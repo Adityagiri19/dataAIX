@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DataAxi Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f8ff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1b2a49;
+      color: white;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: underline;
+      font-size: 1rem;
+    }
+
+    .course-description {
+      padding: 25px 15px;
+      background-color: #dbe8ff;
+      text-align: center;
+    }
+
+    .course-description h2 {
+      color: #1b2a49;
+      margin-bottom: 0.5rem;
+    }
+
+    .modules {
+      padding: 25px 15px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .module {
+      background-color: white;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+
+    .module-header {
+      background-color: #304b84;
+      color: white;
+      padding: 16px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .module-header:hover {
+      background-color: #223563;
+    }
+
+    .module-content {
+      display: none;
+      padding: 0 20px 20px 20px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .module-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .module-content li {
+      padding: 12px;
+      margin-top: 12px;
+      background-color: #f0f4ff;
+      border: 1px solid #cbd9ff;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .module-content li:hover {
+      background-color: #e3edff;
+    }
+
+    footer {
+      background-color: #1b2a49;
+      color: #fff;
+      text-align: center;
+      padding: 16px 10px;
+      margin-top: 30px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .module-header, .module-content {
+        font-size: 0.95rem;
+      }
+
+      header h1 {
+        font-size: 1.3rem;
+      }
+
+      header a {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome, Student</h1>
+    <a href="#">Logout</a>
+  </header>
+
+  <section class="course-description">
+    <h2>Dashboard: Data Analytics Course</h2>
+    <p>Click on a module to expand and select a video.</p>
+  </section>
+
+  <section class="modules">
+
+    <div class="module">
+      <div class="module-header" onclick="toggleModule(this)">Module 1: Introduction to Data Analytics</div>
+      <div class="module-content">
+        <ul>
+          <li onclick="location.href='video.html?video=W6w6_IKiUs0'">Video 1: Data Science Overview</li>
+          <li onclick="location.href='video.html?video=VIDEO_ID_2'">Video 2: Data Processing</li>
+          <li onclick="location.href='video.html?video=VIDEO_ID_3'">Video 3: Data Tools</li>
+          <li onclick="location.href='video.html?video=VIDEO_ID_4'">Video 4: Cleaning Data</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Add more modules here -->
+    <!--
+    <div class="module">
+      <div class="module-header" onclick="toggleModule(this)">Module 2: Visualization</div>
+      <div class="module-content">
+        <ul>
+          <li>Video 1: Charts</li>
+          <li>Video 2: Dashboards</li>
+        </ul>
+      </div>
+    </div>
+    -->
+
+  </section>
+
+  <footer>
+    <p>&copy; 2025 DataAxi | All rights reserved</p>
+  </footer>
+
+  <script>
+    function toggleModule(header) {
+      const content = header.nextElementSibling;
+      const isOpen = content.style.display === "block";
+      document.querySelectorAll('.module-content').forEach(el => el.style.display = 'none');
+      if (!isOpen) {
+        content.style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
