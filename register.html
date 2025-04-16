@@ -114,7 +114,7 @@
         <option value="data-analytics">Data Analytics</option>
       </select>
 
-      <button type="submit" class="btn">Pay ₹499 via UPI</button>
+      <button type="submit" class="btn">Pay ₹10 via UPI</button>
     </form>
   </div>
 
@@ -129,7 +129,7 @@
       const fullname = document.getElementById("fullname").value;
       const upiId = "adityagirind@okaxis"; // Replace with your actual UPI ID
       const name = "DataAxi";
-      const amount = "499";
+      const amount = "10";
       const note = `Course Fee - ${fullname}`;
 
       const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
