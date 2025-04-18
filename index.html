@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DataAxi - Data Analytics Course</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(ellipse at top, #0f172a, #020617);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+    }
+
+    .container {
+      max-width: 960px;
+      text-align: center;
+    }
+
+    .brand {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #22c55e, #facc15);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+
+    h1 .highlight {
+      color: #22c55e;
+    }
+
+    h1 .glow {
+      color: #facc15;
+      text-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      margin-bottom: 2rem;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .buttons button,
+    .buttons a {
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      color: #000;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: #16a34a;
+    }
+
+    .btn-secondary {
+      background-color: #0f172a;
+      color: #ffffff;
+      border: 1px solid #334155;
+    }
+
+    .btn-secondary:hover {
+      background-color: #1e293b;
+    }
+
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .testimonial-container {
+      width: 100%;
+      max-width: 360px;
+      overflow: hidden;
+      margin: 2rem auto;
+      border-radius: 20px;
+      background: #1e293b;
+      padding: 1rem;
+    }
+
+    .testimonial-slider {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .testimonial-card {
+      min-width: 100%;
+      padding: 1.2rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    .testimonial-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-card p {
+      font-size: 1rem;
+      color: #cbd5e1;
+      margin-bottom: 0.5rem;
+    }
+
+    .testimonial-card h3 {
+      font-size: 1.1rem;
+      color: #22c55e;
+      margin-top: 0.5rem;
+    }
+
+    .testimonial-dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 10px;
+    }
+
+    .testimonial-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0.4;
+    }
+
+    .testimonial-dot.active {
+      background-color: #22c55e;
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .testimonial-card img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="brand">data<span class="glow">AXI Lab</span></div>
+    <div class="badge">"Master Data, Empower Your Career"</div>
+
+    <h1>
+      Master the Future with <span class="highlight">Data Analytics</span><br>
+      <span class="glow">Comprehensive Course</span>
+    </h1>
+
+    <p>Start your journey to becoming a Data Analytics expert with our immersive, hands-on course. Real-world projects, job assistance, and expert mentorship included.</p>
+
+    <div class="testimonial-container">
+      <div class="testimonial-slider" id="testimonialSlider">
+        <div class="testimonial-card">
+          <img src="IMG2.jpg" alt="Jesika">
+          <p>"This course changed my career! The projects were hands-on, and the mentorship was exceptional."</p>
+          <h3>Jesika</h3>
+        </div>
+        <div class="testimonial-card">
+          <img src="IMG1.jpg" alt="Pranay">
+          <p>"I gained the skills and knowledge I needed to land a job in Data Analytics. Highly recommend!"</p>
+          <h3>Pranay</h3>
+        </div>
+        <div class="testimonial-card">
+          <img src="IMG3.jpg" alt="Himanshu">
+          <p>"Excellent course with real-world applications. The best investment I made in my career."</p>
+          <h3>Himanshu</h3>
+        </div>
+        <div class="testimonial-card">
+          <img src="IMG4.jpg" alt="Kaushik">
+          <p>"I particularly appreciated the clarity of explanations and the focus on practical implementation."</p>
+          <h3>Kaushik</h3>
+        </div>
+        <div class="testimonial-card">
+          <img src="img5.jpg" alt="Shubhada">
+          <p>"The course was well-structured and covered all the essential concepts in a beginner-friendly manner."</p>
+          <h3>Shubhada</h3>
+        </div>
+      </div>
+      <div class="testimonial-dots" id="testimonialDots"></div>
+    </div>
+
+    <div class="buttons">
+      <a href="module.html" class="btn-primary">Explore Courses</a>
+      <button id="learnMoreBtn" class="btn-secondary">Unlock Jobs</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 dataAXI Lab | All rights reserved
+  </footer>
+
+  <script>
+    // Testimonial Slider Logic
+    let slideIndex = 0;
+    const slider = document.getElementById('testimonialSlider');
+    const dotsContainer = document.getElementById('testimonialDots');
+    const totalSlides = slider.children.length;
+
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('testimonial-dot');
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    function updateDots() {
+      document.querySelectorAll('.testimonial-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === slideIndex);
+      });
+    }
+
+    function goToSlide(index) {
+      slideIndex = index;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      updateDots();
+    }
+
+    setInterval(() => {
+      slideIndex = (slideIndex + 1) % totalSlides;
+      goToSlide(slideIndex);
+    }, 5000);
+
+    goToSlide(slideIndex);
+
+    // Unlock Jobs Button Logic
+    document.getElementById('learnMoreBtn').addEventListener('click', function () {
+      this.textContent = "Job Assistance";
+      this.classList.remove("btn-secondary");
+      this.classList.add("btn-primary");
+      setTimeout(() => {
+        window.location.href = "https://forms.gle/HhLSoM4xpg7CPBGd9";
+      }, 400); // small delay to show effect
+    });
+  </script>
+
+</body>
+</html>
