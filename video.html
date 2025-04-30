@@ -118,18 +118,18 @@
   </footer>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const videoId = urlParams.get("video");
+  const urlParams = new URLSearchParams(window.location.search);
+  const videoId = urlParams.get("video");
 
-    if (videoId) {
-      const iframe = document.getElementById("videoPlayer");
-      // Use your own video platform URL instead of YouTube's URL
-      iframe.src = `https://yourplatform.com/embed/${videoId}`;  // Replace with your own video URL
-    } else {
-      const heading = document.createElement("h2");
-      heading.textContent = "❌ No video found!";
-      document.querySelector(".video-container").prepend(heading);
-    }
-  </script>
+  if (videoId) {
+    const iframe = document.getElementById("videoPlayer");
+    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+  } else {
+    const heading = document.createElement("h2");
+    heading.textContent = "❌ No video found!";
+    document.querySelector(".video-container").prepend(heading);
+  }
+</script>
+
 </body>
 </html>
