@@ -16,10 +16,12 @@
     }
 
     body {
-      background: radial-gradient(ellipse at top, #0f172a, #020617);
+      background-color: #0f171c;
       color: #ffffff;
+      display: flex;
+      flex-direction: column;
       min-height: 100vh;
-      padding-bottom: 60px;
+      overflow-x: hidden;
     }
 
     header {
@@ -28,52 +30,61 @@
     }
 
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 800;
-      background: linear-gradient(to right, #22c55e, #facc15);
+      background: linear-gradient(to right, #00ffc8, #00c2c1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
     }
 
     .course-description {
       max-width: 960px;
       margin: 0 auto 2rem;
-      background-color: rgba(255, 255, 255, 0.05);
+      background: linear-gradient(145deg, #1a2b33, #0c1216);
       padding: 2rem;
       border-radius: 16px;
       text-align: center;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     }
 
     .course-description h2 {
       font-size: 2rem;
       font-weight: 700;
-      color: #facc15;
+      color: #00ffc8;
       margin-bottom: 0.5rem;
     }
 
     .course-description p {
       font-size: 1.1rem;
-      color: #cbd5e1;
+      color: #e2e8f0;
+      line-height: 1.6;
     }
 
     .modules {
       max-width: 960px;
       margin: 0 auto;
+      padding: 2rem 0;
     }
 
     .module {
-      background-color: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .module:hover {
+      transform: translateY(-5px);
     }
 
     .module-header {
       background-color: #1e293b;
       color: #f1f5f9;
-      padding: 1.2rem 1.5rem;
+      padding: 1.5rem;
       font-size: 1.2rem;
       font-weight: 600;
       cursor: pointer;
@@ -81,7 +92,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease;
     }
 
     .module-header span {
@@ -91,6 +102,7 @@
 
     .module-header:hover {
       background-color: #334155;
+      transform: scale(1.05);
     }
 
     .module-header i {
@@ -100,30 +112,36 @@
     .module-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.5s ease;
+      opacity: 0;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
       padding: 0 1.5rem;
     }
 
     .module-content.open {
       padding: 1rem 1.5rem;
+      opacity: 1;
+      max-height: 1000px; /* Ensure content expands fully */
     }
 
     .module-content ul {
       list-style: none;
+      margin-top: 1rem;
     }
 
     .module-content li {
       background-color: rgba(255, 255, 255, 0.05);
-      padding: 0.9rem 1rem;
+      padding: 1rem;
       border-radius: 8px;
       margin-bottom: 0.8rem;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.3s ease;
       color: #e2e8f0;
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .module-content li:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(0, 255, 200, 0.2);
     }
 
     footer {
@@ -162,12 +180,12 @@
   <section class="modules">
     <div class="module">
       <div class="module-header" onclick="toggleModule(this)">
-        <span>Module 1 : SQL (Basic To  Advanced)</span>
+        <span>Module 1 : SQL (Basic To Advanced)</span>
         <i class="fas fa-chevron-down"></i>
       </div>
       <div class="module-content">
         <ul>
-          <li onclick="location.href='video.html?video=xw5dyeeO6_Y'"> SQL - Database and Table Operations </li>
+          <li onclick="location.href='https://youtu.be/BU64EFRC-Bw'">SQL - Database and Table Operations</li>
           <li onclick="location.href='video.html?video=pqr456stu'"> SQL - Queries </li>
         </ul>
       </div>
@@ -188,6 +206,7 @@
       document.querySelectorAll(".module-content").forEach(c => {
         c.classList.remove("open");
         c.style.maxHeight = null;
+        c.style.opacity = 0;
       });
 
       document.querySelectorAll(".module-header i").forEach(i => {
@@ -198,6 +217,7 @@
       if (!isOpen) {
         content.classList.add("open");
         content.style.maxHeight = content.scrollHeight + "px";
+        content.style.opacity = 1;
         icon.style.transform = "rotate(180deg)";
       }
     }
