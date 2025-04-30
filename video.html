@@ -3,157 +3,131 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - DataAxi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>dataAXI Lab</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
-
     body {
-      background: radial-gradient(ellipse at top, #0f172a, #020617);
-      color: #ffffff;
-      min-height: 100vh;
+      margin: 0;
+      background-color: #0f171c;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
     }
 
-    header {
-      text-align: center;
-      padding: 3rem 1rem;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      background: linear-gradient(to right, #22c55e, #facc15);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .video-lessons {
+    .content-wrapper {
       flex: 1;
-      padding: 40px 15px;
-      text-align: center;
-    }
-
-    .video-lessons h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #facc15;
-      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
     .video-container {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      max-width: 100%;
-      margin: 0 auto;
+      background: linear-gradient(145deg, #0c1216, #1a2b33);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+      padding: 15px 20px;
+      width: 100%;
+      max-width: 800px;
+      height: 300px;
+      position: relative;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .video-container h2 {
+      color: #ffffff;
+      font-size: 20px;
+      margin: 0;
+      text-align: center;
     }
 
     .video-container iframe {
-      border-radius: 8px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
       width: 100%;
-      height: 315px;
-      max-width: 560px;
-      margin: 0 auto;
+      height: 180px;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      color: #00ffc8;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.3s;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background-color: rgba(0, 255, 200, 0.2);
     }
 
     footer {
-      background-color: #1e293b;
-      color: #64748b;
       text-align: center;
-      padding: 1rem;
+      color: #ccc;
+      font-size: 12px;
+      padding: 10px 0;
     }
 
-    @media (max-width: 1024px) {
-      header h1 {
-        font-size: 2rem;
-      }
-
-      .video-lessons h2 {
-        font-size: 1.75rem;
-      }
-
-      .video-container iframe {
-        width: 100%;
-        height: auto;
-      }
-    }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-
-      .video-lessons h2 {
-        font-size: 1.6rem;
-      }
-
-      .video-container iframe {
+    @media screen and (max-width: 768px) {
+      .video-container {
         height: auto;
       }
 
-      footer {
-        font-size: 14px;
+      .video-container iframe {
+        height: 200px;
       }
     }
 
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 1.5rem;
+    @media screen and (max-width: 480px) {
+      .video-container iframe {
+        height: 180px;
       }
 
-      .video-lessons h2 {
-        font-size: 1.4rem;
-      }
-
-      footer {
+      .back-btn {
+        top: 10px;
+        left: 10px;
         font-size: 12px;
+        padding: 5px 10px;
       }
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1><i class="fas fa-chart-line"></i> Welcome, Students</h1>
-  </header>
-
-  <section class="video-lessons">
-    <h2><i class="fas fa-play-circle"></i> Video Lessons</h2>
+    <a href="module.html" class="back-btn">⬅ Back to Modules</a>
+  <div class="content-wrapper">
     <div class="video-container">
-      <iframe id="videoPlayer" src="" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
+      <iframe id="videoPlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-  </section>
+  </div>
 
   <footer>
     <p>&copy; 2025 dataAXI Lab | All rights reserved</p>
   </footer>
 
   <script>
-    // Extract the video ID from the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const videoId = urlParams.get("video");
 
-    // Check if the video ID exists and set the iframe source
     if (videoId) {
       const iframe = document.getElementById("videoPlayer");
       iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&autohide=1&showinfo=0`;
     } else {
-      document.querySelector('.video-lessons h2').textContent = "No video found!";
+      const heading = document.createElement("h2");
+      heading.textContent = "❌ No video found!";
+      document.querySelector(".video-container").prepend(heading);
     }
   </script>
-
 </body>
 </html>
