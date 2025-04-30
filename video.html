@@ -45,13 +45,13 @@
     }
 
     .video-container iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 12px;
-  object-fit: cover; /* This makes sure the video covers the entire container */
-  transition: all 0.3s ease-in-out;
-}
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+      object-fit: cover; /* This makes sure the video covers the entire container */
+      transition: all 0.3s ease-in-out;
+    }
 
     .back-btn {
       position: absolute;
@@ -123,7 +123,8 @@
 
     if (videoId) {
       const iframe = document.getElementById("videoPlayer");
-      iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&autohide=1&showinfo=0`;
+      // Use your own video platform URL instead of YouTube's URL
+      iframe.src = `https://yourplatform.com/embed/${videoId}`;  // Replace with your own video URL
     } else {
       const heading = document.createElement("h2");
       heading.textContent = "❌ No video found!";
