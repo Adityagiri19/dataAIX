@@ -25,37 +25,36 @@
     .video-container {
       background: linear-gradient(145deg, #0c1216, #1a2b33);
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
-      padding: 15px 20px;
+      box-shadow: 0 0 30px rgba(0, 255, 200, 0.3);
+      padding: 20px;
       width: 100%;
-      max-width: 800px;
-      height: 300px;
+      max-width: 850px;
       position: relative;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 15px;
     }
 
     .video-container h2 {
       color: #ffffff;
-      font-size: 20px;
+      font-size: 24px;
       margin: 0;
       text-align: center;
     }
 
     .video-container iframe {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 16 / 9;
       border: none;
       border-radius: 12px;
-      object-fit: cover; /* This makes sure the video covers the entire container */
+      object-fit: cover;
       transition: all 0.3s ease-in-out;
     }
 
     .back-btn {
-      position: absolute;
-      top: 15px;
+      position: fixed;
+      top: 20px;
       left: 20px;
       color: #00ffc8;
       font-size: 14px;
@@ -68,6 +67,7 @@
       gap: 5px;
       transition: background 0.3s;
       text-decoration: none;
+      z-index: 1000; /* makes sure the button is always on top */
     }
 
     .back-btn:hover {
@@ -81,19 +81,38 @@
       padding: 10px 0;
     }
 
+    /* Tablet Layout */
     @media screen and (max-width: 768px) {
-      .video-container {
-        height: auto;
+      .video-container iframe {
+        aspect-ratio: 16 / 9;
       }
 
-      .video-container iframe {
-        height: 200px;
+      .video-container h2 {
+        font-size: 20px;
+      }
+
+      .video-container {
+        padding: 15px;
+      }
+
+      .back-btn {
+        font-size: 12px;
+        padding: 5px 10px;
       }
     }
 
+    /* Mobile Layout */
     @media screen and (max-width: 480px) {
       .video-container iframe {
-        height: 180px;
+        aspect-ratio: 16 / 9;
+      }
+
+      .video-container h2 {
+        font-size: 18px;
+      }
+
+      .video-container {
+        padding: 10px;
       }
 
       .back-btn {
@@ -106,9 +125,10 @@
   </style>
 </head>
 <body>
-    <a href="module.html" class="back-btn">⬅ Back to Modules</a>
+  <a href="module.html" class="back-btn">⬅ Back to Modules</a>
   <div class="content-wrapper">
     <div class="video-container">
+      <h2 id="videoTitle">Now Playing</h2>
       <iframe id="videoPlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
@@ -118,19 +138,15 @@
   </footer>
 
   <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const videoId = urlParams.get("video");
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get("video");
 
-  if (videoId) {
-    const iframe = document.getElementById("videoPlayer");
-   iframe.src = `https://www.youtube.com/embed/${videoId}`;
-
-  } else {
-    const heading = document.createElement("h2");
-    heading.textContent = "❌ No video found!";
-    document.querySelector(".video-container").prepend(heading);
-  }
-</script>
-
+    if (videoId) {
+      const iframe = document.getElementById("videoPlayer");
+      iframe.src = `https://www.youtube.com/embed/${videoId}`;
+    } else {
+      document.getElementById("videoTitle").textContent = "❌ No video found!";
+    }
+  </script>
 </body>
 </html>
