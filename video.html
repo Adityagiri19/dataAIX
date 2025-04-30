@@ -123,7 +123,8 @@
 
   if (videoId) {
     const iframe = document.getElementById("videoPlayer");
-    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+   iframe.src = `https://www.youtube.com/embed/${videoId}`;
+
   } else {
     const heading = document.createElement("h2");
     heading.textContent = "❌ No video found!";
