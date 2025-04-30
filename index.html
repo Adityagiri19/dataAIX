@@ -20,17 +20,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       padding: 3rem 1rem;
     }
 
     .container {
       max-width: 960px;
+      width: 100%;
       text-align: center;
     }
 
     .brand {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       margin-bottom: 1rem;
       background: linear-gradient(to right, #22c55e, #facc15);
@@ -45,15 +45,15 @@
       padding: 0.4rem 1rem;
       border-radius: 999px;
       font-size: 0.9rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       letter-spacing: 0.5px;
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 1rem;
+      line-height: 1.4;
+      margin-bottom: 1.5rem;
     }
 
     h1 .highlight {
@@ -65,17 +65,40 @@
       text-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
     }
 
-    p {
+    .description {
       font-size: 1.1rem;
       color: #cbd5e1;
       margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    ul.features {
+      list-style-type: none;
+      padding-left: 0;
+      text-align: left;
+      max-width: 720px;
+      margin: 0 auto 2rem auto;
+      color: #cbd5e1;
+    }
+
+    ul.features li {
+      margin-bottom: 0.7rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    ul.features li::before {
+      content: "✅";
+      position: absolute;
+      left: 0;
     }
 
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 1rem;
       flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
     }
 
     .buttons button,
@@ -109,21 +132,35 @@
     .btn-secondary:hover {
       background-color: #1e293b;
     }
+    .features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}
 
-    footer {
-      margin-top: 4rem;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #64748b;
-    }
+.feature-card {
+  background: #1e293b;
+  padding: 0.8rem 1.2rem; /* Reduced padding */
+  border-radius: 12px; /* Slightly smaller radius */
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.2); /* Reduced shadow size */
+  color: #cbd5e1;
+  font-size: 0.9rem; /* Smaller font size */
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  max-width: 80%; /* Limit width for smaller boxes */
+  margin: 0.5rem auto; /* Added some spacing between boxes */
+}
 
     .testimonial-container {
       width: 100%;
       max-width: 360px;
-      overflow: hidden;
       margin: 2rem auto;
-      border-radius: 20px;
       background: #1e293b;
+      border-radius: 20px;
+      overflow: hidden;
       padding: 1rem;
     }
 
@@ -136,7 +173,6 @@
       min-width: 100%;
       padding: 1.2rem;
       text-align: center;
-      color: #fff;
     }
 
     .testimonial-card img {
@@ -149,7 +185,6 @@
     .testimonial-card p {
       font-size: 1rem;
       color: #cbd5e1;
-      margin-bottom: 0.5rem;
     }
 
     .testimonial-card h3 {
@@ -161,8 +196,8 @@
     .testimonial-dots {
       display: flex;
       justify-content: center;
-      margin-top: 1rem;
       gap: 10px;
+      margin-top: 1rem;
     }
 
     .testimonial-dot {
@@ -179,14 +214,29 @@
       opacity: 1;
     }
 
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+      }
+
+      .description {
+        font-size: 1rem;
       }
 
       .testimonial-card img {
         width: 50px;
         height: 50px;
+      }
+
+      .buttons {
+        flex-direction: column;
       }
     }
   </style>
@@ -202,17 +252,17 @@
       <span class="glow">Comprehensive Course</span>
     </h1>
 
-    <p>Kickstart Your Career in Data Analytics – Join Our Free Live Classes!</p>
-    <p>Start your journey to becoming a Data Analytics expert with our 100% free, live, and interactive course.
-       Whether you're a student or job-seeker this program is designed to build your skills from the ground up!</p>
-    <p>💡 What You’ll Get:</p>
-    <p>✅ Live Online Classes led by industry experts</p>
-    <p>✅ Hands-on Training with real-world datasets</p>
-    <p>✅ Capstone Projects to showcase your skills</p>
-    <p>✅ Resume & Interview Support</p>
-    <p>✅ 1:1 Mentorship from data professionals</p>
-    <p>✅ Completion Certificate</p>
-    <p>✅ No Prior Experience Required</p>
+    <p class="description">Kickstart your career in Data Analytics with our 100% free, live and interactive training sessions. Whether you're a student or job seeker, our beginner-friendly course will build your skills from the ground up.</p>
+
+    <div class="features-list">
+      <div class="feature-card">✅ FREE Live Online Classes</div>
+      <div class="feature-card">✅ Hands-on Training with real-world datasets</div>
+      <div class="feature-card">✅ Capstone Projects to showcase your skills</div>
+      <div class="feature-card">✅ Resume & Interview Support</div>
+      <div class="feature-card">✅ 1:1 Mentorship from data professionals</div>
+      <div class="feature-card">✅ Completion Certificate</div>
+      <div class="feature-card">✅ No Prior Experience Required</div>
+    </div>
 
     <div class="testimonial-container">
       <div class="testimonial-slider" id="testimonialSlider">
@@ -256,7 +306,6 @@
   </footer>
 
   <script>
-    // Testimonial Slider Logic
     let slideIndex = 0;
     const slider = document.getElementById('testimonialSlider');
     const dotsContainer = document.getElementById('testimonialDots');
@@ -288,13 +337,12 @@
 
     goToSlide(slideIndex);
 
-    // Unlock Jobs Button Logic
     document.getElementById('learnMoreBtn').addEventListener('click', function () {
       this.classList.remove("btn-secondary");
       this.classList.add("btn-primary");
       setTimeout(() => {
         window.location.href = "https://forms.gle/HhLSoM4xpg7CPBGd9";
-      }, 400); // small delay to show effect
+      }, 400);
     });
   </script>
 
