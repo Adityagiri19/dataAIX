@@ -57,7 +57,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 80%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
@@ -123,11 +123,12 @@
             padding: 2.5rem;
             max-width: 600px;
             width: 100%;
-            box-shadow: 
+            box-shadow:
                 0 20px 40px var(--shadow-heavy),
                 0 0 0 1px rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .payment-container::before {
@@ -201,6 +202,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: textReveal 0.8s ease-out;
         }
 
         .payment-header .subtitle {
@@ -228,6 +230,14 @@
             color: var(--secondary);
             font-size: 0.9rem;
             font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--secondary);
+            color: var(--bg-primary);
+            border-color: var(--secondary);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         /* Course selection */
@@ -313,6 +323,7 @@
         .payment-option:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-light);
         }
 
         .payment-option-header {
@@ -383,6 +394,7 @@
             padding: 2rem;
             margin-top: 1.5rem;
             text-align: center;
+            animation: fadeInScale 0.6s ease-out;
         }
 
         .amount-display {
@@ -392,6 +404,7 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
         .amount-label {
@@ -404,6 +417,7 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .upi-info {
@@ -424,6 +438,12 @@
             color: var(--text-primary);
             word-break: break-all;
             min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .upi-id-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.1);
         }
 
         .payment-actions {
@@ -492,6 +512,8 @@
             background: var(--bg-secondary);
             border-radius: 12px;
             text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border); /* Added border for consistency */
         }
 
         .qr-container {
@@ -509,7 +531,7 @@
             background: white;
             padding: 10px;
             box-shadow: 0 8px 25px rgba(0, 212, 170, 0.2);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
         }
 
         .qr-code-img:hover {
@@ -522,7 +544,7 @@
             position: fixed;
             bottom: 20px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(20px); /* Start slightly below */
             background: var(--bg-card);
             color: var(--text-primary);
             padding: 16px 24px;
@@ -531,11 +553,12 @@
             z-index: 2001;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Springy transition */
             display: flex;
             align-items: center;
             gap: 12px;
             border: 1px solid var(--border);
+            font-weight: 500;
         }
 
         .message-box.show {
@@ -546,7 +569,24 @@
 
         .message-box.success {
             border-color: var(--success);
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .message-box.error {
+            border-color: #ef4444; /* Red for error */
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .message-box .fas {
+            font-size: 1.2rem;
+        }
+
+        .message-box.success .fas {
+            color: var(--success);
+        }
+
+        .message-box.error .fas {
+            color: #ef4444;
         }
 
         /* Footer */
@@ -557,6 +597,7 @@
             border-top: 1px solid var(--border);
             background: var(--bg-secondary);
             margin-top: 2rem;
+            animation: fadeIn 1s ease-out;
         }
 
         .social-links {
@@ -580,43 +621,59 @@
             transform: translateY(-2px);
         }
 
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes textReveal {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             body {
                 padding-top: var(--header-height-mobile);
             }
-            
+
             .navbar {
                 padding: 12px 20px;
                 height: var(--header-height-mobile);
             }
-            
+
             .security-badge {
                 display: none;
             }
-            
+
             .payment-wrapper {
                 padding: 20px 15px;
             }
-            
+
             .payment-container {
                 padding: 1.5rem;
             }
-            
+
             .payment-header h1 {
                 font-size: 2rem;
             }
-            
+
             .top-links {
                 flex-direction: column;
                 gap: 0.5rem;
             }
-            
+
             .payment-actions {
                 flex-direction: column;
                 align-items: stretch;
             }
-            
+
             .progress-indicator {
                 flex-direction: column;
                 gap: 0.5rem;
@@ -628,11 +685,11 @@
                 padding: 1rem;
                 border-radius: 16px;
             }
-            
+
             .payment-header h1 {
                 font-size: 1.8rem;
             }
-            
+
             .amount-value {
                 font-size: 1.5rem;
             }
@@ -663,12 +720,12 @@
                 <h1>Complete Your Enrollment</h1>
                 <p class="subtitle">Secure payment gateway for DataAXI Lab courses</p>
                 <div class="progress-indicator">
-                    <div class="progress-step">
+                    <div class="progress-step active">
                         <i class="fas fa-check-circle"></i>
                         <span>Course Selected</span>
                     </div>
                     <i class="fas fa-arrow-right" style="color: var(--text-secondary);"></i>
-                    <div class="progress-step">
+                    <div class="progress-step active">
                         <i class="fas fa-credit-card"></i>
                         <span>Payment</span>
                     </div>
@@ -715,10 +772,10 @@
                 </div>
             </div>
 
-            <div class="upi-details">
+            <div class="upi-details" id="upi-details-section">
                 <div class="amount-display">
                     <div class="amount-label">Amount to Pay</div>
-                    <div class="amount-value" id="course-price">₹4000</div>
+                    <div class="amount-value" id="course-price">₹</div>
                 </div>
 
                 <div class="upi-info">
@@ -733,11 +790,10 @@
                         <i class="fas fa-qrcode"></i> Scan QR Code to Pay
                     </h4>
                     <div class="qr-container">
-                        <img id="qr-code-img" class="qr-code-img" src="qr.jpg" alt="Static UPI Payment QR Code">
-                        
-                        </div>
-                    <div class="qr-status" style="margin-top: 1rem;">
-                        Scan this QR code with any UPI app. Please ensure you enter the correct amount.
+                        <img id="qr-code-img" class="qr-code-img" src="gpay.jpg" alt="Universal UPI Payment QR Code" onerror="this.onerror=null; this.src='https://placehold.co/200x200/FF0000/FFFFFF?text=QR+Not+Found'; console.error('Error loading QR code image: gpay.jpg. Please ensure the file exists in the same directory and the name is correct.');">
+                    </div>
+                    <div class="qr-status" style="margin-top: 1rem; color: var(--text-secondary);">
+                        Scan this QR code with any UPI app and **manually enter the amount shown above**.
                     </div>
                 </div>
 
@@ -758,19 +814,26 @@
                         Payment Instructions
                     </div>
                     <ul style="color: var(--text-secondary); font-size: 0.9rem; margin-left: 1rem;">
-                        <li>f the 'Pay with UPI App' button doesn't work, please follow the steps below.</li>
-                        <li>Scan the QR code or copy the UPI ID.</li>
-                        <li>Open your UPI app and **manually enter the exact amount** displayed above.</li>
+                        <li>If the 'Pay with UPI App' button doesn't work, you can scan the QR code.</li>
+                        <li>**Important:** You will need to **manually enter the exact amount** for your chosen course in your UPI app.</li>
                         <li>Take a screenshot of payment confirmation.</li>
                         <li>You'll receive course access within 30 Mins.</li>
                     </ul>
                 </div>
             </div>
+            <div id="payment-success-section" style="display: none; text-align: center; padding: 3rem 1.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); border-radius: 16px; margin-top: 2rem; animation: fadeInScale 0.6s ease-out;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
+                <h2 style="font-size: 2rem; color: var(--success); margin-bottom: 1rem;">Payment Successful!</h2>
+                <p id="success-message-text" style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem;"></p>
+                <a href="index.html" class="action-btn btn-primary" style="background: var(--success); border-color: var(--success);">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
         </div>
     </div>
 
     <div id="message-box" class="message-box">
-        <i class="fas fa-check-circle"></i>
+        <i class="fas"></i>
         <span id="message-text"></span>
     </div>
 
@@ -801,40 +864,62 @@
             const payViaUpiBtn = document.getElementById('pay-via-upi-btn');
             const messageBox = document.getElementById('message-box');
             const messageText = document.getElementById('message-text');
+            const messageIcon = messageBox.querySelector('.fas');
+            const qrCodeImg = document.getElementById('qr-code-img');
+            const upiDetailsSection = document.getElementById('upi-details-section');
+            const paymentSuccessSection = document.getElementById('payment-success-section');
+            const successMessageText = document.getElementById('success-message-text'); // New element for specific success message
 
-            // Define course prices
             const coursePrices = {
                 "Data Analytics": 20,
                 "Data Engineering": 10,
                 "Network Engineering": 10,
             };
 
-            // Common UPI ID for all courses
-            const commonUpiId = "adityagirind@oksbi";
-            const payeeName = "DataAXI Lab"; // Payee name for UPI deep link
+            // The QR code image path is now set directly in the HTML <img> tag's src attribute.
+            // This variable is no longer strictly necessary for setting the image source,
+            // but it's kept for consistency if you decide to dynamically change it later.
+            // IMPORTANT: Ensure 'gpay.jpg' is in the same folder as this HTML file.
+            const universalQrCodePath = "gpay.jpg"; 
 
-            // Function to display custom messages
+            const commonUpiId = "adityagirind@oksbi";
+            const payeeName = "DataAXI Lab";
+
             function showMessage(message, type = 'info') {
                 messageText.textContent = message;
-                messageBox.className = `message-box show ${type}`;
+                messageBox.classList.remove('success', 'error', 'info');
+                messageBox.classList.add(type);
+
+                if (type === 'success') {
+                    messageIcon.className = 'fas fa-check-circle';
+                } else if (type === 'error') {
+                    messageIcon.className = 'fas fa-exclamation-circle';
+                } else {
+                    messageIcon.className = 'fas fa-info-circle';
+                }
+
+                messageBox.classList.add('show');
 
                 setTimeout(() => {
                     messageBox.classList.remove('show');
-                    messageBox.classList.remove('success', 'error', 'info');
                 }, 4000);
             }
 
-            // Function to update displayed price
             function updatePaymentDetails() {
                 const selectedCourse = courseSelect.value;
                 const price = coursePrices[selectedCourse];
-
+                
                 if (price) {
                     coursePriceSpan.textContent = `₹${price}`;
                 } else {
                     coursePriceSpan.textContent = "N/A";
                 }
                 displayUpiId.textContent = commonUpiId;
+
+                // The QR code image source is now primarily set via the HTML src attribute.
+                // This line is kept to ensure the alt text is always correct,
+                // but the src itself is static in the HTML.
+                qrCodeImg.alt = "Universal UPI Payment QR Code";
             }
 
             // Get course from URL query parameter (if any)
@@ -856,8 +941,7 @@
             // Copy UPI ID to clipboard
             copyUpiBtn.addEventListener('click', function() {
                 const upiIdToCopy = displayUpiId.textContent;
-                
-                // Using document.execCommand('copy') for better iframe compatibility
+
                 const tempInput = document.createElement('textarea');
                 tempInput.value = upiIdToCopy;
                 document.body.appendChild(tempInput);
@@ -873,19 +957,27 @@
                 }
             });
 
-            // Pay via UPI App button
+            // Pay via UPI App button - simulate success after a delay
             payViaUpiBtn.addEventListener('click', function() {
-                const selectedCourse = courseSelect.value;
-                const amount = coursePrices[selectedCourse];
-                const transactionNote = `Payment for ${selectedCourse} Course`;
+                const selectedCourse = courseSelect.value; // Still get selected course for display
+                const amount = coursePrices[selectedCourse]; // Still get amount for display
 
                 if (amount) {
-                    // This will attempt to open a UPI app.
-                    // Note: For static QR, the amount won't be pre-filled unless
-                    // the UPI app itself supports it or the static QR is a dynamic one (which we're replacing).
-                    // Users will likely need to manually enter the amount.
-                    const upiUrl = `upi://pay?pa=${commonUpiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}.00&tn=${encodeURIComponent(transactionNote)}&cu=INR`;
+                    const upiUrl = `upi://pay?pa=${commonUpiId}&pn=${encodeURIComponent(payeeName)}`;
+
+                    showMessage('Opening UPI app. Please manually enter the amount.', 'info');
+                    
                     window.location.href = upiUrl;
+
+                    setTimeout(() => {
+                        upiDetailsSection.style.display = 'none';
+                        paymentSuccessSection.style.display = 'block';
+                        // --- MODIFIED: Personalized success message ---
+                        successMessageText.textContent = `Congratulations! You have been successfully enrolled for the ${selectedCourse} course. Your course access details will be sent to your registered email shortly.`;
+                        showMessage('Payment confirmed!', 'success'); // Keep main message box brief
+                        // --- END MODIFIED ---
+                    }, 3000); 
+                    
                 } else {
                     showMessage('Please select a course to initiate payment.', 'error');
                 }
