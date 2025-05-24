@@ -457,7 +457,7 @@
             background: var(--bg-secondary);
             color: var(--text-primary);
             border: 1px solid var(--border);
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
@@ -538,6 +538,31 @@
             transform: scale(1.05);
             box-shadow: 0 12px 35px rgba(0, 212, 170, 0.3);
         }
+
+        /* Upload Section */
+        .upload-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .upload-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* This centers the icon and text */
+            gap: 10px;
+        }
+
+        .upload-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
 
         /* Message box */
         .message-box {
@@ -802,7 +827,7 @@
                         <i class="fas fa-copy"></i>
                         Copy UPI ID
                     </button>
-                    </div>
+                </div>
 
                 <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent); border-radius: 8px;">
                     <div style="display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">
@@ -816,8 +841,21 @@
                         <li>You'll receive course access within 30 Mins.</li>
                     </ul>
                 </div>
-            </div>
-            </div>
+
+                <div class="upload-section">
+                    <h4>
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Payment Screenshot
+                    </h4>
+                    <p>
+                        After completing your payment, please upload a screenshot of the payment confirmation. This will help us verify your enrollment faster.
+                    </p>
+                    <a href="https://forms.gle/Qw27mteCLDxBnpv49" target="_blank" class="action-btn btn-primary">
+                        <i class="fas fa-upload"></i>
+                        Upload Screenshot
+                    </a>
+                </div>
+                </div>
+        </div>
     </div>
 
     <div id="message-box" class="message-box">
@@ -849,13 +887,10 @@
             const coursePriceSpan = document.getElementById('course-price');
             const displayUpiId = document.getElementById('display-upi-id');
             const copyUpiBtn = document.getElementById('copy-upi-btn');
-            // Removed payViaUpiBtn
             const messageBox = document.getElementById('message-box');
             const messageText = document.getElementById('message-text');
             const messageIcon = messageBox.querySelector('.fas');
             const qrCodeImg = document.getElementById('qr-code-img');
-            // Removed upiDetailsSection and paymentSuccessSection as their display logic is no longer needed
-            // Removed successMessageText
 
             const coursePrices = {
                 "Data Analytics": 20,
@@ -863,14 +898,8 @@
                 "Network Engineering": 10,
             };
 
-            // The QR code image path is now set directly in the HTML <img> tag's src attribute.
-            // This variable is no longer strictly necessary for setting the image source,
-            // but it's kept for consistency if you decide to dynamically change it later.
-            // IMPORTANT: Ensure 'gpay.jpg' is in the same folder as this HTML file.
-            const universalQrCodePath = "gpay.jpg"; 
-
+            const universalQrCodePath = "gpay.jpg"; // IMPORTANT: Ensure 'gpay.jpg' is in the same folder as this HTML file.
             const commonUpiId = "adityagirind@oksbi";
-            const payeeName = "DataAXI Lab"; // This is still used in the instructions, but not in the UPI URL anymore
 
             function showMessage(message, type = 'info') {
                 messageText.textContent = message;
@@ -895,17 +924,13 @@
             function updatePaymentDetails() {
                 const selectedCourse = courseSelect.value;
                 const price = coursePrices[selectedCourse];
-                
+
                 if (price) {
                     coursePriceSpan.textContent = `₹${price}`;
                 } else {
                     coursePriceSpan.textContent = "N/A";
                 }
                 displayUpiId.textContent = commonUpiId;
-
-                // The QR code image source is now primarily set via the HTML src attribute.
-                // This line is kept to ensure the alt text is always correct,
-                // but the src itself is static in the HTML.
                 qrCodeImg.alt = "Universal UPI Payment QR Code";
             }
 
@@ -943,8 +968,6 @@
                     document.body.removeChild(tempInput);
                 }
             });
-
-            // Removed the payViaUpiBtn event listener and its associated logic
         });
     </script>
 </body>
