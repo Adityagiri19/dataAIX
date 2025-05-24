@@ -799,144 +799,162 @@
         }
 
         /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-        }
+        /* --- Corrected Modal Overlay Styles --- */
+.modal-overlay {
+    display: none; /* Hidden by default; JavaScript will change this to 'flex' */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+    display: flex; /* Use flexbox to center content when active */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    z-index: 1000; /* Ensure it's on top of other page content */
+    opacity: 0; /* Start hidden for transition */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
 
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    /* When active, override 'display: none;' set above */
+    display: flex; /* Ensure it shows as a flex container when active */
+}
 
-        .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 450px;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
+/* --- Updated Modal Content Styles (for scrolling) --- */
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 450px; /* Limits the width of the modal itself */
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    position: relative; /* Needed for positioning the close button */
 
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
+    /* --- IMPORTANT: Add these lines for scrolling --- */
+    max-height: 90vh; /* Max height relative to viewport height */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    /* Add some internal padding at the bottom to prevent scrollbar covering content */
+    padding-bottom: 2.5rem; /* Adjust if your content still gets cut off */
+    /* --- End of IMPORTANT lines --- */
+}
 
-        .modal-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
 
-        .modal-close-btn:hover {
-            color: var(--primary);
-        }
+/* --- Rest of your modal styles (unchanged) --- */
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
 
-        .modal-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
+.modal-close-btn:hover {
+    color: var(--primary);
+}
 
-        .modal-form label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
+.modal-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
 
-        .modal-form input[type="text"],
-        .modal-form input[type="email"],
-        .modal-form input[type="tel"],
-        .modal-form input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 1.2rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
+.modal-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
 
-        .modal-form input::placeholder {
-            color: var(--text-muted);
-        }
+.modal-form input[type="text"],
+.modal-form input[type="email"],
+.modal-form input[type="tel"],
+.modal-form input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
 
-        .modal-form button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: var(--bg-primary);
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.modal-form input::placeholder {
+    color: var(--text-muted);
+}
 
-        .modal-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--glow-primary);
-        }
+.modal-form button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        /* Message Box */
-        .message-box {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--bg-card);
-            color: var(--text-primary);
-            padding: 15px 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 2001;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.modal-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--glow-primary);
+}
 
-        .message-box.show {
-            opacity: 1;
-            visibility: visible;
-        }
+/* --- Message Box (unchanged, as it was already correct for its purpose) --- */
+.message-box {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 2001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .message-box.success {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
+.message-box.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-        .message-box.error {
-            border: 1px solid var(--network);
-            color: var(--network);
-        }
+.message-box.success {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.message-box.error {
+    border: 1px solid var(--network);
+    color: var(--network);
+}
+
+/* Prevent body scroll when modal is open */
+body.no-scroll {
+    overflow: hidden;
+}
 
 
         /* Responsive Design */
