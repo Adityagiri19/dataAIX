@@ -7,19 +7,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Re-using some variables from your existing CSS */
         :root {
             --primary: #00d4aa;
             --primary-dark: #00b896;
             --secondary: #6366f1;
+            --accent: #f59e0b;
+            --success: #10b981;
             --bg-primary: #0a0e17;
             --bg-secondary: #0f1419;
             --bg-card: #1a1f2e;
+            --bg-glass: rgba(26, 31, 46, 0.8);
             --text-primary: #ffffff;
             --text-secondary: #a8b3cf;
+            --text-muted: #6b7280;
             --border: #2d3748;
-            --header-height-desktop: 80px; /* Consistent header height */
-            --header-height-mobile: 70px; /* Consistent header height for mobile */
+            --shadow-light: rgba(0, 212, 170, 0.1);
+            --shadow-heavy: rgba(0, 0, 0, 0.3);
+            --header-height-desktop: 80px;
+            --header-height-mobile: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         html {
@@ -28,48 +39,49 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #0d1421 50%, var(--bg-secondary) 100%);
             color: var(--text-primary);
             line-height: 1.6;
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
-            justify-content: flex-start; /* Align content below header */
-            align-items: center;
-            /* Adjust padding-top as secondary-nav-links is removed */
             padding-top: var(--header-height-desktop);
-            padding-bottom: 20px; /* Keep some bottom padding */
-            box-sizing: border-box;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Standard */
+            padding-bottom: 20px;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* Navbar styles (fixed top bar with brand only) */
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navbar styles */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(26, 31, 46, 0.9);
+            background: rgba(26, 31, 46, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            border-radius: 0 0 16px 16px;
-            padding: 16px 32px; /* Generous padding for the main brand header */
+            padding: 16px 32px;
             z-index: 1000;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Align brand to the left */
+            justify-content: space-between;
             height: var(--header-height-desktop);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .navbar:hover {
-            background: rgba(26, 31, 46, 0.95);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px var(--shadow-heavy);
         }
 
         .nav-brand {
@@ -80,84 +92,161 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            flex-shrink: 0; /* Prevent brand from shrinking */
         }
 
-        /* Main content container */
-        .payment-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2.5rem;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-top: 40px; /* Space below the header */
-            margin-bottom: 40px; /* Space above the footer */
-            display: flex; /* Enable flexbox for internal alignment */
-            flex-direction: column; /* Stack children vertically */
-            align-items: center; /* Center items horizontally */
-        }
-
-        .payment-container .top-links { /* New class for the Home/Courses links container */
-            display: flex;
-            gap: 1.5rem; /* Space between the links */
-            margin-bottom: 2rem; /* Space between links and main heading */
-            justify-content: center; /* Center the links within their container */
-            width: 100%; /* Ensure it takes full width to center effectively */
-        }
-
-        .payment-container .top-links .link-button { /* Styling for Home/Courses links */
-            background: var(--bg-card); /* Changed to bg-card for better contrast */
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 25px; /* Increased padding for a more substantial button */
-            color: var(--text-primary); /* Changed to text-primary for better visibility */
-            text-decoration: none;
-            font-weight: 600; /* Slightly bolder font */
-            font-size: 1rem; /* Consistent text size */
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .security-badge {
             display: flex;
             align-items: center;
-            gap: 10px; /* Increased gap between icon and text */
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            color: var(--success);
         }
 
-        .payment-container .top-links .link-button:hover {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); /* Gradient background on hover */
-            color: var(--bg-primary); /* Text color changes on hover */
+        /* Main container */
+        .payment-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - var(--header-height-desktop));
+            padding: 40px 20px;
+        }
+
+        .payment-container {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 
+                0 20px 40px var(--shadow-heavy),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        /* Navigation links */
+        .top-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .link-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .link-button:hover::before {
+            left: 100%;
+        }
+
+        .link-button:hover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--bg-primary);
             border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+            box-shadow: 0 8px 25px var(--shadow-light);
         }
 
-        /* Icon size within link buttons */
-        .payment-container .top-links .link-button i {
-            font-size: 1.1rem; /* Slightly larger icon size for desktop */
-            transition: font-size 0.3s ease; /* Smooth transition for icon size */
+        /* Header section */
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .payment-container h1 {
-            font-size: 2.2rem;
+        .payment-header h1 {
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .payment-container p {
+        .payment-header .subtitle {
             font-size: 1.1rem;
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Course selection */
+        .course-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
-            text-align: left;
-            width: 100%; /* Ensure form group takes full width for alignment */
         }
 
         .form-group label {
@@ -167,216 +256,385 @@
             font-weight: 500;
         }
 
+        .course-select-wrapper {
+            position: relative;
+        }
+
         .form-group select {
             width: 100%;
-            padding: 12px;
+            padding: 16px 20px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             background: var(--bg-secondary);
             color: var(--text-primary);
             font-size: 1rem;
-            -webkit-user-select: text !important;
-            -moz-user-select: text !important;
-            -ms-user-select: text !important;
-            user-select: text !important;
-            appearance: none; /* Remove default select arrow */
+            font-weight: 500;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a8b3cf%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.2-6.4H18.2c-5%200-9.3%201.8-13.2%206.4-3.9%204.6-5.8%2010.1-5.8%2016.3s1.9%2011.7%205.8%2016.3L128.6%20246.7c3.9%204.6%209.1%206.9%2014.3%206.9s10.4-2.3%2014.3-6.9L287%20102c3.9-4.6%205.8-10.1%205.8-16.3s-1.9-11.7-5.8-16.3z%22%2F%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
-            background-position: right 12px top 50%;
+            background-position: right 16px top 50%;
             background-size: 12px auto;
         }
 
-        .upi-details {
-            margin-top: 2rem;
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+        }
+
+        /* Payment methods */
+        .payment-methods {
+            margin-bottom: 2rem;
+        }
+
+        .payment-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--border);
+            border-radius: 16px;
             padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-option.active {
+            border-color: var(--primary);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .payment-option-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-option-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .payment-option-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .upi-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .payment-option-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .radio-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option.active .radio-indicator {
+            border-color: var(--primary);
+        }
+
+        .payment-option.active .radio-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        /* UPI Details */
+        .upi-details {
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .amount-display {
             background: var(--bg-secondary);
-            border: 1px dashed var(--primary);
+            border: 1px solid var(--border);
             border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .amount-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .amount-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .upi-info {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
-            width: 100%; /* Ensure UPI details take full width for alignment */
+            margin-bottom: 1.5rem;
         }
 
-        .upi-details h2 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .upi-details .upi-id {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            word-break: break-all; /* Ensures long IDs wrap */
-        }
-
-        .upi-details .copy-btn,
-        .upi-details .pay-upi-btn {
-            /* Removed linear-gradient for normal state */
-            background: var(--bg-secondary); /* Solid background for normal state */
-            color: var(--text-primary); /* Text color for normal state */
-            border: 1px solid var(--border); /* Add a border for definition */
-            padding: 10px 20px;
+        .upi-id-display {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--primary);
             border-radius: 8px;
+            padding: 12px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            color: var(--text-primary);
+            word-break: break-all;
+            min-width: 200px;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 8px;
-            width: fit-content;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for normal state */
+            text-decoration: none;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .upi-details .copy-btn:hover,
-        .upi-details .pay-upi-btn:hover {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); /* Gradient background on hover */
-            color: var(--bg-primary); /* Text color changes on hover */
-            border-color: var(--primary); /* Border color changes on hover */
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--bg-primary);
+            border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.5); /* Enhanced shadow on hover */
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
         }
 
-        .upi-qr-code {
-            width: 180px;
-            height: 180px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-top: 1.5rem;
-            display: block;
-            object-fit: contain;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--bg-primary);
+            border-color: var(--primary);
         }
 
-        /* Message Box (for copy success) */
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
+        }
+
+        /* QR Code section */
+        .qr-section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .qr-code-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            border: 3px solid var(--primary);
+            background: white;
+            padding: 10px;
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .qr-code-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 212, 170, 0.3);
+        }
+
+        /* Message box */
         .message-box {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--bg-card);
-            color: var(--primary);
-            padding: 15px 25px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 16px 24px;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px var(--shadow-heavy);
             z-index: 2001;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            border: 1px solid var(--border);
         }
 
         .message-box.show {
             opacity: 1;
             visibility: visible;
+            transform: translateX(-50%) translateY(0);
         }
 
-        /* Footer styles */
+        .message-box.success {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Footer */
         .footer {
             text-align: center;
             padding: 2rem 1rem;
             color: var(--text-muted);
             border-top: 1px solid var(--border);
             background: var(--bg-secondary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            width: 100%; /* Ensure footer spans full width */
-            margin-top: auto; /* Push footer to the bottom */
+            margin-top: 2rem;
         }
 
         .social-links {
             display: flex;
-            gap: 1.2rem;
-            margin-top: 0.5rem;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1rem;
         }
 
         .social-link {
             color: var(--text-secondary);
-            font-size: 1.6rem;
-            transition: color 0.3s ease, transform 0.3s ease;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
         }
 
         .social-link:hover {
             color: var(--primary);
-            transform: translateY(-3px);
+            background: rgba(0, 212, 170, 0.1);
+            transform: translateY(-2px);
         }
 
-        /* Responsive adjustments */
+        /* Responsive design */
         @media (max-width: 768px) {
             body {
-                padding-top: var(--header-height-mobile); /* Only main navbar padding */
+                padding-top: var(--header-height-mobile);
             }
+            
             .navbar {
                 padding: 12px 20px;
                 height: var(--header-height-mobile);
             }
+            
+            .security-badge {
+                display: none;
+            }
+            
+            .payment-wrapper {
+                padding: 20px 15px;
+            }
+            
             .payment-container {
-                margin-top: 20px; /* Adjust margin for mobile header */
                 padding: 1.5rem;
             }
-            .payment-container .top-links {
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-                flex-direction: column; /* Stack buttons vertically on small screens */
+            
+            .payment-header h1 {
+                font-size: 2rem;
             }
-            .payment-container .top-links .link-button {
-                width: 80%; /* Make buttons wider on small screens */
-                padding: 10px 20px; /* Adjusted padding for mobile buttons */
+            
+            .top-links {
+                flex-direction: column;
+                gap: 0.5rem;
             }
-            .payment-container .top-links .link-button i {
-                font-size: 0.9rem; /* Smaller icon size for mobile */
+            
+            .payment-actions {
+                flex-direction: column;
+                align-items: stretch;
             }
-            .payment-container h1 {
+            
+            .progress-indicator {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-container {
+                padding: 1rem;
+                border-radius: 16px;
+            }
+            
+            .payment-header h1 {
                 font-size: 1.8rem;
             }
-            .payment-container p {
-                font-size: 0.95rem;
-            }
-            .upi-details {
-                padding: 1rem;
-            }
-            .upi-details h2 {
-                font-size: 1.3rem;
-            }
-            .upi-details .upi-id {
-                font-size: 1rem;
-            }
-            .upi-qr-code {
-                width: 150px;
-                height: 150px;
-            }
-        }
-
-        /* Adjustments for smaller laptop screens (e.g., 769px to 1024px) */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .navbar {
-                padding: 16px 20px; /* Keep consistent padding */
-            }
-            .payment-container .top-links {
-                gap: 1rem;
-            }
-        }
-
-        /* Adjustments for very small screens (e.g., mobile landscape) */
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-            .nav-brand {
-                font-size: 1.4rem;
-            }
-            .payment-container .top-links .link-button {
-                font-size: 0.9rem;
-                padding: 8px 15px;
-            }
-            .payment-container .top-links .link-button i {
-                font-size: 0.8rem; /* Even smaller icon size for very small screens */
+            
+            .amount-value {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -384,56 +642,152 @@
 <body>
     <nav class="navbar">
         <div class="nav-brand">DataAXI <span style="color: var(--secondary);">Lab</span></div>
+        <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure Payment</span>
+        </div>
     </nav>
 
-    <div class="payment-container">
-        <div class="top-links">
-            <a href="index.html" class="link-button">
-                <i class="fas fa-home"></i> Home
-            </a>
-            <a href="#" class="link-button">
-                <i class="fas fa-book"></i> Courses
-            </a>
+    <div class="payment-wrapper">
+        <div class="payment-container">
+            <div class="top-links">
+                <a href="index.html" class="link-button">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#" class="link-button">
+                    <i class="fas fa-book"></i> Courses
+                </a>
+            </div>
+
+            <div class="payment-header">
+                <h1>Complete Your Enrollment</h1>
+                <p class="subtitle">Secure payment gateway for DataAXI Lab courses</p>
+                <div class="progress-indicator">
+                    <div class="progress-step">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Course Selected</span>
+                    </div>
+                    <i class="fas fa-arrow-right" style="color: var(--text-secondary);"></i>
+                    <div class="progress-step">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Payment</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-section">
+                <div class="section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Select Your Course
+                </div>
+                <div class="form-group">
+                    <label for="course-select">Choose Course:</label>
+                    <div class="course-select-wrapper">
+                        <select id="course-select">
+                            <option value="Data Analytics">Data Analytics - Advanced Course</option>
+                            <option value="Data Engineering">Data Engineering - Professional Track</option>
+                            <option value="Network Engineering">Network Engineering - Specialist Program</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <div class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Payment Method
+                </div>
+                <div class="payment-options">
+                    <div class="payment-option active" data-method="upi">
+                        <div class="payment-option-header">
+                            <div class="payment-option-title">
+                                <div class="payment-option-icon upi-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <span>UPI Payment</span>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+                        <div class="payment-option-desc">
+                            Pay instantly using your UPI app (GPay, PhonePe, Paytm, etc.)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upi-details">
+                <div class="amount-display">
+                    <div class="amount-label">Amount to Pay</div>
+                    <div class="amount-value" id="course-price">₹4000</div>
+                </div>
+
+                <div class="upi-info">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">UPI ID</h3>
+                        <div class="upi-id-display" id="display-upi-id">adityagirind@oksbi</div>
+                    </div>
+                </div>
+
+                <div class="qr-section">
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+                        <i class="fas fa-qrcode"></i> Scan QR Code to Pay
+                    </h4>
+                    <div class="qr-container">
+                        <img id="qr-code-img" class="qr-code-img" src="qr.jpg" alt="Static UPI Payment QR Code">
+                        
+                        </div>
+                    <div class="qr-status" style="margin-top: 1rem;">
+                        Scan this QR code with any UPI app. Please ensure you enter the correct amount.
+                    </div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="action-btn" id="copy-upi-btn">
+                        <i class="fas fa-copy"></i>
+                        Copy UPI ID
+                    </button>
+                    <button class="action-btn btn-primary" id="pay-via-upi-btn">
+                        <i class="fas fa-mobile-alt"></i>
+                        Pay with UPI App
+                    </button>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent); border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">
+                        <i class="fas fa-info-circle"></i>
+                        Payment Instructions
+                    </div>
+                    <ul style="color: var(--text-secondary); font-size: 0.9rem; margin-left: 1rem;">
+                        <li>Scan the QR code or copy the UPI ID.</li>
+                        <li>Open your UPI app and **manually enter the exact amount** displayed above.</li>
+                        <li>Take a screenshot of payment confirmation.</li>
+                        <li>You'll receive course access within 24 hours.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
-        <h1>Complete Your Enrollment</h1>
-        <p>Please select your course and make the payment using the UPI details below.</p>
-
-        <div class="form-group">
-            <label for="course-select">Select Course:</label>
-            <select id="course-select">
-                <option value="Data Analytics">Data Analytics</option>
-                <option value="Data Engineering">Data Engineering</option>
-                <option value="Network Engineering">Network Engineering</option>
-            </select>
-        </div>
-
-        <div class="upi-details">
-            <h2>Amount to Pay: <span id="course-price"></span></h2>
-            <p>Scan the QR code or use the UPI ID:</p>
-            <img id="upi-qr-img" class="upi-qr-code" src="qr.img.jpg" alt="Your UPI QR Code">
-            <span class="upi-id" id="display-upi-id">adityagirind@oksbi</span>
-            <button class="copy-btn" id="copy-upi-btn">
-                <i class="fas fa-copy"></i> Copy UPI ID
-            </button>
-            <button class="pay-upi-btn" id="pay-via-upi-btn">
-                <i class="fas fa-money-bill-wave"></i> Pay through UPI
-            </button>
-        </div>
-
     </div>
 
     <div id="message-box" class="message-box">
+        <i class="fas fa-check-circle"></i>
         <span id="message-text"></span>
     </div>
 
     <footer class="footer">
-        <p>© 2025 DataAXI Hub. All rights reserved.</p>
+        <p>© 2025 DataAXI Lab. All rights reserved.</p>
         <div class="social-links">
-            <a href="https://www.youtube.com/" target="_blank" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://medium.com/" target="_blank" class="social-link" aria-label="Medium"><i class="fab fa-medium"></i></a>
-            <a href="mailto:info@dataaxilab.com" class="social-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
-            <a href="https://www.linkedin.com/" target="_blank" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.youtube.com/" target="_blank" class="social-link" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://medium.com/" target="_blank" class="social-link" aria-label="Medium">
+                <i class="fab fa-medium"></i>
+            </a>
+            <a href="mailto:info@dataaxilab.com" class="social-link" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://www.linkedin.com/" target="_blank" class="social-link" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
         </div>
     </footer>
 
@@ -441,7 +795,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const courseSelect = document.getElementById('course-select');
             const coursePriceSpan = document.getElementById('course-price');
-            const upiQrImg = document.getElementById('upi-qr-img');
             const displayUpiId = document.getElementById('display-upi-id');
             const copyUpiBtn = document.getElementById('copy-upi-btn');
             const payViaUpiBtn = document.getElementById('pay-via-upi-btn');
@@ -456,25 +809,18 @@
             };
 
             // Common UPI ID for all courses
-            const commonUpiId = "adityagirind@oksbi"; // Your UPI ID
-            const payeeName = "DataAXI Lab";
+            const commonUpiId = "adityagirind@oksbi";
+            const payeeName = "DataAXI Lab"; // Payee name for UPI deep link
 
             // Function to display custom messages
             function showMessage(message, type = 'info') {
                 messageText.textContent = message;
-                messageBox.className = 'message-box show';
-                if (type === 'success') {
-                    messageBox.classList.add('success');
-                } else if (type === 'error') {
-                    messageBox.classList.add('error');
-                } else {
-                    messageBox.classList.add('info');
-                }
+                messageBox.className = `message-box show ${type}`;
 
                 setTimeout(() => {
                     messageBox.classList.remove('show');
                     messageBox.classList.remove('success', 'error', 'info');
-                }, 3000);
+                }, 4000);
             }
 
             // Function to update displayed price
@@ -488,17 +834,16 @@
                     coursePriceSpan.textContent = "N/A";
                 }
                 displayUpiId.textContent = commonUpiId;
-                // QR code src is now static and not updated dynamically
             }
 
-            // Get course from URL query parameter (if redirected from application form)
+            // Get course from URL query parameter (if any)
             const urlParams = new URLSearchParams(window.location.search);
             const initialCourse = urlParams.get('course');
 
             if (initialCourse && coursePrices[initialCourse]) {
                 courseSelect.value = initialCourse;
             } else {
-                courseSelect.value = "Data Analytics";
+                courseSelect.value = "Data Analytics"; // Default to Data Analytics
             }
 
             // Initial update when page loads
@@ -510,26 +855,38 @@
             // Copy UPI ID to clipboard
             copyUpiBtn.addEventListener('click', function() {
                 const upiIdToCopy = displayUpiId.textContent;
+                
+                // Using document.execCommand('copy') for better iframe compatibility
                 const tempInput = document.createElement('textarea');
                 tempInput.value = upiIdToCopy;
                 document.body.appendChild(tempInput);
                 tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                showMessage('UPI ID copied to clipboard!', 'success');
+                try {
+                    document.execCommand('copy');
+                    showMessage('UPI ID copied to clipboard!', 'success');
+                } catch (err) {
+                    console.error('Failed to copy UPI ID: ', err);
+                    showMessage('Failed to copy UPI ID. Please copy manually.', 'error');
+                } finally {
+                    document.body.removeChild(tempInput);
+                }
             });
 
-            // Pay via UPI button click
+            // Pay via UPI App button
             payViaUpiBtn.addEventListener('click', function() {
                 const selectedCourse = courseSelect.value;
                 const amount = coursePrices[selectedCourse];
                 const transactionNote = `Payment for ${selectedCourse} Course`;
 
                 if (amount) {
+                    // This will attempt to open a UPI app.
+                    // Note: For static QR, the amount won't be pre-filled unless
+                    // the UPI app itself supports it or the static QR is a dynamic one (which we're replacing).
+                    // Users will likely need to manually enter the amount.
                     const upiUrl = `upi://pay?pa=${commonUpiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}.00&tn=${encodeURIComponent(transactionNote)}&cu=INR`;
                     window.location.href = upiUrl;
                 } else {
-                    showMessage('Please select a valid course to pay.', 'error');
+                    showMessage('Please select a course to initiate payment.', 'error');
                 }
             });
         });
