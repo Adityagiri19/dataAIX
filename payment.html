@@ -802,11 +802,7 @@
                         <i class="fas fa-copy"></i>
                         Copy UPI ID
                     </button>
-                    <button class="action-btn btn-primary" id="pay-via-upi-btn">
-                        <i class="fas fa-mobile-alt"></i>
-                        Pay with UPI App
-                    </button>
-                </div>
+                    </div>
 
                 <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent); border-radius: 8px;">
                     <div style="display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">
@@ -814,22 +810,14 @@
                         Payment Instructions
                     </div>
                     <ul style="color: var(--text-secondary); font-size: 0.9rem; margin-left: 1rem;">
-                        <li>If the 'Pay with UPI App' button doesn't work, you can scan the QR code.</li>
+                        <li>Scan the QR code with any UPI app.</li>
                         <li>**Important:** You will need to **manually enter the exact amount** for your chosen course in your UPI app.</li>
                         <li>Take a screenshot of payment confirmation.</li>
                         <li>You'll receive course access within 30 Mins.</li>
                     </ul>
                 </div>
             </div>
-            <div id="payment-success-section" style="display: none; text-align: center; padding: 3rem 1.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); border-radius: 16px; margin-top: 2rem; animation: fadeInScale 0.6s ease-out;">
-                <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
-                <h2 style="font-size: 2rem; color: var(--success); margin-bottom: 1rem;">Payment Successful!</h2>
-                <p id="success-message-text" style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem;"></p>
-                <a href="index.html" class="action-btn btn-primary" style="background: var(--success); border-color: var(--success);">
-                    <i class="fas fa-home"></i> Back to Home
-                </a>
             </div>
-        </div>
     </div>
 
     <div id="message-box" class="message-box">
@@ -861,14 +849,13 @@
             const coursePriceSpan = document.getElementById('course-price');
             const displayUpiId = document.getElementById('display-upi-id');
             const copyUpiBtn = document.getElementById('copy-upi-btn');
-            const payViaUpiBtn = document.getElementById('pay-via-upi-btn');
+            // Removed payViaUpiBtn
             const messageBox = document.getElementById('message-box');
             const messageText = document.getElementById('message-text');
             const messageIcon = messageBox.querySelector('.fas');
             const qrCodeImg = document.getElementById('qr-code-img');
-            const upiDetailsSection = document.getElementById('upi-details-section');
-            const paymentSuccessSection = document.getElementById('payment-success-section');
-            const successMessageText = document.getElementById('success-message-text'); // New element for specific success message
+            // Removed upiDetailsSection and paymentSuccessSection as their display logic is no longer needed
+            // Removed successMessageText
 
             const coursePrices = {
                 "Data Analytics": 20,
@@ -883,7 +870,7 @@
             const universalQrCodePath = "gpay.jpg"; 
 
             const commonUpiId = "adityagirind@oksbi";
-            const payeeName = "DataAXI Lab";
+            const payeeName = "DataAXI Lab"; // This is still used in the instructions, but not in the UPI URL anymore
 
             function showMessage(message, type = 'info') {
                 messageText.textContent = message;
@@ -957,31 +944,7 @@
                 }
             });
 
-            // Pay via UPI App button - simulate success after a delay
-            payViaUpiBtn.addEventListener('click', function() {
-                const selectedCourse = courseSelect.value; // Still get selected course for display
-                const amount = coursePrices[selectedCourse]; // Still get amount for display
-
-                if (amount) {
-                    const upiUrl = `upi://pay?pa=${commonUpiId}&pn=${encodeURIComponent(payeeName)}`;
-
-                    showMessage('Opening UPI app. Please manually enter the amount.', 'info');
-                    
-                    window.location.href = upiUrl;
-
-                    setTimeout(() => {
-                        upiDetailsSection.style.display = 'none';
-                        paymentSuccessSection.style.display = 'block';
-                        // --- MODIFIED: Personalized success message ---
-                        successMessageText.textContent = `Congratulations! You have been successfully enrolled for the ${selectedCourse} course. Your course access details will be sent to your registered email shortly.`;
-                        showMessage('Payment confirmed!', 'success'); // Keep main message box brief
-                        // --- END MODIFIED ---
-                    }, 3000); 
-                    
-                } else {
-                    showMessage('Please select a course to initiate payment.', 'error');
-                }
-            });
+            // Removed the payViaUpiBtn event listener and its associated logic
         });
     </script>
 </body>
