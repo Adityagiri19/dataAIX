@@ -1348,7 +1348,7 @@
     <div id="apply-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close-btn">×</button>
-            <h3 class="modal-title">Apply to DataAXI Lab</h3>
+            <h3 class="modal-title">Apply to dataAXI Lab</h3>
             <form id="apply-form" class="modal-form">
                 <label for="applicant-name">Full Name:</label>
                 <input type="text" id="applicant-name" placeholder="John Doe" required>
@@ -1361,8 +1361,20 @@
 
                 <label for="applicant-graduation-year">Year of Graduation:</label>
                 <input type="number" id="applicant-graduation-year" placeholder="2024" min="1900" max="2100" required>
-                
-                <button type="submit">Submit Application</button>
+
+                <div class="form-group">
+    <label for="applicant-college-name">College Name:</label>
+    <input type="text" id="applicant-college-name" name="applicant-college-name" required>
+</div>
+<div class="form-group">
+    <label for="applicant-course">Course Name:</label>
+    <input type="text" id="applicant-course" name="applicant-course" required>
+</div>
+<div class="form-group">
+    <label for="applicant-city">City:</label>
+    <input type="text" id="applicant-city" name="applicant-city" required>
+</div>
+<button type="submit" class="submit-btn">Submit Application</button>
             </form>
         </div>
     </div>
@@ -1454,7 +1466,8 @@
     }
 
     // --- Application Form Logic ---
-    async function handleSubmitApplication(name, email, phone, graduationYear) {
+    // UPDATED: Now accepts collegeName, courseUndertaken, and city
+    async function handleSubmitApplication(name, email, phone, graduationYear, collegeName, courseUndertaken, city) {
         if (!currentUserId) {
             showMessage('Authentication not ready. Please try again.', 'error');
             console.error("Firestore operation attempted before user ID is available.");
@@ -1469,6 +1482,9 @@
                 email: email,
                 phone: phone,
                 graduationYear: parseInt(graduationYear),
+                collegeName: collegeName,      // <--- NEW: Including collegeName
+                courseUndertaken: courseUndertaken, // <--- NEW: Including courseUndertaken
+                city: city,                    // <--- NEW: Including city
                 submittedAt: new Date(),
                 submittedBy: currentUserId // Record which user (even anonymous) submitted
             });
@@ -1518,13 +1534,19 @@
     });
 
     // Application Form Submission
+    // UPDATED: Now extracts new fields and passes them to handleSubmitApplication
     applyForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = applyForm.elements['applicant-name'].value;
         const email = applyForm.elements['applicant-email'].value;
         const phone = applyForm.elements['applicant-phone'].value;
         const graduationYear = applyForm.elements['applicant-graduation-year'].value;
-        await handleSubmitApplication(name, email, phone, graduationYear);
+        const collegeName = applyForm.elements['applicant-college-name'].value;    // <--- NEW: Get college name
+        const courseUndertaken = applyForm.elements['applicant-course'].value;      // <--- NEW: Get course
+        const city = applyForm.elements['applicant-city'].value;                    // <--- NEW: Get city
+
+        // Pass all fields to the submission function
+        await handleSubmitApplication(name, email, phone, graduationYear, collegeName, courseUndertaken, city);
     });
 
 
