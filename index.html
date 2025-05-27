@@ -1017,7 +1017,7 @@
                     </div>
 
                     <button type="button" id="razorpayButton" class="btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-money-bill-wave"></i> Pay ₹1099
+                        <i class="fas fa-money-bill-wave"></i> Pay Now
                     </button>
                 </form>
             </div>
@@ -1096,12 +1096,43 @@
 
         if (razorpayButton) {
             razorpayButton.addEventListener('click', function() {
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const phoneInput = document.getElementById('phone');
+                const courseSelect = document.getElementById('course');
+
+                let amountInPaisa = 0;
+                let courseDescription = "Enrollment Fee"; // Default description for Razorpay checkout
+
+                // Determine the amount and description based on the selected course
+                if (courseSelect && courseSelect.value) {
+                    switch (courseSelect.value) {
+                        case 'data-analytics':
+                            amountInPaisa = 120000; // Example: 1200 INR
+                            courseDescription = "Enrollment for Data Analytics Mastery";
+                            break;
+                        case 'data-engineering':
+                            amountInPaisa = 150000; // Example: 1500 INR
+                            courseDescription = "Enrollment for Data Engineering Pro";
+                            break;
+                        case 'network-engineering':
+                            amountInPaisa = 100000; // Example: 1000 INR
+                            courseDescription = "Enrollment for Network Engineering Expert";
+                            break;
+                        default:
+                            amountInPaisa = 109900; // Fallback to original 1099 INR if no course or invalid course selected
+                            courseDescription = "Enrollment for Selected Course";
+                    }
+                } else {
+                    amountInPaisa = 109900; // Fallback to original 1099 INR if no course is selected from the dropdown
+                }
+
                 var options = {
                     "key": "rzp_live_QhsHTzRSUBITkk", // Your Razorpay Key ID
-                    "amount": "109900", // Amount in paisa (1099 INR = 109900 paisa)
+                    "amount": amountInPaisa.toString(), // Amount in paisa, converted to string for Razorpay
                     "currency": "INR",
                     "name": "DataAXI Lab",
-                    "description": "Enrollment for All Courses",
+                    "description": courseDescription,
                     "image": "https://placehold.co/100x100/1A2F4F/FFFFFF?text=AXI", // Optional: Your logo URL
                     "handler": function (response){
                         // This function is called when the payment is successful
@@ -1137,37 +1168,18 @@
                         // });
                     },
                     "prefill": {
-                        "name": "",
-                        "email": "",
-                        "contact": ""
+                        "name": nameInput ? nameInput.value : "",
+                        "email": emailInput ? emailInput.value : "",
+                        "contact": phoneInput ? phoneInput.value : ""
                     },
                     "notes": {
-                        "address": "Wardha Office"
+                        "address": "Wardha Office",
+                        "course": courseSelect && courseSelect.value ? courseSelect.options[courseSelect.selectedIndex].text : "Not Selected"
                     },
                     "theme": {
                         "color": "#206BDE" // Your theme color (matches secondary-blue)
                     }
                 };
-
-                // Get form values for prefill
-                const nameInput = document.getElementById('name');
-                const emailInput = document.getElementById('email');
-                const phoneInput = document.getElementById('phone');
-                const courseSelect = document.getElementById('course');
-
-                if (nameInput && nameInput.value) {
-                    options.prefill.name = nameInput.value;
-                }
-                if (emailInput && emailInput.value) {
-                    options.prefill.email = emailInput.value;
-                }
-                if (phoneInput && phoneInput.value) {
-                    options.prefill.contact = phoneInput.value;
-                }
-                if (courseSelect && courseSelect.value) {
-                     options.notes.course = courseSelect.options[courseSelect.selectedIndex].text;
-                }
-
 
                 var rzp1 = new Razorpay(options);
                 rzp1.open();
