@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Engineering Pro - Course Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Define CSS Variables for Hamburger Menu Bar Color */
+        :root {
+            --hamburger-bar-color: #FFFFFF; /* White for contrast on dark blue header */
+            
+            /* Colors from index.html for consistency */
+            --primary-dark-blue: #1A2F4F;
+            --secondary-blue: #206BDE;
+            --accent-white: #FFFFFF;
+            --light-grey-bg: #F0F4F8;
+            --dark-text: #333333;
+            --subtle-text: #A0AEC0;
+            --success-green: #28A745; /* Keeping green for checkmarks */
+            --light-border: #E2E8F0;
+            --footer-border: #3F5472;
+            --hover-blue: #1A5BBF; /* Slightly darker secondary blue for hover */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background: var(--light-grey-bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header (Copied from index.html) */
+        .header {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--accent-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .cta-btn {
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--hover-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger Menu Icon (CSS Bars - Copied from index.html) */
+        .hamburger-menu {
+            display: none; /* Hidden by default, shown on mobile */
+            flex-direction: column; /* Stack bars vertically */
+            justify-content: space-around; /* Distribute bars evenly */
+            align-items: center;
+            width: 30px; /* Width of the hamburger icon */
+            height: 25px; /* Height of the hamburger icon */
+            position: relative; /* Needed for z-index to work reliably */
+            z-index: 1001; /* Higher than navbar, ensures it's clickable */
+            cursor: pointer; /* Visual cue for clickability */
+            padding: 5px; /* Added for better touch target */
+        }
+
+        .hamburger-menu .bar {
+            display: block; /* Ensure bars are block elements */
+            width: 100%; /* Take full width of parent */
+            height: 3px; /* Thickness of the bar */
+            background-color: var(--hamburger-bar-color); /* Color of the bars */
+            border-radius: 2px; /* Slightly rounded corners for aesthetics */
+            transition: all 0.3s ease;
+        }
+
+        /* Optional: Add active state for hamburger animation */
+        .hamburger-menu.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Section Common Styling */
+        section {
+            padding: 80px 0;
+            background: var(--light-grey-bg);
+        }
+        section:nth-of-type(odd) { /* Adjusted for alternating background */
+            background: var(--accent-white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--subtle-text);
+            margin-bottom: 3rem;
+        }
+
+        /* Data Engineering Demand section - now the main header */
+        .data-engineering-demand {
+            padding-top: 120px; /* To account for fixed header */
+            padding-bottom: 60px;
+            background: var(--light-grey-bg);
+            text-align: center;
+        }
+
+        .data-engineering-demand .content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .data-engineering-demand h2 {
+            font-size: 2.8rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .data-engineering-demand p {
+            font-size: 1.15rem;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+        }
+
+        .data-engineering-demand ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1.5rem;
+        }
+
+        .data-engineering-demand ul li {
+            background: var(--accent-white);
+            border-left: 5px solid var(--secondary-blue);
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            font-size: 1.05rem;
+            color: var(--subtle-text);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .data-engineering-demand ul li i {
+            color: var(--secondary-blue);
+            font-size: 1.5rem;
+        }
+
+        .data-engineering-demand .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .data-engineering-demand .stat-item {
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(32, 107, 222, 0.15); /* Shadow based on secondary blue */
+            transition: transform 0.3s ease;
+        }
+
+        .data-engineering-demand .stat-item:hover {
+            transform: translateY(-8px);
+        }
+
+        .data-engineering-demand .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-white);
+            line-height: 1.2;
+        }
+
+        .data-engineering-demand .stat-item p {
+            font-size: 0.85rem;
+            color: var(--accent-white);
+            margin-bottom: 0;
+            word-wrap: break-word;
+            line-height: 1.3;
+            padding: 0 5px;
+        }
+
+        /* Course Modules (Accordion) */
+        .modules-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .module-item {
+            background: var(--accent-white);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .module-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .module-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .module-content {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            background: #F8F9FA; /* A slightly lighter white for content background */
+        }
+
+        .module-content.active {
+            max-height: 1000px; /* Large enough to accommodate content */
+            padding: 25px;
+        }
+
+        .module-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .module-content ul li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--light-border);
+            color: var(--subtle-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-content ul li:last-child {
+            border-bottom: none;
+        }
+
+        .module-content ul li i {
+            color: var(--success-green);
+        }
+
+        /* Tutor Info Section */
+        .tutor-info-section {
+            background: var(--accent-white);
+        }
+
+        .tutor-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tutor-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .tutor-details h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .tutor-details p {
+            font-size: 1.1rem;
+            color: var(--subtle-text);
+            margin-bottom: 1rem;
+        }
+
+        .tutor-details .social-links-tutor {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tutor-details .social-links-tutor a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .tutor-details .social-links-tutor a:hover {
+            background: var(--hover-blue);
+            color: var(--accent-white);
+            transform: translateY(-3px);
+        }
+
+
+        /* Footer (Copied from index.html) */
+        .footer {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-blue);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            padding: 0.25rem 0;
+        }
+
+        .footer-section ul li a {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--hover-blue);
+            color: var(--accent-white);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--subtle-text);
+        }
+
+        /* Responsive Design (Copied and adapted from index.html) */
+        @media (max-width: 768px) {
+            .nav {
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                display: none; /* Hide navigation links by default on smaller screens */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Below the header */
+                left: 0;
+                width: 100%;
+                background: var(--primary-dark-blue); /* Background for mobile menu */
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                padding: 20px 0;
+                text-align: center;
+                gap: 1rem;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .nav-links.active {
+                display: flex; /* Show when active */
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                display: block;
+                color: white; /* Ensure links are white on dark background */
+            }
+
+            .cta-btn {
+                display: block; /* Ensure CTA button is visible in the mobile menu */
+                margin-top: 1rem; /* Add some space */
+            }
+
+            .hamburger-menu {
+                display: flex !important; /* Ensure it's visible and a flex container */
+            }
+
+            .data-engineering-demand h2 {
+                font-size: 2.5rem; /* Adjusted for smaller screens */
+            }
+
+            .tutor-content {
+                flex-direction: column;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-engineering-demand .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-engineering-demand .stat-item p {
+                font-size: 0.8rem; /* Further adjustment for smaller screens */
+            }
+        }
+
+        /* Style to prevent scrolling when the menu is open */
+        .no-scroll {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                AXI CareerNest
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="AXICareerNest.html#courses" class="nav-link">Home</a></li>
+                <li><a href="AXICareerNest.html#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="AXICareerNest.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="AXICareerNest.html#contact" class="cta-btn nav-link">Enroll Now</a></li>
+            </ul>
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="data-engineering-demand">
+        <div class="container">
+            <h2 class="section-title">Why Data Engineering?</h2>
+            <h2 class="section-title">Build the Backbone of Data!</h2>
+            <div class="content">
+                <p>
+                    Data Engineering is the foundational pillar of modern data-driven organizations. As data volumes explode, the need for skilled professionals who can design, build, and maintain robust data pipelines and infrastructure is more critical than ever. This role ensures that data is clean, accessible, and ready for analysis, powering everything from business intelligence to advanced AI applications.
+                </p>
+                <ul>
+                    <li><i class="fas fa-cubes"></i> **High Demand & Growth**: Data Engineering is one of the fastest-growing fields in tech, with strong demand across all industries.</li>
+                    <li><i class="fas fa-cloud-upload-alt"></i> **Cloud Dominance**: Expertise in cloud platforms (AWS, Azure, GCP) for data solutions is highly valued and essential for modern data ecosystems.</li>
+                    <li><i class="fas fa-cogs"></i> **Impactful Role**: Data Engineers directly enable data scientists and analysts by providing reliable data, making their work crucial for business success.</li>
+                    <li><i class="fas fa-code-branch"></i> **Diverse Technologies**: Work with a wide array of cutting-edge tools and technologies, from big data frameworks to streaming platforms.</li>
+                </ul>
+
+                <h3 class="section-subtitle">Average Salary Insights for Data Engineering Professionals:</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>₹10-20 Lakhs/year</h3>
+                        <p>Average Salary in India</p>
+                        <p>(Experienced Professional)</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>35% Growth Expected</h3>
+                        <p>Job Growth for Data Engineers by 2030</p>
+                        <p>(Based on industry reports)</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem;">
+                    These figures highlight the lucrative and expanding career landscape awaiting skilled data engineers.
+                    Enroll in our **Data Engineering Pro** course and become part of this exciting future!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="modules" class="course-modules">
+        <div class="container">
+            <h2 class="section-title">Course Modules & Syllabus</h2>
+            <p class="section-subtitle">A comprehensive breakdown of what you'll learn.</p>
+            
+            <div class="modules-container">
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 1: Foundations of Data Engineering & SQL
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Introduction to Data Engineering Concepts</li>
+                            <li><i class="fas fa-check-circle"></i> Relational Databases & Advanced SQL</li>
+                            <li><i class="fas fa-check-circle"></i> Data Modeling (Star Schema, Snowflake Schema)</li>
+                            <li><i class="fas fa-check-circle"></i> Database Design Principles</li>
+                            <li><i class="fas fa-check-circle"></i> NoSQL Databases (MongoDB, Cassandra)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 2: Python for Data Engineering & ETL
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Python Programming for Data Manipulation</li>
+                            <li><i class="fas fa-check-circle"></i> ETL/ELT Concepts and Best Practices</li>
+                            <li><i class="fas fa-check-circle"></i> Building Data Pipelines with Python</li>
+                            <li><i class="fas fa-check-circle"></i> Data Quality and Validation</li>
+                            <li><i class="fas fa-check-circle"></i> Introduction to Apache Airflow (Orchestration)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 3: Big Data Technologies (Hadoop & Spark)
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Introduction to Big Data Ecosystem</li>
+                            <li><i class="fas fa-check-circle"></i> HDFS and YARN Fundamentals</li>
+                            <li><i class="fas fa-check-circle"></i> Apache Spark Core Concepts</li>
+                            <li><i class="fas fa-check-circle"></i> Spark SQL, DataFrames, and RDDs</li>
+                            <li><i class="fas fa-check-circle"></i> Real-world Spark Use Cases</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 4: Cloud Data Platforms (AWS/Azure/GCP)
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Cloud Computing Fundamentals</li>
+                            <li><i class="fas fa-check-circle"></i> Data Storage Services (S3, ADLS, GCS)</li>
+                            <li><i class="fas fa-check-circle"></i> Data Warehousing in Cloud (Redshift, Synapse, BigQuery)</li>
+                            <li><i class="fas fa-check-circle"></i> Serverless Data Processing (Lambda, Azure Functions)</li>
+                            <li><i class="fas fa-check-circle"></i> Cloud Data Lake Architectures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 5: Data Streaming & Real-time Processing
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Introduction to Data Streaming</li>
+                            <li><i class="fas fa-check-circle"></i> Apache Kafka Fundamentals</li>
+                            <li><i class="fas fa-check-circle"></i> Real-time Analytics with Spark Streaming</li>
+                            <li><i class="fas fa-check-circle"></i> Message Queues and Event Hubs</li>
+                            <li><i class="fas fa-check-circle"></i> Building Real-time Dashboards</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 6: Data Governance, Security & DevOps
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Data Governance and Compliance</li>
+                            <li><i class="fas fa-check-circle"></i> Data Security Best Practices</li>
+                            <li><i class="fas fa-check-circle"></i> Introduction to DataOps and MLOps</li>
+                            <li><i class="fas fa-check-circle"></i> CI/CD for Data Pipelines</li>
+                            <li><i class="fas fa-check-circle"></i> Monitoring and Logging Data Systems</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-item">
+                    <div class="module-header">
+                        Module 7: Capstone Project & Deployment
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="module-content">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> End-to-End Data Engineering Project</li>
+                            <li><i class="fas fa-check-circle"></i> Designing a Scalable Data Platform</li>
+                            <li><i class="fas fa-check-circle"></i> Implementing ETL/ELT Processes</li>
+                            <li><i class="fas fa-check-circle"></i> Deployment to Cloud Environment</li>
+                            <li><i class="fas fa-check-circle"></i> Performance Optimization & Troubleshooting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tutor-info-section">
+        <div class="container">
+            <h2 class="section-title">Meet Your Lead Instructor</h2>
+            <p class="section-subtitle">Learn from an industry expert with years of practical experience.</p>
+
+            <div class="tutor-content">
+                <div class="tutor-image">
+                    <img src="https://placehold.co/200x200/1A2F4F/FFFFFF?text=Tutor" alt="Tutor Name">
+                </div>
+                <div class="tutor-details">
+                    <h3>Mr. David Chen</h3>
+                    <p>Principal Data Engineer & Course Architect</p>
+                    <p>
+                        Mr. David Chen is a Principal Data Engineer with over 15 years of experience in designing and implementing large-scale data platforms for Fortune 100 companies. His expertise spans across big data technologies, cloud architecture, and real-time data processing. David is passionate about sharing his practical knowledge and guiding aspiring data engineers to build robust and efficient data solutions.
+                    </p>
+                    <div class="social-links-tutor">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>DataAXI Lab</h3>
+                    <p>Empowering the next generation of data professionals and network engineers with cutting-edge education and industry-relevant skills.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="index.html#courses">Data Analytics Mastery</a></li>
+                        <li><a href="index.html#courses">Data Engineering Pro</a></li>
+                        <li><a href="index.html#courses">Network Engineering Expert</a></li>
+                        <li><a href="index.html#courses">Custom Training</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Avenue, Innovation District</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@dataxilab.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                &copy; <span id="currentYear"></span> DataAXI Lab. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Hamburger menu functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        if (hamburgerMenu && navLinks) {
+            hamburgerMenu.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                hamburgerMenu.classList.toggle('active');
+                document.body.classList.toggle('no-scroll', navLinks.classList.contains('active'));
+            });
+
+            // Close mobile menu when a nav link is clicked
+            navLinks.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        hamburgerMenu.classList.remove('active');
+                        document.body.classList.remove('no-scroll');
+                    }
+                });
+            });
+        }
+
+        // Accordion functionality for Course Modules
+        document.querySelectorAll('.module-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const moduleContent = header.nextElementSibling;
+                const icon = header.querySelector('i');
+
+                // Toggle active class on header and content
+                header.classList.toggle('active');
+                moduleContent.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

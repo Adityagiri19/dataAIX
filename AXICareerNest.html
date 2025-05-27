@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataAXI Lab - Master Data Analytics, Data Engineering & Network Engineering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Define CSS Variables for Colors */
+        :root {
+            --hamburger-bar-color: #FFFFFF;
+            --primary-dark-blue: #1A2F4F;
+            --secondary-blue: #206BDE;
+            --accent-white: #FFFFFF;
+            --light-grey-bg: #F0F4F8;
+            --dark-text: #333333;
+            --subtle-text: #A0AEC0;
+            --success-green: #28A745;
+            --light-border: #E2E8F0;
+            --footer-border: #3F5472;
+            --hover-blue: #1A5BBF; /* Slightly darker secondary blue for hover */
+            --gradient-start: #1A2F4F; /* Dark blue */
+            --gradient-end: #206BDE; /* Secondary blue */
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Changed to Inter for a modern feel */
+            line-height: 1.6;
+            color: var(--dark-text);
+            background: var(--light-grey-bg);
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--accent-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .cta-btn {
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--hover-blue);
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Hamburger Menu Icon (CSS Bars) */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 30px;
+            height: 25px;
+            position: relative;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger-menu .bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--hamburger-bar-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-menu.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%); /* Gradient background */
+            color: var(--accent-white);
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden; /* For subtle background animations */
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://placehold.co/1920x1080/1A2F4F/FFFFFF?text=CareerNest') no-repeat center center/cover; /* Placeholder for a subtle background image */
+            opacity: 0.1;
+            z-index: 0;
+            animation: panBackground 20s linear infinite alternate; /* Subtle pan animation */
+        }
+
+        .hero > .container {
+            position: relative; /* Ensure content is above the pseudo-element */
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem; /* Slightly larger */
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.4rem; /* Slightly larger */
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 1.5rem; /* Increased gap */
+            margin-top: 2rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .btn-primary {
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease-in-out; /* Smoother transition */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(32, 107, 222, 0.2); /* Softer shadow */
+        }
+
+        .btn-primary:hover {
+            background: var(--hover-blue);
+            transform: translateY(-3px) scale(1.02); /* Lift and slightly grow */
+            box-shadow: 0 10px 30px rgba(32, 107, 222, 0.4); /* More pronounced shadow */
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-white);
+            padding: 15px 30px;
+            border: 2px solid var(--accent-white);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-white);
+            color: var(--primary-dark-blue);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--accent-white);
+            padding: 60px 0;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            border-radius: 20px; /* Rounded corners for the stats section */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Subtle shadow */
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border-radius: 15px;
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            transform: translateY(-20px);
+            box-shadow: 0 15px 35px rgba(32, 107, 222, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-25px) scale(1.03); /* Lift more and grow slightly */
+            box-shadow: 0 20px 45px rgba(32, 107, 222, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.8rem; /* Slightly larger */
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Courses Section */
+        .courses {
+            padding: 80px 0;
+            background: var(--light-grey-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem; /* Slightly larger */
+            margin-bottom: 1rem;
+            color: var(--primary-dark-blue); /* Darker title */
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem; /* Slightly larger */
+            color: var(--subtle-text);
+            margin-bottom: 3rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem; /* Increased gap */
+            margin-top: 3rem;
+        }
+
+        .course-card {
+            background: var(--accent-white);
+            border-radius: 20px;
+            padding: 2.5rem; /* Increased padding */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* This is key for button alignment */
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Slightly thicker accent line */
+            background: var(--secondary-blue);
+        }
+
+        .course-card:hover {
+            transform: translateY(-12px) scale(1.01); /* Lift more and subtly grow */
+            box-shadow: 0 25px 60px rgba(0,0,0,0.18); /* More pronounced shadow */
+        }
+
+        .course-icon {
+            font-size: 3.5rem; /* Larger icon */
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .course-card:hover .course-icon {
+            transform: scale(1.1); /* Icon pops on hover */
+        }
+
+        .course-title {
+            font-size: 1.8rem; /* Larger title */
+            margin-bottom: 1rem;
+            color: var(--primary-dark-blue);
+            font-weight: 600;
+        }
+
+        .course-description {
+            color: var(--subtle-text);
+            margin-bottom: 1.8rem; /* Increased margin */
+            flex-grow: 1; /* Allows description to take up available space, pushing button down */
+        }
+
+        .course-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left; /* Align features to left */
+        }
+
+        .course-features li {
+            padding: 0.6rem 0; /* More padding */
+            display: flex;
+            align-items: flex-start; /* Align tick and text at the start for multi-line text */
+            gap: 12px; /* More space */
+            color: var(--dark-text);
+        }
+
+        .course-features i {
+            color: var(--success-green);
+            font-size: 1.1rem; /* Slightly larger checkmark */
+            width: 25px; /* Ensure consistent alignment */
+            text-align: center;
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+            background: var(--accent-white);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem; /* Increased gap */
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 2.5rem; /* Increased padding */
+            background: var(--light-grey-bg); /* Light background for benefits */
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .benefit-icon {
+            font-size: 3.5rem; /* Larger icon */
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .benefit-item:hover .benefit-icon {
+            color: var(--hover-blue); /* Change color on hover */
+        }
+
+        .benefit-title {
+            font-size: 1.5rem; /* Larger title */
+            margin-bottom: 1rem;
+            color: var(--primary-dark-blue);
+            font-weight: 600;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 80px 0;
+        }
+
+        .testimonials .section-title {
+            color: var(--accent-white);
+        }
+
+        .testimonials .section-subtitle {
+            color: #E0E0E0;
+        }
+
+        .testimonials-slider-wrapper {
+            overflow: hidden;
+            margin: 50px 0;
+            padding: 30px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .testimonials-slider {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollTestimonials 20s linear infinite;
+            /* REMOVED: padding-left: 100%; */ /* This was causing issues with the scroll */
+            width: fit-content; /* Ensure the slider can grow to fit all cards */
+        }
+
+        .testimonial-card {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 2.5rem; /* Increased padding */
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            min-width: 450px;
+            margin-right: 30px;
+            flex-shrink: 0;
+            vertical-align: top;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.15);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.8rem; /* Increased margin */
+            font-size: 1.15rem; /* Slightly larger font */
+            color: var(--accent-white);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem; /* Increased gap */
+        }
+
+        .author-avatar {
+            width: 55px; /* Slightly larger avatar */
+            height: 55px; /* Slightly larger avatar */
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--accent-white);
+            font-size: 1.1rem; /* Larger initial for avatar */
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem; /* Slightly larger name */
+        }
+
+        .author-info p {
+            opacity: 0.8;
+            font-size: 0.95rem; /* Slightly larger role */
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: var(--light-grey-bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem; /* Increased gap */
+        }
+
+        .contact-item i {
+            font-size: 1.8rem; /* Larger icon */
+            color: var(--secondary-blue);
+            width: 35px; /* Consistent width for icon */
+            text-align: center;
+        }
+
+        .contact-item h4 {
+            font-size: 1.2rem;
+            color: var(--primary-dark-blue);
+        }
+
+        .contact-item p {
+            font-size: 1rem;
+            color: var(--dark-text);
+        }
+
+        .contact-form {
+            background: var(--accent-white);
+            padding: 2.5rem; /* Increased padding */
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem; /* Increased margin */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem; /* Increased margin */
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px; /* Increased padding */
+            border: 2px solid var(--light-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            color: var(--dark-text);
+            background-color: var(--accent-white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-blue);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            padding: 0.25rem 0;
+        }
+
+        .footer-section ul li a {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--hover-blue);
+            color: var(--accent-white);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--subtle-text);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--primary-dark-blue);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                padding: 20px 0;
+                text-align: center;
+                gap: 1rem;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                display: block;
+                color: white;
+            }
+
+            .cta-btn {
+                display: block;
+                margin-top: 1rem;
+            }
+
+            .hamburger-menu {
+                display: flex !important;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-grid,
+            .courses-grid,
+            .benefits-grid,
+            .stats-grid { /* Ensure all grids stack on mobile */
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-card {
+                min-width: 80%; /* Adjust width for better fit on small screens */
+                padding: 1.5rem; /* Reduce padding on mobile */
+            }
+        }
+
+        /* Style to prevent scrolling when the menu is open */
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes panBackground {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes scrollTestimonials {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(calc(-1 * (450px + 30px) * 3)); } /* Scrolls the width of 3 cards (one full set) */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                AXI CareerNest
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="company.html" class="nav-link">Home</a></li>
+                <li><a href="#courses" class="nav-link">Courses</a></li>
+                <li><a href="#benefits" class="nav-link">Why Choose Us?</a></li>
+                <li><a href="#testimonials" class="nav-link">Success Stories</a></li>
+                <li><a href="#contact" class="cta-btn nav-link">Enroll Now</a></li>
+            </ul>
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Ignite Your Career. Build Your Future.</h1>
+            <p>Unlock your potential with cutting-edge training in Data Analytics, Data Engineering, and Network Engineering. Your journey to a high-demand career starts here.</p>
+            <div class="hero-cta">
+                <a href="#courses" class="btn-primary">Explore Programs <i class="fas fa-arrow-right"></i></a>
+                <a href="#contact" class="btn-secondary">Get Free Consultation <i class="fas fa-phone-alt"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div>Future Leaders Trained</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div>Career Advancement Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div>Specialized Career Paths</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div>Dedicated Mentorship</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="courses" class="courses">
+        <div class="container">
+            <h2 class="section-title">Your Path to Expertise</h2>
+            <p class="section-subtitle">Dive deep into our immersive programs designed for real-world impact.</p>
+
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="course-title">Data Analytics Mastery</h3>
+                    <p class="course-description">Transform raw data into powerful insights. Become a data-driven decision-maker with our comprehensive analytics program.</p>
+                    <ul class="course-features">
+                        <li><i class="fas fa-check-circle"></i> Python & R for Data Analysis</li>
+                        <li><i class="fas fa-check-circle"></i> SQL & Database Management</li>
+                        <li><i class="fas fa-check-circle"></i> Data Visualization & Reporting</li>
+                        <li><i class="fas fa-check-circle"></i> Machine Learning Fundamentals</li>
+                    </ul>
+                    <a href="dataanalytics.html" class="btn-primary">Discover More <i class="fas fa-chevron-right"></i></a>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3 class="course-title">Data Engineering Pro</h3>
+                    <p class="course-description">Engineer robust, scalable data infrastructures. Master the art of building and managing big data pipelines in the cloud.</p>
+                    <ul class="course-features">
+                        <li><i class="fas fa-check-circle"></i> Cloud Data Platforms (Azure)</li>
+                        <li><i class="fas fa-check-circle"></i> Build & Manage Data Pipelines</li>
+                        <li><i class="fas fa-check-circle"></i> Big Data Processing with Industry Tools</li>
+                        <li><i class="fas fa-check-circle"></i> Real-time Data Integration</li>
+                    </ul>
+                    <a href="dataengineer.html" class="btn-primary">Discover More <i class="fas fa-chevron-right"></i></a>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="course-title">Network Engineering Expert</h3>
+                    <p class="course-description">Secure and optimize the digital backbone. Become a specialist in designing, implementing, and defending complex network systems.</p>
+                    <ul class="course-features">
+                        <li><i class="fas fa-check-circle"></i> Advanced Routing & Switching</li>
+                        <li><i class="fas fa-check-circle"></i> Network Security & Firewalls</li>
+                        <li><i class="fas fa-check-circle"></i> Cloud & Virtual Networking</li>
+                        <li><i class="fas fa-check-circle"></i> Network Automation & Lab Simulations</li>
+                    </ul>
+                    <a href="network.html" class="btn-primary">Discover More <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits" class="benefits">
+    <div class="container">
+        <h2 class="section-title">Your Success, Our Priority</h2>
+        <p class="section-subtitle">Why AXI CareerNest is the launchpad for your dream career.</p>
+
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h3 class="benefit-title">Industry-Led Mentorship</h3>
+                <p>Learn directly from seasoned professionals and gain invaluable real-world insights.</p>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h3 class="benefit-title">Portfolio-Ready Projects</h3>
+                <p>Build a robust portfolio with hands-on projects that impress top employers.</p>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3 class="benefit-title">Globally Recognized Certification</h3>
+                <p>Earn certifications that open doors to opportunities worldwide.</p>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="benefit-title">Dedicated Career Services</h3>
+                <p>Receive personalized resume, interview, and job placement assistance.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">Hear From Our Thriving Alumni</h2>
+            <p class="section-subtitle">Their journeys, their words, your inspiration.</p>
+
+            <div class="testimonials-slider-wrapper">
+                <div class="testimonials-slider">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"AXI CareerNest's Data Engineer course completely transformed my career.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">K.G</div>
+                            <div class="author-info">
+                                <h4>Kauntey Gawande</h4>
+                                <p>Data Engineer, dataAXI Lab</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The Network Engineering program helps me to get Job!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">P.P</div>
+                            <div class="author-info">
+                                <h4>Pranay Puri</h4>
+                                <p>Network Engineer, ACL Digital</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Worried at first, confident now—credit to AXI CareerNest."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">R.G</div>
+                            <div class="author-info">
+                                <h4>Rutuja Gawande</h4>
+                                <p>Data Analyst, Infocept</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Real projects. Real job. AXI CareerNest delivers."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">S.D</div>
+                            <div class="author-info">
+                                <h4>Shubhada D</h4>
+                                <p>Data Engineer, Tcs </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Ready to Launch Your Career?</h2>
+            <p class="section-subtitle">Connect with our admissions team for personalized guidance and enrollment details.</p>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Visit Our Learning Hub</h4>
+                            <p>Wardha</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Call Our Admissions Team</h4>
+                            <p>+91-8698313370</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email Us Directly</h4>
+                            <p>info@dataxilab.com<br>admissions@dataxilab.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="enrollmentForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                   <label for="phone">Phone Number</label>
+                   <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
+                   </div>
+
+                    <div class="form-group">
+                        <label for="course">Interested Course</label>
+                        <select id="course" name="course" required>
+                            <option value="">Select a course</option>
+                            <option value="data-analytics">Data Analytics Mastery</option>
+                            <option value="data-engineering">Data Engineering Pro</option>
+                            <option value="network-engineering">Network Engineering Expert</option>
+                        </select>
+                    </div>
+
+
+                    <a href="https://razorpay.me/@dataAXILab" class="btn-primary" style="width: 100%; justify-content: center;" target="_blank">
+                     <i class="fas fa-money-bill-wave"></i>₹1099 </a>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>DataAXI Lab</h3>
+                    <p>Empowering the next generation of data professionals and network engineers with cutting-edge education and industry-relevant skills.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="dataanalytics.html">Data Analytics Mastery</a></li>
+                        <li><a href="dataengineer.html">Data Engineering Pro</a></li>
+                        <li><a href="network.html">Network Engineering Expert</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i>Wardha</li>
+                        <li><i class="fas fa-phone"></i> +91-8698313370</li>
+                        <li><i class="fas fa-envelope"></i>dataaxilab@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; <span id="currentYear"></span> DataAXI Lab|All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Hamburger menu functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        // Hamburger menu toggle
+        if (hamburgerMenu && navLinks) {
+            hamburgerMenu.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                hamburgerMenu.classList.toggle('active');
+                document.body.classList.toggle('no-scroll', navLinks.classList.contains('active'));
+            });
+
+            // Close mobile menu when a nav link is clicked
+            navLinks.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        hamburgerMenu.classList.remove('active');
+                        document.body.classList.remove('no-scroll');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

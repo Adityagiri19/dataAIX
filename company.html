@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataAXI Lab - Data Analytics & Data Engineering Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Define CSS Variables for Colors (Matching index.html) */
+        :root {
+            --hamburger-bar-color: #FFFFFF; /* White for contrast on dark blue header */
+            --primary-dark-blue: #1A2F4F;
+            --secondary-blue: #206BDE;
+            --accent-white: #FFFFFF;
+            --light-grey-bg: #F0F4F8;
+            --dark-text: #333333;
+            --subtle-text: #A0AEC0;
+            --success-green: #28A745; /* Keeping green for checkmarks/success */
+            --light-border: #E2E8F0;
+            --footer-border: #3F5472;
+            --hover-blue: #1A5BBF; /* Slightly darker secondary blue for hover */
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background: var(--light-grey-bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header (Navigation Bar) */
+        .header {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--secondary-blue);
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--accent-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .cta-btn {
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--hover-blue);
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Hamburger Menu Icon (CSS Bars) */
+        .hamburger-menu {
+            display: none; /* Hidden by default, shown on mobile */
+            flex-direction: column; /* Stack bars vertically */
+            justify-content: space-around; /* Distribute bars evenly */
+            align-items: center;
+            width: 30px; /* Width of the hamburger icon */
+            height: 25px; /* Height of the hamburger icon */
+            position: relative; /* Needed for z-index to work reliably */
+            z-index: 1001; /* Higher than navbar, ensures it's clickable */
+            cursor: pointer; /* Visual cue for clickability */
+            padding: 5px; /* Added for better touch target */
+            background-color: transparent; /* Ensure no background on icon itself */
+        }
+
+        .hamburger-menu .bar {
+            display: block; /* Ensure bars are block elements */
+            width: 100%; /* Take full width of parent */
+            height: 3px; /* Thickness of the bar */
+            background-color: var(--hamburger-bar-color); /* Color of the bars */
+            border-radius: 2px; /* Slightly rounded corners for aesthetics */
+            transition: all 0.3s ease;
+        }
+
+        /* Optional: Add active state for hamburger animation */
+        .hamburger-menu.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--primary-dark-blue); /* Matching index.html hero */
+            color: var(--accent-white);
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            color: var(--accent-white); /* White for readability on dark blue */
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--hover-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(32, 107, 222, 0.3); /* Adjusted shadow color */
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-white);
+            border: 2px solid var(--accent-white);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-white);
+            color: var(--dark-text);
+        }
+
+        /* Section Common Styling */
+        section {
+            padding: 80px 0;
+            background: var(--light-grey-bg);
+        }
+        section:nth-of-type(even) {
+            background: var(--accent-white); /* Clean white for alternating sections */
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--subtle-text);
+            margin-bottom: 3rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-blue); /* Using secondary blue for subheadings */
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-text); /* Using dark text for body paragraphs */
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Service Domains Section */
+        .domains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .domain-card {
+            background: var(--accent-white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .domain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--secondary-blue); /* Using secondary blue for accent line */
+        }
+
+        .domain-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .domain-icon {
+            font-size: 3.5rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .domain-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .domain-description {
+            color: var(--subtle-text); /* Using subtle text for descriptions */
+            margin-bottom: 1.5rem;
+        }
+
+        /* Remove dots from service list items */
+        .domain-card ul {
+            list-style: none; 
+            padding: 0;
+        }
+
+        .domain-card ul li {
+            padding: 0.25rem 0;
+            color: var(--dark-text); /* Using dark text for list items */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center; /* Center list items too */
+        }
+
+        /* AXI CareerNest Section Specific Styles */
+        .career-nest-content {
+            display: grid;
+            grid-template-columns: 1fr; /* Changed to 1 column now that image is removed */
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .career-nest-text {
+            /* This will now span the single column */
+            grid-column: span 1; 
+        }
+
+        .career-nest-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-blue);
+        }
+
+        .career-nest-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-text);
+        }
+
+        .career-nest-benefits {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+
+        .career-nest-benefits li {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark-text);
+            display: flex;
+            align-items: center; /* Changed from flex-start to center for better vertical alignment */
+            gap: 10px; /* Ensures space between icon and text */
+        }
+
+        .career-nest-benefits li .highlight-title {
+            font-weight: bold; /* Ensure bolding is applied */
+            flex-shrink: 0; /* Prevent title from shrinking */
+            /* Removed min-width to allow natural wrapping and alignment */
+            text-align: left; /* Align title text to the left */
+        }
+
+        .career-nest-benefits li .highlight-description {
+            flex-grow: 1; /* Allow description to take up remaining space */
+        }
+
+        .career-nest-benefits li i {
+            color: var(--success-green);
+            font-size: 1.2rem;
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+
+        .career-nest-domains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .career-domain-card {
+            background: var(--accent-white);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .career-domain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .career-domain-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .career-domain-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .career-domain-description {
+            color: var(--subtle-text);
+            font-size: 0.95rem;
+        }
+
+        /* Clients Section */
+        .clients-section {
+            padding: 80px 0;
+            background: var(--accent-white);
+        }
+
+        /* Client Logos Slider */
+        .client-logos-wrapper {
+            overflow: hidden;
+            margin: 50px 0;
+            background: var(--light-grey-bg);
+            padding: 20px 0;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .client-logos-slider {
+            display: flex;
+            white-space: nowrap; /* Prevents logos from wrapping */
+            animation: scrollLogos 25s linear infinite; /* Adjust speed as needed */
+        }
+
+        .client-logo-item {
+            display: inline-block; /* Allows items to be side-by-side */
+            padding: 0 30px;
+            flex-shrink: 0; /* Prevents items from shrinking */
+        }
+
+        .client-logo-item img {
+            max-height: 80px;
+            width: auto;
+            opacity: 0.6;
+            transition: opacity 0.3s ease-in-out;
+            filter: grayscale(100%); /* Make logos grayscale */
+        }
+
+        .client-logo-item img:hover {
+            opacity: 1;
+            filter: grayscale(0%); /* Color on hover */
+        }
+
+        /* Testimonials Slider */
+        .testimonials-slider-wrapper {
+            overflow: hidden;
+            margin: 50px 0;
+            padding: 30px 0;
+            background: var(--primary-dark-blue); /* Matching index.html testimonials background */
+            color: var(--accent-white);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .testimonials-slider {
+            display: flex;
+            white-space: nowrap; /* Prevents cards from wrapping */
+            animation: scrollTestimonials 40s linear infinite; /* Adjust speed as needed */
+            padding-left: 100%; /* Start off-screen to the right initially */
+        }
+
+        .testimonial-card {
+            display: inline-block; /* Allows cards to be side-by-side */
+            background: rgba(255,255,255,0.15); /* Semi-transparent white on dark blue */
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            min-width: 450px; /* Set a fixed width for cards */
+            margin-right: 30px; /* Spacing between cards */
+            flex-shrink: 0; /* Prevents cards from shrinking */
+            vertical-align: top; /* Align items at the top */
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--accent-white); /* White for readability on dark blue */
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary-blue); /* Secondary blue for avatar background */
+            color: var(--accent-white);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.25rem;
+            color: var(--accent-white);
+        }
+
+        .author-info p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            color: var(--subtle-text); /* Subtle text on dark background */
+        }
+
+        /* Client Satisfaction Grid */
+        .satisfaction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--light-border);
+        }
+
+        .satisfaction-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--accent-white);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .satisfaction-icon {
+            font-size: 3rem;
+            color: var(--success-green); /* Kept original green */
+            margin-bottom: 1rem;
+        }
+
+        .satisfaction-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        /* Founder Section */
+        .founder-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .founder-image img {
+            max-width: 75%;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .founder-details h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .founder-details p {
+            font-size: 1.1rem;
+            color: var(--subtle-text);
+            margin-bottom: 1rem;
+        }
+
+        .founder-details ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .founder-details ul li {
+            padding: 0.5rem 0;
+            color: var(--dark-text); /* Using dark text for list items */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .founder-details ul li i {
+            color: var(--secondary-blue);
+        }
+
+        /* Contact Section (Project Submission Form) */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--secondary-blue);
+            width: 30px;
+        }
+
+        .project-form {
+            background: var(--accent-white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+                display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            color: var(--dark-text); /* Ensure input text is dark */
+            background-color: var(--accent-white); /* Ensure input background is white */
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-blue);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            padding: 0.25rem 0;
+        }
+
+        .footer-section ul li a {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            color: var(--accent-white);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--hover-blue);
+            color: var(--accent-white);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--subtle-text);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                display: none; /* Hide navigation links by default on smaller screens */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Below the header */
+                left: 0;
+                width: 100%;
+                background: var(--primary-dark-blue); /* Background for mobile menu */
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                padding: 20px 0;
+                text-align: center;
+                gap: 1rem;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .nav-links.active {
+                display: flex; /* Show when active */
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                display: block;
+                color: white; /* Ensure links are white on dark background */
+            }
+
+            .cta-btn {
+                display: block; /* Ensure CTA button is visible in the mobile menu */
+                margin-top: 1rem; /* Add some space */
+            }
+
+            .hamburger-menu {
+                display: flex; /* Show hamburger icon on mobile */
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content,
+            .contact-grid,
+            .founder-content,
+            .domains-grid,
+            .satisfaction-grid,
+            .career-nest-content, /* Added for CareerNest responsiveness */
+            .career-nest-domains-grid { /* Added for CareerNest domains responsiveness */
+                grid-template-columns: 1fr;
+            }
+
+            .about-image, .founder-image {
+                order: -1; /* Puts image above text on small screens */
+            }
+
+            .founder-image {
+                text-align: center; /* Center the image within its div */
+            }
+
+            .founder-image img {
+                max-width: 85%; /* Adjust max-width for better fit */
+                margin: 0 auto; /* Center the image itself */
+                display: block; /* Ensure it takes up full width for centering */
+            }
+
+            .testimonial-card {
+                min-width: 80%; /* Adjust width for better fit on small screens */
+            }
+        }
+
+        /* Style to prevent scrolling when the menu is open */
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        /* Keyframe Animations for continuous scrolling */
+        @keyframes scrollLogos {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); } /* Scrolls half the duplicated content */
+        }
+
+        @keyframes scrollTestimonials {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); } /* Scrolls half the duplicated content */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                DataAXI Lab
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="AXICareerNest.html" class="nav-link">Explore CareerNest</a></li>
+                <li><a href="#career-nest" class="nav-link">AXI CareerNest</a></li>
+                <li><a href="#domains" class="nav-link">Our Services</a></li>
+                <li><a href="#clients" class="nav-link">Clients & Testimonials</a></li>
+                <li><a href="#contact" class="nav-link">Contact Us</a></li>
+                <li><a href="#contact" class="cta-btn nav-link">Start Your Project</a></li> </ul>
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Unlocking Insights. Engineering Future.</h1>
+            <p>Your trusted partner for cutting-edge Data Analytics and Data Engineering solutions.</p>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+    <div class="container">
+        <h2 class="section-title">About DataAXI Lab</h2>
+        <p class="section-subtitle">Innovating with data to drive business success.</p>
+        
+        <div class="about-content" style="grid-template-columns: 1fr;">
+            <div class="about-text">
+                <h3>Our Mission</h3>
+                <p>
+                    To empower businesses with actionable insights and robust data infrastructure, fostering growth and efficiency through advanced data analytics and engineering solutions.
+                </p>
+                <h3>Our Vision</h3>
+                <p>
+                    To be the leading global provider of data-driven solutions, transforming industries and setting new benchmarks for data excellence.
+                </p>
+                <p>
+                    At DataAXI Lab, we stand out through our commitment to innovation, a deep understanding of industry-specific challenges, and a relentless focus on delivering measurable results. Our team of expert data scientists and engineers collaborates closely with clients to build bespoke solutions that not only solve current problems but also anticipate future needs, ensuring long-term success. We believe in transparency, ethical data practices, and continuous learning, making us a reliable partner in your data journey.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="domains" class="domains">
+        <div class="container">
+            <h2 class="section-title">Our Expertise & Service Domains</h2>
+            <p class="section-subtitle">Delivering comprehensive solutions across the data lifecycle.</p>
+            
+            <div class="domains-grid">
+                <div class="domain-card">
+                    <div class="domain-icon">
+                        <i class="fas fa-chart-area"></i>
+                    </div>
+                    <h3 class="domain-title">Advanced Data Analytics</h3>
+                    <p class="domain-description">
+                        Transform raw data into strategic insights with our advanced analytics services, including predictive modeling, business intelligence, and real-time dashboards.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Business Intelligence & Reporting</li>
+                        <li><i class="fas fa-check"></i> Predictive Analytics</li>
+                        <li><i class="fas fa-check"></i> Data Visualization</li>
+                        <li><i class="fas fa-check"></i> AI/ML Integration for Analytics</li>
+                    </ul>
+                </div>
+
+                <div class="domain-card">
+                    <div class="domain-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="domain-title">Robust Data Engineering</h3>
+                    <p class="domain-description">
+                        Build scalable and efficient data pipelines, data warehouses, and data lakes tailored to your business needs, ensuring data quality and accessibility.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> ETL/ELT Development</li>
+                        <li><i class="fas fa-check"></i> Cloud Data Warehousing (AWS, Azure, GCP)</li>
+                        <li><i class="fas fa-check"></i> Big Data Solutions (Spark, Hadoop)</li>
+                        <li><i class="fas fa-check"></i> Data Governance & Security</li>
+                    </ul>
+                </div>
+
+                <div class="domain-card">
+                    <div class="domain-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3 class="domain-title">Cloud Data Solutions</h3>
+                    <p class="domain-description">
+                        Leverage the power of cloud platforms for scalable data storage, processing, and analytics, optimizing costs and performance.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Cloud Migration Strategy</li>
+                        <li><i class="fas fa-check"></i> Data Lake & Warehouse on Cloud</li>
+                        <li><i class="fas fa-check"></i> Serverless Data Processing</li>
+                        <li><i class="fas fa-check"></i> Cloud Cost Optimization</li>
+                    </ul>
+                </div>
+                </div>
+        </div>
+    </section>
+     <section id="clients" class="clients-section">
+        <div class="container">
+            <h2 class="section-title">Our Valued Clients</h2>
+            <p class="section-subtitle">We partner with leading organizations to drive data-driven success.</p>
+            
+            <div class="client-logos-wrapper">
+                <div class="client-logos-slider">
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+A" alt="Client A Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+B" alt="Client B Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+C" alt="Client C Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+D" alt="Client D Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+E" alt="Client E Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+F" alt="Client F Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+A" alt="Client A Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+B" alt="Client B Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+C" alt="Client C Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+D" alt="Client D Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+E" alt="Client E Logo"></div>
+                    <div class="client-logo-item"><img src="https://placehold.co/150x80/1A2F4F/FFFFFF?text=Client+F" alt="Client F Logo"></div>
+                </div>
+            </div>
+
+            <div class="testimonials-slider-wrapper">
+                <div class="testimonials-slider">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"DataAXI Lab transformed our disparate data into a cohesive, insightful platform, leading to a 15% increase in operational efficiency."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C1</div>
+                            <div class="author-info">
+                                <h4>Client Name 1</h4>
+                                <p>Company / Role</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The data engineering team at DataAXI Lab was exceptional in building our scalable data lake. Their expertise saved us months of development time."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C2</div>
+                            <div class="author-info">
+                                <h4>Client Name 2</h4>
+                                <p>Company / Role</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"We finally have a clear view of our customer behavior thanks to the comprehensive analytics solutions provided by DataAXI Lab."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C3</div>
+                            <div class="author-info">
+                                <h4>Client Name 3</h4>
+                                <p>Company / Role</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"DataAXI Lab transformed our disparate data into a cohesive, insightful platform, leading to a 15% increase in operational efficiency."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C1</div>
+                            <div class="author-info">
+                                <h4>Client Name 1</h4>
+                                <p>Company / Role</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The data engineering team at DataAXI Lab was exceptional in building our scalable data lake. Their expertise saved us months of development time."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C2</div>
+                            <div class="author-info">
+                                <h4>Client Name 2</h4>
+                                <p>Company / Role</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"As a career changer, I was nervous about learning network engineering. But DataAXI Lab's comprehensive curriculum and supportive community made the transition smooth and successful."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C3</div>
+                            <div class="author-info">
+                                <h4>Client Name 3</h4>
+                                <p>Company / Role</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="satisfaction-grid">
+                <h2 class="section-title" style="grid-column: 1 / -1; margin-bottom: 2rem; color: var(--dark-text);">Ensuring Client Satisfaction</h2>
+                <div class="satisfaction-item">
+                    <div class="satisfaction-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="satisfaction-title">Client-Centric Approach</h3>
+                    <p>We deeply understand our clients' unique challenges and tailor solutions that deliver tangible business value.</p>
+                </div>
+
+                <div class="satisfaction-item">
+                    <div class="satisfaction-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3 class="satisfaction-title">Agile & Iterative Process</h3>
+                    <p>Our agile methodology ensures flexibility, continuous feedback, and rapid delivery of impactful results.</p>
+                </div>
+
+                <div class="satisfaction-item">
+                    <div class="satisfaction-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="satisfaction-title">Dedicated Support</h3>
+                    <p>We provide ongoing support and maintenance to ensure the long-term success and optimal performance of your data solutions.</p>
+                </div>
+
+                <div class="satisfaction-item">
+                    <div class="satisfaction-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="satisfaction-title">Measurable Impact</h3>
+                    <p>We focus on delivering solutions that provide clear, quantifiable improvements and return on investment for your business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="career-nest" class="career-nest">
+        <div class="container">
+            <h2 class="section-title">Introducing AXI CareerNest</h2>
+            <p class="section-subtitle">Your gateway to a thriving career in Data & Network Engineering.</p>
+            
+            <div class="career-nest-content">
+                <div class="career-nest-text">
+                    <h3>About the Program</h3>
+                    <p>
+                        AXI CareerNest is a dedicated learning program designed by DataAXI Lab to equip aspiring professionals with in-depth knowledge and practical skills in the most in-demand data and networking domains. Our comprehensive curriculum is crafted to provide proper learning, preparing students for real-world industry challenges.
+                    </p>
+                    <h3>Program Highlights</h3>
+                    <ul class="career-nest-benefits">
+                        <li>
+                            <i class="fas fa-check-circle"></i> 
+                            <span class="highlight-title">Expert-Led Training:</span> 
+                            <span class="highlight-description">Learn from seasoned industry professionals and subject matter experts.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i> 
+                            <span class="highlight-title">Practical, Hands-on Experience:</span> 
+                            <span class="highlight-description">Gain real-world experience through projects and case studies.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i> 
+                            <span class="highlight-title">Potential for Hiring:</span> 
+                            <span class="highlight-description">Top-performing students have the opportunity to be hired by DataAXI Lab or our extensive network of clients.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i> 
+                            <span class="highlight-title">Enhanced Employability:</span> 
+                            <span class="highlight-description">Even if not hired directly, graduates will possess the skills and training necessary to secure jobs easily in the competitive market.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i> 
+                            <span class="highlight-title">Comprehensive Curriculum:</span> 
+                            <span class="highlight-description">Covering foundational to advanced concepts in each domain.</span>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+
+            <h3 class="section-title" style="margin-top: 4rem; margin-bottom: 2rem;">Learning Domains</h3>
+            <div class="career-nest-domains-grid domains-grid"> <div class="career-domain-card domain-card"> <div class="career-domain-icon domain-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="career-domain-title domain-title">Data Analytics</h4>
+                    <p class="career-domain-description domain-description">
+                        Master the art of extracting insights from data, including statistical analysis, business intelligence, and data visualization.
+                    </p>
+                </div>
+
+                <div class="career-domain-card domain-card">
+                    <div class="career-domain-icon domain-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h4 class="career-domain-title domain-title">Data Engineering</h4>
+                    <p class="career-domain-description domain-description">
+                        Learn to build robust, scalable data pipelines, data warehouses, and data lakes using cutting-edge technologies.
+                    </p>
+                </div>
+
+                <div class="career-domain-card domain-card">
+                    <div class="career-domain-icon domain-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h4 class="career-domain-title domain-title">Network Engineering</h4>
+                    <p class="career-domain-description domain-description">
+                        Gain expertise in designing, implementing, and managing secure and efficient computer networks.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="founder" class="founder">
+        <div class="container">
+            <h2 class="section-title">Meet Our Founder</h2>
+            <p class="section-subtitle">Visionary leadership driving data innovation.</p>
+
+            <div class="founder-content">
+                <div class="founder-image">
+                    <img src="founder4.jpg" alt="Founder Name">
+                </div>
+                <div class="founder-details">
+                    <h3>[Founder's Full Name]</h3>
+                    <p>CEO & Founder</p>
+                    <p>
+                        With over 15 years of experience in data science and enterprise architecture, [Founder's Name] founded DataAXI Lab with a vision to bridge the gap between complex data and actionable business intelligence. Their expertise in AI, big data, and cloud platforms has been instrumental in shaping the company's innovative solutions.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-award"></i> Recognized as a Top 50 Data Innovator</li>
+                        <li><i class="fas fa-graduation-cap"></i> Ph.D. in Computer Science</li>
+                        <li><i class="fas fa-lightbulb"></i> Passionate about leveraging data for societal good</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Discuss Your Project</h2>
+            <p class="section-subtitle">Reach out to us for a free consultation or to submit your project needs.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Our Headquarters</h4>
+                            <p>[Your Company Address Line 1]<br>[Your Company Address Line 2]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Call Us Anytime</h4>
+                            <p>[Your Phone Number 1]<br>[Your Phone Number 2 (Optional)]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email Us</h4>
+                            <p>info@dataaxilab.com<br>sales@dataaxilab.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="project-form">
+                    <h3>Submit Your Project Needs</h3>
+                    <div class="form-group">
+                        <label for="p-name">Your Full Name</label>
+                        <input type="text" id="p-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="p-email">Your Work Email</label>
+                        <input type="email" id="p-email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="p-company">Company Name (Optional)</label>
+                        <input type="text" id="p-company" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="p-service">Interested Service Domain</label>
+                        <select id="p-service" name="service" required>
+                            <option value="">Select a service</option>
+                            <option value="data-analytics">Advanced Data Analytics</option>
+                            <option value="data-engineering">Robust Data Engineering</option>
+                            <option value="cloud-data-solutions">Cloud Data Solutions</option>
+                            <option value="other">Other / Not sure</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="p-budget">Estimated Budget (Optional)</label>
+                        <select id="p-budget" name="budget">
+                            <option value="">Select budget range</option>
+                            <option value="<10k">Less than $10,000</option>
+                            <option value="10k-50k">$10,000 - $50,000</option>
+                            <option value="50k-100k">$50,000 - $100,000</option>
+                            <option value=">100k">More than $100,000</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="p-message">Describe Your Project Needs</label>
+                        <textarea id="p-message" name="message" rows="6" placeholder="Tell us about your project, challenges, and goals..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Project Inquiry
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>DataAXI Lab</h3>
+                    <p>Empowering businesses with data-driven intelligence and robust engineering.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="#domains">Our Services</a></li>
+                        <li><a href="#career-nest">AXI CareerNest</a></li>
+                        <li><a href="#clients">Clients</a></li>
+                        <li><a href="#founder">Leadership</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#domains">Data Analytics</a></li>
+                        <li><a href="#domains">Data Engineering</a></li>
+                        <li><a href="#domains">Cloud Solutions</a></li>
+                        <li><a href="#contact">Custom Projects</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> [Your Address]</li>
+                        <li><i class="fas fa-phone"></i> [Your Phone Number]</li>
+                        <li><i class="fas fa-envelope"></i> info@dataaxilab.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                &copy; <span id="currentYear"></span> DataAXI Lab. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Hamburger menu functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        // Hamburger menu toggle
+        if (hamburgerMenu && navLinks) {
+            hamburgerMenu.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                hamburgerMenu.classList.toggle('active');
+                document.body.classList.toggle('no-scroll', navLinks.classList.contains('active'));
+            });
+
+            // Close mobile menu when a nav link is clicked
+            navLinks.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        hamburgerMenu.classList.remove('active');
+                        document.body.classList.remove('no-scroll');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
