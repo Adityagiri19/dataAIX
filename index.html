@@ -6,7 +6,8 @@
     <title>DataAXI Lab - Master Data Analytics, Data Engineering & Network Engineering</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
         /* Define CSS Variables for Colors */
         :root {
             --hamburger-bar-color: #FFFFFF;
@@ -427,6 +428,8 @@
             background: var(--primary-dark-blue);
             color: var(--accent-white);
             padding: 80px 0;
+            overflow: hidden; /* Ensure the sliding elements are contained */
+            position: relative; /* For absolute positioning of slider */
         }
 
         .testimonials .section-title {
@@ -438,57 +441,70 @@
         }
 
         .testimonials-slider-wrapper {
-            overflow: hidden;
-            margin: 50px 0;
-            padding: 30px 0;
+            overflow: hidden; /* Hide cards that are off-screen */
+            margin: 30px auto; /* Center the slider */
+            max-width: 500px; /* Limit the width of the visible slider */
+            padding: 20px;
             background: rgba(255,255,255,0.1);
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative; /* For positioning individual cards */
+            height: 250px; /* Fixed height for the wrapper to contain sliding cards */
         }
 
         .testimonials-slider {
             display: flex;
-            white-space: nowrap;
-            animation: scrollTestimonials 20s linear infinite;
-            /* REMOVED: padding-left: 100%; */ /* This was causing issues with the scroll */
-            width: fit-content; /* Ensure the slider can grow to fit all cards */
+            width: 100%; /* The container is 100% of its parent's width */
+            position: relative; /* For positioning child cards */
+            height: 100%; /* Take full height of wrapper */
         }
 
         .testimonial-card {
-            display: inline-block;
             background: rgba(255,255,255,0.15);
-            padding: 2.5rem; /* Increased padding */
-            border-radius: 15px;
+            padding: 1.5rem; /* Reduced padding for smaller box */
+            border-radius: 10px; /* Slightly less rounded */
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.2);
-            min-width: 450px;
-            margin-right: 30px;
-            flex-shrink: 0;
-            vertical-align: top;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            width: 100%; /* Make card take full width of wrapper */
+            flex-shrink: 0; /* Prevent cards from shrinking */
+            text-align: center; /* Center content within the box */
+            opacity: 0; /* Initially hidden */
+            position: absolute; /* Position cards for animation */
+            top: 50%;
+            left: 0;
+            transform: translate(100%, -50%); /* Initial position off-screen right and vertically centered */
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
         }
 
-        .testimonial-card:hover {
-            transform: translateY(-5px) scale(1.01);
-            box-shadow: 0 15px 45px rgba(0,0,0,0.15);
+        .testimonial-card.active {
+            transform: translate(0, -50%); /* Slide into view */
+            opacity: 1;
+        }
+
+        .testimonial-card.inactive-left {
+            transform: translate(-100%, -50%); /* Slide out to the left */
+            opacity: 0;
         }
 
         .testimonial-text {
             font-style: italic;
-            margin-bottom: 1.8rem; /* Increased margin */
-            font-size: 1.15rem; /* Slightly larger font */
+            margin-bottom: 1rem; /* Reduced margin */
+            font-size: 1rem; /* Slightly smaller font */
             color: var(--accent-white);
+            white-space: normal; /* Allow text to wrap */
         }
 
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 1.2rem; /* Increased gap */
+            justify-content: center; /* Center author info */
+            gap: 0.8rem; /* Reduced gap */
+            margin-top: 1rem;
         }
 
         .author-avatar {
-            width: 55px; /* Slightly larger avatar */
-            height: 55px; /* Slightly larger avatar */
+            width: 40px; /* Smaller avatar */
+            height: 40px; /* Smaller avatar */
             border-radius: 50%;
             background: var(--secondary-blue);
             display: flex;
@@ -496,17 +512,21 @@
             justify-content: center;
             font-weight: bold;
             color: var(--accent-white);
-            font-size: 1.1rem; /* Larger initial for avatar */
+            font-size: 0.9rem; /* Smaller initial for avatar */
+        }
+
+        .author-info {
+            text-align: left; /* Align text within author info */
         }
 
         .author-info h4 {
-            margin-bottom: 0.3rem;
-            font-size: 1.1rem; /* Slightly larger name */
+            margin-bottom: 0.2rem;
+            font-size: 1rem; /* Smaller name */
         }
 
         .author-info p {
             opacity: 0.8;
-            font-size: 0.95rem; /* Slightly larger role */
+            font-size: 0.85rem; /* Smaller role */
         }
 
         /* Contact Section */
@@ -517,38 +537,10 @@
 
         .contact-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr; /* Changed to single column */
             gap: 3rem;
             margin-top: 3rem;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem; /* Increased gap */
-        }
-
-        .contact-item i {
-            font-size: 1.8rem; /* Larger icon */
-            color: var(--secondary-blue);
-            width: 35px; /* Consistent width for icon */
-            text-align: center;
-        }
-
-        .contact-item h4 {
-            font-size: 1.2rem;
-            color: var(--primary-dark-blue);
-        }
-
-        .contact-item p {
-            font-size: 1rem;
-            color: var(--dark-text);
+            justify-content: center; /* Center the grid item */
         }
 
         .contact-form {
@@ -556,6 +548,8 @@
             padding: 2.5rem; /* Increased padding */
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-width: 500px; /* Make it little smaller */
+            margin: 0 auto; /* Arrange it in the middle */
         }
 
         .form-group {
@@ -718,9 +712,19 @@
                 grid-template-columns: 1fr;
             }
 
+            .testimonials-slider-wrapper {
+                max-width: 95%;
+                padding: 15px;
+                height: 280px; /* Adjust height for smaller screens if needed */
+            }
+
             .testimonial-card {
-                min-width: 80%; /* Adjust width for better fit on small screens */
-                padding: 1.5rem; /* Reduce padding on mobile */
+                width: 100%; /* Full width of wrapper */
+                padding: 1rem; /* Adjust padding for smaller screens */
+            }
+
+            .contact-form {
+                max-width: 90%; /* Adjust for smaller screens */
             }
         }
 
@@ -744,11 +748,6 @@
         @keyframes panBackground {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
-        }
-
-        @keyframes scrollTestimonials {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(calc(-1 * (450px + 30px) * 3)); } /* Scrolls the width of 3 cards (one full set) */
         }
     </style>
 </head>
@@ -778,10 +777,6 @@
         <div class="container">
             <h1>Ignite Your Career. Build Your Future.</h1>
             <p>Unlock your potential with cutting-edge training in Data Analytics, Data Engineering, and Network Engineering. Your journey to a high-demand career starts here.</p>
-            <div class="hero-cta">
-                <a href="#courses" class="btn-primary">Explore Programs <i class="fas fa-arrow-right"></i></a>
-                <a href="#contact" class="btn-secondary">Get Free Consultation <i class="fas fa-phone-alt"></i></a>
-            </div>
         </div>
     </section>
 
@@ -911,7 +906,7 @@
             <div class="testimonials-slider-wrapper">
                 <div class="testimonials-slider">
                     <div class="testimonial-card">
-                        <p class="testimonial-text">"AXI CareerNest's Data Engineer course completely transformed my career.</p>
+                        <p class="testimonial-text">"AXI CareerNest's Data Engineer course completely transformed my career. The comprehensive curriculum and hands-on projects were exactly what I needed to land my dream role. Highly recommend!"</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">K.G</div>
                             <div class="author-info">
@@ -922,7 +917,7 @@
                     </div>
 
                     <div class="testimonial-card">
-                        <p class="testimonial-text">"The Network Engineering program helps me to get Job!"</p>
+                        <p class="testimonial-text">"The Network Engineering program at AXI CareerNest was a game-changer. The practical training and expert guidance helped me secure a fantastic job. Truly grateful for the experience!"</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">P.P</div>
                             <div class="author-info">
@@ -933,7 +928,7 @@
                     </div>
 
                     <div class="testimonial-card">
-                        <p class="testimonial-text">"Worried at first, confident now—credit to AXI CareerNest."</p>
+                        <p class="testimonial-text">"Before AXI CareerNest, I was worried about my career path. Now, I feel confident and well-equipped. The Data Analyst program provided me with the skills and confidence to excel in my new role."</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">R.G</div>
                             <div class="author-info">
@@ -943,12 +938,52 @@
                         </div>
                     </div>
                     <div class="testimonial-card">
-                        <p class="testimonial-text">"Real projects. Real job. AXI CareerNest delivers."</p>
+                        <p class="testimonial-text">"AXI CareerNest delivers on its promises. Real projects, real-world skills, and a real job. The Data Engineer program set me up for success at TCS. Fantastic instructors and support!"</p>
                         <div class="testimonial-author">
                             <div class="author-avatar">S.D</div>
                             <div class="author-info">
                                 <h4>Shubhada D</h4>
                                 <p>Data Engineer, Tcs </p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="testimonial-card">
+                        <p class="testimonial-text">"I gained practical knowledge and interview confidence. AXI CareerNest made my transition into data analytics smooth and successful."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">A.S</div>
+                            <div class="author-info">
+                                <h4>Akshay S.</h4>
+                                <p>Data Analyst, Tech Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The mentorship here is unparalleled. It's more than just coding; it's about building a career."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">V.K</div>
+                            <div class="author-info">
+                                <h4>Vishal K.</h4>
+                                <p>Network Security Specialist</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"From beginner to pro, the Data Engineering program was challenging yet incredibly rewarding. I'm now building data pipelines with confidence."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">M.P</div>
+                            <div class="author-info">
+                                <h4>Meera P.</h4>
+                                <p>Junior Data Engineer, FinTech Co.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"AXI CareerNest truly prepares you for the demands of the industry. The hands-on labs were my favorite part of the Network Engineering course."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">R.S</div>
+                            <div class="author-info">
+                                <h4>Rohan S.</h4>
+                                <p>Network Administrator, Global Corp.</p>
                             </div>
                         </div>
                     </div>
@@ -964,19 +999,6 @@
             <p class="section-subtitle">Connect with our admissions team for personalized guidance and enrollment details.</p>
 
             <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email Us Directly</h4>
-                            <p>dataaxilab@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-
                 <form class="contact-form" id="enrollmentForm">
                     <div class="form-group">
                         <label for="name">Full Name</label>
@@ -997,14 +1019,14 @@
                         <label for="course">Interested Course</label>
                         <select id="course" name="course" required>
                             <option value="">Select a course</option>
-                            <option value="data-analytics">Data Analytics Mastery</option>
-                            <option value="data-engineering">Data Engineering Pro</option>
-                            <option value="network-engineering">Network Engineering Expert</option>
+                            <option value="data-analytics" data-price="1200">Data Analytics with AI (₹1200)</option>
+                            <option value="data-engineering" data-price="1400">Data Engineering with Azure (₹1400)</option>
+                            <option value="network-engineering" data-price="1000">Network Engineering with Azure (₹1000)</option>
                         </select>
                     </div>
 
                     <button type="button" id="razorpayButton" class="btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-money-bill-wave"></i> Pay & Enroll
+                        <i class="fas fa-money-bill-wave"></i> Pay Now
                     </button>
                 </form>
             </div>
@@ -1029,22 +1051,22 @@
                 <div class="footer-section">
                     <h3>Courses</h3>
                     <ul>
-                        <li><a href="dataanalytics.html">Data Analytics Mastery</a></li>
-                        <li><a href="dataengineer.html">Data Engineering Pro</a></li>
-                        <li><a href="network.html">Network Engineering Expert</a></li>
+                        <li><a href="dataanalytics.html">Data Analytics with AI</a></li>
+                        <li><a href="dataengineer.html">Data Engineering with Azure</a></li>
+                        <li><a href="network.html">Network Engineering with Azure</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <ul>
-                        <li><i class="fas fa-envelope"></i>dataaxilab@gmail.com</li>
+                        <li><i class="fas fa-envelope"></i> dataaxilab@gmail.com</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                &copy; <span id="currentYear"></span> DataAXI Lab | All rights reserved.
+                &copy; <span id="currentYear"></span> DataAXI Lab|All rights reserved.
             </div>
         </div>
     </footer>
@@ -1056,7 +1078,6 @@
         const hamburgerMenu = document.getElementById('hamburgerMenu');
         const navLinks = document.getElementById('navLinks');
 
-        // Hamburger menu toggle
         if (hamburgerMenu && navLinks) {
             hamburgerMenu.addEventListener('click', function() {
                 navLinks.classList.toggle('active');
@@ -1064,7 +1085,6 @@
                 document.body.classList.toggle('no-scroll', navLinks.classList.contains('active'));
             });
 
-            // Close mobile menu when a nav link is clicked
             navLinks.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', () => {
                     if (navLinks.classList.contains('active')) {
@@ -1076,37 +1096,72 @@
             });
         }
 
+        // Testimonial Slider Animation
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        let currentIndex = 0;
+
+        function showTestimonial(index) {
+            testimonialCards.forEach((card, i) => {
+                card.classList.remove('active', 'inactive-left'); // Ensure previous states are cleared
+                if (i === index) {
+                    card.classList.add('active'); // Current testimonial slides in
+                } else if (i < index) {
+                    card.classList.add('inactive-left'); // Previously viewed testimonials slide out left
+                }
+                // Testimonials with index > current index remain off-screen right by default
+            });
+        }
+
+        function nextTestimonial() {
+            currentIndex = (currentIndex + 1) % testimonialCards.length;
+            showTestimonial(currentIndex);
+        }
+
+        // Show the first testimonial initially
+        if (testimonialCards.length > 0) {
+            showTestimonial(currentIndex);
+            setInterval(nextTestimonial, 5000); // Change testimonial every 5 seconds
+        }
+
         // --- Razorpay Integration ---
         const razorpayButton = document.getElementById('razorpayButton');
+        const courseSelect = document.getElementById('course');
+
+        const updateButtonPrice = () => {
+            let selectedOption = courseSelect.options[courseSelect.selectedIndex];
+            let price = selectedOption.dataset.price;
+            if (price) {
+                razorpayButton.innerHTML = `<i class="fas fa-money-bill-wave"></i> Pay Now (₹${price})`;
+            } else {
+                razorpayButton.innerHTML = `<i class="fas fa-money-bill-wave"></i> Pay Now`;
+            }
+        };
+
+        // Initial call to set the button text on page load
+        updateButtonPrice();
+
+        // Update button text when course selection changes
+        courseSelect.addEventListener('change', updateButtonPrice);
 
         if (razorpayButton) {
             razorpayButton.addEventListener('click', function() {
                 const nameInput = document.getElementById('name');
                 const emailInput = document.getElementById('email');
                 const phoneInput = document.getElementById('phone');
-                const courseSelect = document.getElementById('course');
 
                 let amountInPaisa = 0;
                 let courseDescription = "Enrollment Fee"; // Default description for Razorpay checkout
 
                 // Determine the amount and description based on the selected course
                 if (courseSelect && courseSelect.value) {
-                    switch (courseSelect.value) {
-                        case 'data-analytics':
-                            amountInPaisa = 120000; // Example: 1200 INR
-                            courseDescription = "Enrollment for Data Analytics Mastery";
-                            break;
-                        case 'data-engineering':
-                            amountInPaisa = 150000; // Example: 1500 INR
-                            courseDescription = "Enrollment for Data Engineering Pro";
-                            break;
-                        case 'network-engineering':
-                            amountInPaisa = 100000; // Example: 1000 INR
-                            courseDescription = "Enrollment for Network Engineering Expert";
-                            break;
-                        default:
-                            amountInPaisa = 109900; // Fallback to original 1099 INR if no course or invalid course selected
-                            courseDescription = "Enrollment for Selected Course";
+                    let selectedOption = courseSelect.options[courseSelect.selectedIndex];
+                    let price = selectedOption.dataset.price;
+                    if (price) {
+                         amountInPaisa = parseInt(price) * 100; // Convert Rupees to Paisa
+                         courseDescription = `Enrollment for ${selectedOption.textContent.split('(')[0].trim()}`;
+                    } else {
+                        amountInPaisa = 109900; // Fallback to original 1099 INR if no course or invalid course selected
+                        courseDescription = "Enrollment for Selected Course";
                     }
                 } else {
                     amountInPaisa = 109900; // Fallback to original 1099 INR if no course is selected from the dropdown
@@ -1116,41 +1171,15 @@
                     "key": "rzp_live_QhsHTzRSUBITkk", // Your Razorpay Key ID
                     "amount": amountInPaisa.toString(), // Amount in paisa, converted to string for Razorpay
                     "currency": "INR",
-                    "name": "DataAXI Lab",
+                    "name": "dataAXI Lab",
                     "description": courseDescription,
-                    "image": "https://placehold.co/100x100/1A2F4F/FFFFFF?text=AXI", // Optional: Your logo URL
+                    "image": "https://media.licdn.com/dms/image/v2/D4D0BAQHalNv3ZG0OjQ/img-crop_100/B4DZZKKdbfGgAM-/0/1745000979434?e=1753920000&v=beta&t=bUcntDRh3mxeaPTCOSQrG2uSDcR9W_q6wOqRFhsFh4M", // Optional: Your logo URL
                     "handler": function (response){
                         // This function is called when the payment is successful
                         // In a real application, you MUST send 'response.razorpay_payment_id' to your server
                         // for verification. Do NOT rely solely on this client-side callback for order fulfillment.
                         alert("Payment Successful! Payment ID: " + response.razorpay_payment_id +
                               "\nThank you for enrolling!");
-
-                        // Example of where you might send data to your server for verification:
-                        // fetch('/verify-payment', {
-                        //     method: 'POST',
-                        //     headers: {
-                        //         'Content-Type': 'application/json',
-                        //     },
-                        //     body: JSON.stringify({
-                        //         razorpay_payment_id: response.razorpay_payment_id,
-                        //         razorpay_order_id: response.razorpay_order_id, // If you created an order on your server
-                        //         razorpay_signature: response.razorpay_signature // Essential for verification
-                        //     }),
-                        // })
-                        // .then(response => response.json())
-                        // .then(data => {
-                        //     if (data.success) {
-                        //         // Payment verified successfully on server
-                        //         window.location.href = "/payment-success.html";
-                        //     } else {
-                        //         alert("Payment verification failed. Please contact support.");
-                        //     }
-                        // })
-                        // .catch(error => {
-                        //     console.error('Error:', error);
-                        //     alert("An error occurred during payment verification. Please contact support.");
-                        // });
                     },
                     "prefill": {
                         "name": nameInput ? nameInput.value : "",
@@ -1158,7 +1187,7 @@
                         "contact": phoneInput ? phoneInput.value : ""
                     },
                     "notes": {
-                        "address": "Wardha Office",
+                        "address": "Nagpur Office",
                         "course": courseSelect && courseSelect.value ? courseSelect.options[courseSelect.selectedIndex].text : "Not Selected"
                     },
                     "theme": {
