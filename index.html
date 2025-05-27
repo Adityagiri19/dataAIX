@@ -6,8 +6,7 @@
     <title>DataAXI Lab - Master Data Analytics, Data Engineering & Network Engineering</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <style>
         /* Define CSS Variables for Colors */
         :root {
             --hamburger-bar-color: #FFFFFF;
@@ -208,7 +207,7 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 5px 15px rgba(32, 107, 222, 0.2); /* Softer shadow */
-            border: none; /* Ensure buttons don't have default borders */
+            border: none; /* Add this to remove default button border */
             cursor: pointer; /* Indicate it's clickable */
         }
 
@@ -502,12 +501,12 @@
 
         .author-info h4 {
             margin-bottom: 0.3rem;
-            font-size: 1.1rem;
+            font-size: 1.1rem; /* Slightly larger name */
         }
 
         .author-info p {
             opacity: 0.8;
-            font-size: 0.95rem;
+            font-size: 0.95rem; /* Slightly larger role */
         }
 
         /* Contact Section */
@@ -532,13 +531,13 @@
         .contact-item {
             display: flex;
             align-items: center;
-            gap: 1.2rem;
+            gap: 1.2rem; /* Increased gap */
         }
 
         .contact-item i {
-            font-size: 1.8rem;
+            font-size: 1.8rem; /* Larger icon */
             color: var(--secondary-blue);
-            width: 35px;
+            width: 35px; /* Consistent width for icon */
             text-align: center;
         }
 
@@ -554,18 +553,18 @@
 
         .contact-form {
             background: var(--accent-white);
-            padding: 2.5rem;
+            padding: 2.5rem; /* Increased padding */
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
         .form-group {
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.8rem; /* Increased margin */
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.6rem; /* Increased margin */
             font-weight: 500;
             color: var(--dark-text);
         }
@@ -574,7 +573,7 @@
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 14px;
+            padding: 14px; /* Increased padding */
             border: 2px solid var(--light-border);
             border-radius: 8px;
             font-size: 1rem;
@@ -588,24 +587,6 @@
         .form-group select:focus {
             outline: none;
             border-color: var(--secondary-blue);
-        }
-
-        .payment-message {
-            margin-top: 1rem;
-            padding: 10px;
-            background-color: #d4edda; /* Light green for success */
-            color: #155724; /* Dark green text */
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            text-align: center;
-            display: none; /* Hidden by default */
-        }
-        .current-price {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary-dark-blue);
-            text-align: center;
-            margin-bottom: 1rem;
         }
 
         /* Footer */
@@ -1021,25 +1002,22 @@
                     </div>
 
                     <div class="form-group">
-                       <label for="phone">Phone Number</label>
-                       <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
-                    </div>
+                   <label for="phone">Phone Number</label>
+                   <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
+                   </div>
 
                     <div class="form-group">
                         <label for="course">Interested Course</label>
                         <select id="course" name="course" required>
                             <option value="">Select a course</option>
-                            <option value="Data Analytics Mastery:109900">Data Analytics Mastery (₹1099)</option>
-                            <option value="Data Engineering Pro:159900">Data Engineering Pro (₹1599)</option>
-                            <option value="Network Engineering Expert:129900">Network Engineering Expert (₹1299)</option>
-                            </select>
+                            <option value="data-analytics">Data Analytics Mastery</option>
+                            <option value="data-engineering">Data Engineering Pro</option>
+                            <option value="network-engineering">Network Engineering Expert</option>
+                        </select>
                     </div>
-                    <div id="currentPriceDisplay" class="current-price"></div>
 
-                    <div id="paymentMessage" class="payment-message"></div>
-
-                    <button type="submit" id="payButton" class="btn-primary" style="width: 100%; justify-content: center;">
-                     <i class="fas fa-money-bill-wave"></i> Enroll & Pay
+                    <button type="button" id="razorpayButton" class="btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-money-bill-wave"></i> Pay ₹1099
                     </button>
                 </form>
             </div>
@@ -1086,7 +1064,6 @@
         </div>
     </footer>
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
@@ -1114,113 +1091,87 @@
             });
         }
 
-        // --- Dynamic Razorpay Integration ---
-        const enrollmentForm = document.getElementById('enrollmentForm');
-        const courseSelect = document.getElementById('course');
-        const payButton = document.getElementById('payButton');
-        const paymentMessage = document.getElementById('paymentMessage');
-        const currentPriceDisplay = document.getElementById('currentPriceDisplay');
+        // --- Razorpay Integration ---
+        const razorpayButton = document.getElementById('razorpayButton');
 
-        // Update displayed price when course selection changes
-        courseSelect.addEventListener('change', updatePriceDisplay);
+        if (razorpayButton) {
+            razorpayButton.addEventListener('click', function() {
+                var options = {
+                    "key": "rzp_live_QhsHTzRSUBITkk", // Your Razorpay Key ID
+                    "amount": "109900", // Amount in paisa (1099 INR = 109900 paisa)
+                    "currency": "INR",
+                    "name": "DataAXI Lab",
+                    "description": "Enrollment for All Courses",
+                    "image": "https://placehold.co/100x100/1A2F4F/FFFFFF?text=AXI", // Optional: Your logo URL
+                    "handler": function (response){
+                        // This function is called when the payment is successful
+                        // In a real application, you MUST send 'response.razorpay_payment_id' to your server
+                        // for verification. Do NOT rely solely on this client-side callback for order fulfillment.
+                        alert("Payment Successful! Payment ID: " + response.razorpay_payment_id +
+                              "\nThank you for enrolling!");
 
-        function updatePriceDisplay() {
-            const selectedValue = courseSelect.value;
-            if (selectedValue) {
-                const [courseName, priceInPaisa] = selectedValue.split(':');
-                const priceInRupees = (parseInt(priceInPaisa) / 100).toFixed(2);
-                currentPriceDisplay.textContent = `Selected Course Price: ₹${priceInRupees}`;
-                currentPriceDisplay.style.display = 'block';
-            } else {
-                currentPriceDisplay.textContent = '';
-                currentPriceDisplay.style.display = 'none';
-            }
-        }
+                        // Example of where you might send data to your server for verification:
+                        // fetch('/verify-payment', {
+                        //     method: 'POST',
+                        //     headers: {
+                        //         'Content-Type': 'application/json',
+                        //     },
+                        //     body: JSON.stringify({
+                        //         razorpay_payment_id: response.razorpay_payment_id,
+                        //         razorpay_order_id: response.razorpay_order_id, // If you created an order on your server
+                        //         razorpay_signature: response.razorpay_signature // Essential for verification
+                        //     }),
+                        // })
+                        // .then(response => response.json())
+                        // .then(data => {
+                        //     if (data.success) {
+                        //         // Payment verified successfully on server
+                        //         window.location.href = "/payment-success.html";
+                        //     } else {
+                        //         alert("Payment verification failed. Please contact support.");
+                        //     }
+                        // })
+                        // .catch(error => {
+                        //     console.error('Error:', error);
+                        //     alert("An error occurred during payment verification. Please contact support.");
+                        // });
+                    },
+                    "prefill": {
+                        "name": "",
+                        "email": "",
+                        "contact": ""
+                    },
+                    "notes": {
+                        "address": "Wardha Office"
+                    },
+                    "theme": {
+                        "color": "#206BDE" // Your theme color (matches secondary-blue)
+                    }
+                };
 
-        // Initialize price display on page load
-        updatePriceDisplay();
+                // Get form values for prefill
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const phoneInput = document.getElementById('phone');
+                const courseSelect = document.getElementById('course');
 
-
-        if (enrollmentForm) {
-            enrollmentForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                // Basic form validation
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const selectedCourseValue = courseSelect.value;
-
-                if (!name || !email || !phone || !selectedCourseValue) {
-                    paymentMessage.style.display = 'block';
-                    paymentMessage.style.backgroundColor = '#f8d7da'; // Light red for error
-                    paymentMessage.style.color = '#721c24'; // Dark red text
-                    paymentMessage.textContent = 'Please fill in all required fields and select a course.';
-                    return;
+                if (nameInput && nameInput.value) {
+                    options.prefill.name = nameInput.value;
+                }
+                if (emailInput && emailInput.value) {
+                    options.prefill.email = emailInput.value;
+                }
+                if (phoneInput && phoneInput.value) {
+                    options.prefill.contact = phoneInput.value;
+                }
+                if (courseSelect && courseSelect.value) {
+                     options.notes.course = courseSelect.options[courseSelect.selectedIndex].text;
                 }
 
-                // Parse course name and price
-                const [courseName, priceInPaisa] = selectedCourseValue.split(':');
-                const amount = parseInt(priceInPaisa); // Amount in paisa
 
-                // Display message to the user
-                paymentMessage.style.display = 'block';
-                paymentMessage.style.backgroundColor = '#d4edda'; // Light green for success
-                paymentMessage.style.color = '#155724'; // Dark green text
-                paymentMessage.textContent = `Initiating payment for ${courseName}...`;
-
-                // Initiate Razorpay Checkout
-                openRazorpayCheckout(name, email, phone, courseName, amount);
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
             });
-        }
-
-        function openRazorpayCheckout(name, email, phone, courseName, amount) {
-            // NOTE: For a real application, you should create an Order on your backend
-            // and use the `order_id` in the options. This example directly processes.
-            const options = {
-                "key": 'YOUR_RAZORPAY_KEY_ID', // Replace with your actual Key ID
-                "amount": amount, // Amount in paisa
-                "currency": "INR",
-                "name": "DataAXI Lab",
-                "description": `Enrollment for ${courseName}`,
-                // "order_id": "order_XXXX", // Uncomment and use a generated order_id from your backend
-                "handler": function (response) {
-                    // This function is called after successful payment
-                    console.log(response); // Log the response for debugging
-                    alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-                    paymentMessage.style.backgroundColor = '#d4edda';
-                    paymentMessage.style.color = '#155724';
-                    paymentMessage.textContent = "Payment successful!";
-                    enrollmentForm.reset(); // Clear the form
-                    updatePriceDisplay(); // Reset price display
-                    setTimeout(() => paymentMessage.style.display = 'none', 3000); // Hide message
-                    // Here you would typically send response.razorpay_payment_id
-                    // to your backend for verification and order fulfillment.
-                },
-                "prefill": {
-                    "name": name,
-                    "email": email,
-                    "contact": phone
-                },
-                "notes": {
-                    "course_name": courseName,
-                    "student_email": email
-                },
-                "theme": {
-                    "color": "#206BDE" // Your primary blue color
-                }
-            };
-
-            const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){
-                // This function is called if payment fails
-                console.error(response); // Log the error for debugging
-                alert("Payment Failed: " + response.error.description);
-                paymentMessage.style.backgroundColor = '#f8d7da';
-                paymentMessage.style.color = '#721c24';
-                paymentMessage.textContent = "Payment failed. Please try again.";
-            });
-            rzp.open(); // Open the Razorpay checkout popup
         }
     </script>
 </body>
