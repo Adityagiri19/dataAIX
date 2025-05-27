@@ -274,7 +274,7 @@
             cursor: pointer;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: center; /* This should center it vertically */
             font-size: 1.3rem;
             font-weight: 600;
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -282,6 +282,7 @@
 
         .module-header i {
             transition: transform 0.3s ease;
+            font-size: 1.2rem; /* Slightly larger icon for better visual balance */
         }
 
         .module-header.active i {
@@ -530,13 +531,12 @@
         <nav class="nav container">
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i>
-                AXI CareerNest
+                dataAXI Lab
             </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="AXICareerNest.html#courses" class="nav-link">Home</a></li>
-                <li><a href="AXICareerNest.html#testimonials" class="nav-link">Testimonials</a></li>
-                <li><a href="AXICareerNest.html#contact" class="nav-link">Contact</a></li>
-                <li><a href="AXICareerNest.html#contact" class="cta-btn nav-link">Enroll Now</a></li>
+                <li><a href="index.html#courses" class="nav-link">Home</a></li>
+                <li><a href="index.html#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="index.html#contact" class="cta-btn nav-link">Enroll Now</a></li>
             </ul>
             <div class="hamburger-menu" id="hamburgerMenu">
                 <div class="bar"></div>
@@ -549,7 +549,6 @@
     <section class="data-analytics-demand">
         <div class="container">
             <h2 class="section-title">Why Data Analytics?</h2>
-            <h2 class="section-title">The Future is Data-Driven!</h2>
             <div class="content">
                 <p>
                     The demand for skilled Data Analytics professionals is skyrocketing globally. Businesses across every sector are clamoring for experts who can harness the power of data to make informed decisions, optimize operations, and predict future trends. This isn't just a job; it's a career path with immense growth potential and exciting opportunities.
