@@ -208,6 +208,8 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 5px 15px rgba(32, 107, 222, 0.2); /* Softer shadow */
+            border: none; /* Ensure buttons don't have default borders */
+            cursor: pointer; /* Indicate it's clickable */
         }
 
         .btn-primary:hover {
@@ -586,6 +588,17 @@
         .form-group select:focus {
             outline: none;
             border-color: var(--secondary-blue);
+        }
+
+        .payment-message {
+            margin-top: 1rem;
+            padding: 10px;
+            background-color: #d4edda; /* Light green for success */
+            color: #155724; /* Dark green text */
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+            display: none; /* Hidden by default */
         }
 
         /* Footer */
@@ -1015,9 +1028,11 @@
                         </select>
                     </div>
 
+                    <div id="paymentMessage" class="payment-message"></div>
 
-                    <a href="https://razorpay.me/@dataAXILab" class="btn-primary" style="width: 100%; justify-content: center;" target="_blank">
-                     <i class="fas fa-money-bill-wave"></i>₹1099 </a>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                     <i class="fas fa-money-bill-wave"></i> Enroll Now (₹1099)
+                    </button>
                 </form>
             </div>
         </div>
@@ -1087,6 +1102,46 @@
                         document.body.classList.remove('no-scroll');
                     }
                 });
+            });
+        }
+
+        // Handle enrollment form submission for Razorpay redirection
+        const enrollmentForm = document.getElementById('enrollmentForm');
+        const paymentMessage = document.getElementById('paymentMessage');
+        const razorpayPaymentLink = 'https://razorpay.me/@dataAXILab'; // Your existing Razorpay payment link
+
+        if (enrollmentForm) {
+            enrollmentForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Basic form validation (you can add more comprehensive validation here)
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const course = document.getElementById('course').value;
+
+                if (!name || !email || !phone || !course) {
+                    paymentMessage.style.display = 'block';
+                    paymentMessage.style.backgroundColor = '#f8d7da'; // Light red for error
+                    paymentMessage.style.color = '#721c24'; // Dark red text
+                    paymentMessage.textContent = 'Please fill in all required fields.';
+                    return;
+                }
+
+                // Display message to the user
+                paymentMessage.style.display = 'block';
+                paymentMessage.style.backgroundColor = '#d4edda'; // Light green for success
+                paymentMessage.style.color = '#155724'; // Dark green text
+                paymentMessage.textContent = 'Redirecting to Razorpay for secure payment...';
+
+                // Simulate form submission and then redirect
+                // In a real application, you might send this form data to your server first
+                setTimeout(() => {
+                    window.open(razorpayPaymentLink, '_blank'); // Open Razorpay link in a new tab
+                    // Optionally, clear the form after redirection
+                    enrollmentForm.reset();
+                    paymentMessage.style.display = 'none'; // Hide message after redirect
+                }, 2000); // Redirect after 2 seconds
             });
         }
     </script>
