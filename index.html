@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataAXI Lab - Master Data Analytics, Data Engineering & Network Engineering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        /* Define CSS Variables for Dark Mode */
+        :root {
+            --hamburger-bar-color: #A0AEC0; /* Lighter grey for contrast on dark background */
+
+            /* Dark Mode Colors */
+            --primary-dark-blue: #0A192F; /* Very dark blue for primary elements */
+            --secondary-blue: #61DAFB; /* Lighter blue for accents, inspired by tech themes */
+            --accent-white: #E2E8F0; /* Off-white for general text, soft on eyes */
+            --light-grey-bg: #1A202C; /* Dark grey for section backgrounds */
+            --dark-text: #E2E8F0; /* Off-white for main text */
+            --subtle-text: #A0AEC0; /* Lighter grey for subtle text */
+            --success-green: #68D391; /* Bright green for success indicators */
+            --light-border: #2D3748; /* Darker border for separation */
+            --footer-border: #4A5568; /* Slightly lighter border for footer separation */
+            --hover-blue: #4DC0B5; /* Teal-ish blue for hover effects, complements secondary blue */
+            --card-background: #2D3748; /* Background for cards/items like stats and module items */
+
+            /* Dynamic Background Colors */
+            --dynamic-bg-start: #000000; /* Deep black */
+            --dynamic-bg-mid: #0A0A10; /* Slightly lighter black */
+            --dynamic-bg-end: #000000; /* Deep black */
+            --dynamic-accent-color1: #0A192F; /* Primary dark blue for subtle geometric touch */
+            --dynamic-accent-color2: #0F2038; /* A darker shade of primary dark blue */
+
+            /* Hero Section specific colors */
+            --hero-bg-dark: #071320; /* Even darker blue for hero background */
+            --hero-text-highlight: #61DAFB; /* Secondary blue for highlight */
+            --hero-gradient-start: #0A192F; /* Dark blue */
+            --hero-gradient-end: #1A202C; /* Dark grey */
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            /* Dynamic background from dataanalytics.html */
+            background:
+                radial-gradient(at 20% 80%, var(--dynamic-accent-color1) 0%, transparent 50%),
+                radial-gradient(at 80% 20%, var(--dynamic-accent-color2) 0%, transparent 50%),
+                linear-gradient(to bottom right, var(--dynamic-bg-start), var(--dynamic-bg-mid), var(--dynamic-bg-end));
+            background-attachment: fixed; /* Makes the background static */
+            background-size: cover; /* Ensures background covers the whole body */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Main content wrapper to sit on top of the static background */
+        .main-content-wrapper {
+            background: rgba(10, 25, 47, 0.95); /* Primary dark blue with slight transparency */
+            border-radius: 15px;
+            margin: 100px auto 50px auto; /* Adjust margin for header and footer */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); /* More prominent shadow */
+            padding-top: 20px; /* Internal padding */
+            padding-bottom: 20px;
+            max-width: 1200px; /* Match container width */
+        }
+
+        /* Header (Updated from dataanalytics.html) */
+        .header {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.4); /* Stronger shadow for depth */
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-white); /* Ensure logo text is visible */
+            text-decoration: none; /* Remove underline from logo link */
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--accent-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative; /* Needed for pseudo-element positioning */
+            padding-bottom: 5px; /* Space for the underline */
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0; /* Position below the text */
+            width: 0%; /* Start with no width */
+            height: 2px; /* Thickness of the underline */
+            background-color: var(--secondary-blue); /* Color of the underline */
+            transition: width 0.3s ease-out; /* Smooth transition for width */
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%; /* Expand to full width on hover */
+        }
+
+        .cta-btn {
+            background: var(--secondary-blue);
+            color: var(--primary-dark-blue); /* Darker text for CTA button from dataanalytics.html */
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--hover-blue);
+            transform: translateY(-2px);
+            color: var(--primary-dark-blue); /* Ensure text remains dark on hover */
+        }
+
+        /* Hamburger Menu Icon (CSS Bars) */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 30px;
+            height: 25px;
+            position: relative;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger-menu .bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--hamburger-bar-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-menu.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Section Common Styling from dataanalytics.html */
+        section {
+            padding: 80px 0;
+            background: var(--light-grey-bg); /* Default section background */
+            border-radius: 10px; /* Slightly rounded corners for sections */
+            margin-bottom: 20px; /* Space between sections within the wrapper */
+        }
+        section:first-of-type {
+            padding-top: 40px; /* Adjust top padding for the first section inside wrapper */
+        }
+        section:last-of-type {
+            margin-bottom: 0; /* No bottom margin for the last section */
+            padding-bottom: 40px; /* Adjust bottom padding for the last section inside wrapper */
+        }
+        section:nth-of-type(odd) { /* Adjusted for alternating background */
+            background: var(--card-background); /* Use card background for odd sections */
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem; /* Kept from index.html for larger impact */
+            margin-bottom: 1rem;
+            color: var(--secondary-blue); /* Use secondary blue for titles */
+            font-weight: 700; /* Kept from index.html */
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem; /* Kept from index.html */
+            color: var(--subtle-text);
+            margin-bottom: 3rem;
+        }
+
+        /* Hero Section (Adjusted from index.html, with dataanalytics.html influences) */
+        .hero {
+            padding: 120px 0 80px; /* More top padding for fixed header, balanced bottom */
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%); /* Adjusted gradient */
+            color: var(--accent-white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px; /* Consistent with other sections */
+            margin-bottom: 20px; /* Space from next section */
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 10% 20%, rgba(97, 218, 251, 0.1) 0%, transparent 70%),
+                        radial-gradient(circle at 90% 80%, rgba(97, 218, 251, 0.1) 0%, transparent 70%);
+            z-index: 0;
+            animation: backgroundPulse 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hero > .container {
+            position: relative; /* Ensure content is above the pseudo-element */
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInDown 1s ease-out; /* Adjusted animation duration */
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Added text shadow */
+        }
+
+        /* Target any element with hero-text-highlight within the hero section */
+        .hero .hero-text-highlight {
+            color: var(--hero-text-highlight);
+        }
+
+        /* Specific styles for the list items in the hero section */
+        .hero ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 2rem; /* Adjust margin as needed */
+            text-align: center; /* Center the list items */
+        }
+
+        .hero ul li {
+            font-size: 1.8rem; /* Adjusted font size slightly smaller */
+            margin-bottom: 0.5rem; /* Space between items */
+            color: var(--accent-white); /* Default color, highlight applied by span */
+            white-space: nowrap; /* Keep text on a single line */
+            overflow: hidden; /* Hide overflow if text is too long */
+            text-overflow: ellipsis; /* Add ellipsis if text is cut off */
+            display: inline-block; /* Allows white-space nowrap to work better */
+            width: auto; /* Allow content to dictate width */
+            max-width: 100%; /* Ensure it doesn't break container */
+        }
+        
+        .hero ul li:last-child {
+            margin-bottom: 0; /* No bottom margin for the last item */
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease-out; /* Adjusted animation duration */
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1.4s ease-out; /* Adjusted animation duration */
+        }
+
+        .btn-primary {
+            background: var(--secondary-blue);
+            color: var(--primary-dark-blue); /* Darker text for primary button */
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+
+            /* New styles for centering */
+            display: block; /* Make it a block element to apply margin auto */
+            margin: 0 auto; /* Center the button */
+            width: fit-content; /* Adjust width to content to allow centering */
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-blue); /* Keep background same on hover */
+            color: var(--primary-dark-blue); /* Ensure text remains dark on hover */
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-white);
+            padding: 15px 30px;
+            border: 2px solid var(--accent-white);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(226, 232, 240, 0.1); /* Subtle background on hover */
+            color: var(--secondary-blue);
+            border-color: var(--secondary-blue);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        /* Stats Section (Adjusted for dark theme) */
+        .stats {
+            background: var(--card-background); /* Use card background for stats section */
+            padding: 60px 0;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); /* Stronger shadow */
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border-radius: 15px;
+            background: linear-gradient(to right, var(--secondary-blue), var(--hover-blue)); /* Gradient background for stats */
+            color: var(--primary-dark-blue); /* Darker text for stats */
+            transform: translateY(-20px);
+            box-shadow: 0 15px 35px rgba(97, 218, 251, 0.4); /* Adjusted shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+         .stat-item::before { /* Shimmer effect for stats */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease-out;
+        }
+        .stat-item:hover::before {
+            transform: translateX(100%);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-25px) scale(1.03);
+            box-shadow: 0 20px 45px rgba(97, 218, 251, 0.6); /* Adjusted shadow */
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark-blue); /* Ensure text within stat items is dark */
+        }
+        .stat-item p { /* Added style for paragraph within stat item */
+            font-size: 0.95rem;
+            color: var(--primary-dark-blue);
+            margin-bottom: 0;
+            word-wrap: break-word;
+            line-height: 1.4;
+            padding: 0 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Courses Section */
+        .courses {
+            padding: 80px 0;
+            background: var(--light-grey-bg);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .course-card {
+            background: var(--card-background); /* Use card background */
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); /* Stronger shadow */
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-left: 5px solid var(--secondary-blue); /* Changed from ::before to border-left for simplicity */
+        }
+
+        .course-card::before { /* Removed the ::before pseudo-element */
+            content: none;
+        }
+
+        .course-card:hover {
+            transform: translateY(-12px) scale(1.01);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+
+        .course-icon {
+            font-size: 3.5rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .course-card:hover .course-icon {
+            transform: scale(1.1);
+        }
+
+        .course-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text); /* Use dark text for titles on cards */
+            font-weight: 600;
+        }
+
+        .course-description {
+            color: var(--subtle-text);
+            margin-bottom: 1.8rem;
+            flex-grow: 1;
+        }
+
+        .course-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .course-features li {
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: var(--subtle-text); /* Subtle text for features */
+        }
+
+        .course-features i {
+            color: var(--success-green);
+            font-size: 1.1rem;
+            width: 25px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+            background: var(--card-background); /* Use card background for benefits */
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 2.5rem;
+            background: var(--light-grey-bg); /* Light background for benefits item */
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* Stronger shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        }
+
+        .benefit-icon {
+            font-size: 3.5rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .benefit-item:hover .benefit-icon {
+            color: var(--hover-blue);
+        }
+
+        .benefit-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text); /* Use dark text for titles on cards */
+            font-weight: 600;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 80px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .testimonials .section-title {
+            color: var(--accent-white);
+        }
+        .testimonials .section-subtitle {
+            color: #E0E0E0;
+        }
+        .testimonials-slider-wrapper {
+            overflow: hidden;
+            margin: 30px auto;
+            max-width: 500px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); /* Stronger shadow */
+            position: relative;
+            height: 250px;
+        }
+        .testimonials-slider {
+            display: flex;
+            width: 100%;
+            position: relative;
+            height: 100%;
+        }
+        .testimonial-card {
+            background: rgba(45, 55, 72, 0.7); /* Darker card background with transparency */
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1); /* Softer border */
+            width: 100%;
+            flex-shrink: 0;
+            text-align: center;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(100%, -50%);
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+        }
+        .testimonial-card.active {
+            transform: translate(0, -50%);
+            opacity: 1;
+        }
+        .testimonial-card.inactive-left {
+            transform: translate(-100%, -50%);
+            opacity: 0;
+        }
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--accent-white);
+            white-space: normal;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-dark-blue); /* Dark text for avatar */
+            font-size: 0.9rem;
+        }
+        .author-info {
+            text-align: left;
+        }
+        .author-info h4 {
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
+        }
+        .author-info p {
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: var(--light-grey-bg);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+            justify-content: center;
+        }
+        .contact-form {
+            background: var(--card-background); /* Use card background */
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); /* Stronger shadow */
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--light-border);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            background: var(--light-grey-bg); /* Match section background */
+            color: var(--dark-text);
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.3);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23A0AEC0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Csvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 18px;
+        }
+
+        /* Footer (Updated from dataanalytics.html) */
+        .footer {
+            background: var(--primary-dark-blue);
+            color: var(--accent-white);
+            padding: 60px 0 20px;
+            margin-top: 50px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-blue);
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li {
+            padding: 0.25rem 0;
+        }
+        .footer-section ul li a {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-section ul li a:hover {
+            color: var(--accent-white);
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            color: var(--subtle-text);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--secondary-blue);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--footer-border);
+            color: var(--subtle-text);
+            font-size: 0.9rem;
+        }
+
+        /* Keyframe Animations from dataanalytics.html (adjust as needed if conflicts arise) */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: flex; /* Keep flex for layout when visible, but control visibility with max-height/opacity */
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--primary-dark-blue);
+                padding: 0; /* Adjust padding, it will expand with max-height */
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 999;
+                text-align: center;
+                gap: 1rem;
+
+                /* Hide by default, use max-height for transition */
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            }
+
+            .nav-links.active {
+                max-height: 500px; /* A value larger than the actual height of the menu */
+                opacity: 1;
+                padding: 1rem 0; /* Apply padding when active */
+            }
+
+            .hamburger-menu {
+                display: flex;
+            }
+
+            .cta-btn {
+                display: none; /* Hide CTA button on mobile for cleaner nav */
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            /* Adjusted font size for hero list items on smaller screens */
+            .hero ul li {
+                font-size: 1.5rem; 
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
+
+            .courses-grid, .benefits-grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item, .course-card, .benefit-item {
+                margin: 0 20px;
+            }
+            .main-content-wrapper {
+                margin: 80px auto 30px auto; /* Adjust margin for smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            .main-content-wrapper {
+                margin: 70px auto 20px auto; /* Further adjust margin */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <a href="#" class="logo">
+                <i class="fas fa-laptop-code"></i> dataAXI Lab
+            </a>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Enroll Now</a></li>
+            </ul>
+            <div class="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content-wrapper">
+         <section class="hero" id="hero">
+            <div class="container">
+                 <h1>"Build, Analyze, Connect<br>Become  <br><span class="hero-text-highlight">Data & Network</span> Pro"</h1>
+                <p>Unlock Your Potential in the World of Data and Networks.</p>
+            </div>
+        </section>
+
+        <section class="stats" id="stats">
+            <div class="container">
+                <h2 class="section-title">Why Choose Us?</h2>
+                <p class="section-subtitle">Accelerate your career with our industry-led programs.</p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <p class="stat-number">100+</p>
+                        <p>Successful Placements</p>
+                    </div>
+                    <div class="stat-item">
+                        <p class="stat-number">500+</p>
+                        <p>Certified Professionals</p>
+                    </div>
+                    <div class="stat-item">
+                        <p class="stat-number">10+</p>
+                        <p>Years of Experience</p>
+                    </div>
+                    <div class="stat-item">
+                        <p class="stat-number">4.9/5</p>
+                        <p>Average Student Rating</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="courses" id="courses">
+            <div class="container">
+                <h2 class="section-title">Our Popular Courses</h2>
+                <p class="section-subtitle">Choose your path to a brighter future.</p>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div>
+                            <i class="fas fa-chart-line course-icon"></i>
+                            <h3 class="course-title">Data Analytics Masterclass</h3>
+                            <p class="course-description">
+                                Dive deep into data analysis, visualization, and interpretation. Master tools like Python, R, SQL, and Tableau to extract actionable insights.
+                            </p>
+                            <ul class="course-features">
+                                <li><i class="fas fa-check-circle"></i> Practical Projects</li>
+                                <li><i class="fas fa-check-circle"></i> Industry Case Studies</li>
+                                <li><i class="fas fa-check-circle"></i> Live Mentorship</li>
+                                <li><i class="fas fa-check-circle"></i> Placement Assistance</li>
+                            </ul>
+                        </div>
+                        <a href="dataanalytics.html" class="btn-primary">View Details</a>
+                    </div>
+                    <div class="course-card">
+                        <div>
+                            <i class="fas fa-database course-icon"></i>
+                            <h3 class="course-title">Data Engineering Pro</h3>
+                            <p class="course-description">
+                                Build robust data pipelines, manage big data systems, and master cloud platforms like AWS and Azure. Become an expert in data infrastructure.
+                            </p>
+                            <ul class="course-features">
+                                <li><i class="fas fa-check-circle"></i> Real-world ETL Projects</li>
+                                <li><i class="fas fa-check-circle"></i> Cloud Data Warehousing</li>
+                                <li><i class="fas fa-check-circle"></i> Apache Spark & Hadoop</li>
+                                <li><i class="fas fa-check-circle"></i> System Design Focus</li>
+                            </ul>
+                        </div>
+                        <a href="dataengineer.html" class="btn-primary">View Details</a>
+                    </div>
+                    <div class="course-card">
+                        <div>
+                            <i class="fas fa-network-wired course-icon"></i>
+                            <h3 class="course-title">Network Engineering Expert</h3>
+                            <p class="course-description">
+                                Design, implement, and manage secure and efficient network infrastructures. Covers Cisco, Juniper, and advanced networking concepts.
+                            </p>
+                            <ul class="course-features">
+                                <li><i class="fas fa-check-circle"></i> Hands-on Lab Sessions</li>
+                                <li><i class="fas fa-check-circle"></i> Network Security</li>
+                                <li><i class="fas fa-check-circle"></i> Wireless Networking</li>
+                                <li><i class="fas fa-check-circle"></i> Troubleshooting Skills</li>
+                            </ul>
+                        </div>
+                        <a href="network.html" class="btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits" id="benefits">
+            <div class="container">
+                <h2 class="section-title">Benefits of Learning with dataAXI Lab</h2>
+                <p class="section-subtitle">We empower you with skills that matter.</p>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <i class="fas fa-lightbulb benefit-icon"></i>
+                        <h3 class="benefit-title">Expert-Led Training</h3>
+                        <p>Learn from industry veterans with years of practical experience.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-laptop-code benefit-icon"></i>
+                        <h3 class="benefit-title">Hands-On Projects</h3>
+                        <p>Build a strong portfolio with real-world projects and case studies.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-headset benefit-icon"></i>
+                        <h3 class="benefit-title">Dedicated Support</h3>
+                        <p>Receive personalized guidance and doubt resolution from mentors.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-user-tie benefit-icon"></i>
+                        <h3 class="benefit-title">Career Placement</h3>
+                        <p>Benefit from our strong industry connections and placement assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials" id="testimonials">
+            <div class="container">
+                <h2 class="section-title">What Our Students Say</h2>
+                <p class="section-subtitle">Hear from those who transformed their careers with us.</p>
+
+                <div class="testimonials-slider-wrapper">
+                    <div class="testimonials-slider">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"DataAXI Lab transformed my career. The practical approach and expert mentorship made all the difference. Highly recommended for anyone serious about data!"</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">JD</div>
+                                <div class="author-info">
+                                    <h4>Jane Doe</h4>
+                                    <p>Data Scientist at TechCorp</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"The Network Engineering course was incredibly thorough. I gained confidence in network design and troubleshooting. Best investment for my professional growth."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">SM</div>
+                                <div class="author-info">
+                                    <h4>Sam Miller</h4>
+                                    <p>Network Engineer, Global Systems</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"As a complete beginner, I found the Data Analytics Masterclass very accessible. The instructors broke down complex topics into easy-to-understand modules."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">AL</div>
+                                <div class="author-info">
+                                    <h4>Anna Lee</h4>
+                                    <p>Junior Data Analyst, FinTech</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-subtitle">Have questions or ready to enroll? Contact us today!</p>
+                <div class="contact-grid">
+                    <div class="contact-form">
+                        <form id="enrollmentForm">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="course">Interested Course</label>
+                                <select id="course" name="course">
+                                    <option value="">Select a Course</option>
+                                    <option value="data-analytics" data-price="1200">Data Analytics with AI</option>
+                                    <option value="data-engineering" data-price="1400">Data Engineer with Azure</option>
+                                    <option value="network-engineering" data-price="1000">Network Engineer with Azure</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary" id="razorpayButton"><i class="fas fa-credit-card"></i> Pay Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-section">
+                <h3>About dataAXI Lab</h3>
+                <p>Empowering the next generation of data and network professionals with cutting-edge skills and industry-relevant training.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#contact">Enroll Now</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra, India</p>
+                <p><i class="fas fa-envelope"></i> info@dataaxilab.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.youtube.com/channel/UCRXRXnNab3z5p067dNh7UhQ" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://medium.com/@Aaditya.G/list/reading-list" aria-label="Medium"><i class="fab fa-medium"></i></a>
+                    <a href="https://www.linkedin.com/company/dataaxi-labs/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 dataAXI Lab | All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburgerMenu.addEventListener('click', () => {
+            hamburgerMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close nav links when a link is clicked (for mobile)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    hamburgerMenu.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Testimonial slider
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        let currentTestimonialIndex = 0;
+
+        function showTestimonial(index) {
+            testimonialCards.forEach((card, i) => {
+                card.classList.remove('active', 'inactive-left');
+                if (i === index) {
+                    card.classList.add('active');
+                } else if (i < index) {
+                    card.classList.add('inactive-left'); // Animate out to the left
+                }
+            });
+        }
+
+        function nextTestimonial() {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonialCards.length;
+            showTestimonial(currentTestimonialIndex);
+        }
+
+        // Auto-advance testimonials
+        setInterval(nextTestimonial, 7000); // Change testimonial every 7 seconds
+
+        // Initial display of the first testimonial
+        showTestimonial(currentTestimonialIndex);
+
+        // --- Razorpay Integration ---
+        const razorpayButton = document.getElementById('razorpayButton');
+        const courseSelect = document.getElementById('course');
+
+        const updateButtonPrice = () => {
+            let selectedOption = courseSelect.options[courseSelect.selectedIndex];
+            let price = selectedOption.dataset.price;
+            if (price) {
+                razorpayButton.innerHTML = `<i class="fas fa-money-bill-wave"></i> Pay Now (₹${price})`;
+            } else {
+                razorpayButton.innerHTML = `<i class="fas fa-money-bill-wave"></i> Pay Now`;
+            }
+        };
+
+        // Initial call to set the button text on page load
+        updateButtonPrice();
+
+        // Update button text when course selection changes
+        courseSelect.addEventListener('change', updateButtonPrice);
+
+        if (razorpayButton) {
+            razorpayButton.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default form submission
+                
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const phoneInput = document.getElementById('phone');
+
+                let amountInPaisa = 0;
+                let courseDescription = "Enrollment Fee"; // Default description for Razorpay checkout
+
+                // Determine the amount and description based on the selected course
+                if (courseSelect && courseSelect.value) {
+                    let selectedOption = courseSelect.options[courseSelect.selectedIndex];
+                    let price = selectedOption.dataset.price;
+                    if (price) {
+                           amountInPaisa = parseInt(price) * 100; // Convert Rupees to Paisa
+                           courseDescription = `Enrollment for ${selectedOption.textContent.split('(')[0].trim()}`;
+                    } else {
+                        amountInPaisa = 109900; // Fallback to original 1099 INR if no course or invalid course selected
+                        courseDescription = "Enrollment for Selected Course";
+                    }
+                } else {
+                    amountInPaisa = 109900; // Fallback to original 1099 INR if no course is selected from the dropdown
+                }
+                
+                // Basic validation (you should add more robust server-side validation)
+                if (!nameInput.value || !emailInput.value || !courseSelect.value) {
+                    alert('Please fill in your Name, Email, and select an Interested Course.');
+                    return;
+                }
+
+                var options = {
+                    "key": "rzp_live_QhsHTzRSUBITkk", // Your Razorpay Key ID
+                    "amount": amountInPaisa.toString(), // Amount in paisa, converted to string for Razorpay
+                    "currency": "INR",
+                    "name": "dataAXI Lab",
+                    "description": courseDescription,
+                    "image": "https://media.licdn.com/dms/image/v2/D4D0BAQHalNv3ZG0OjQ/img-crop_100/B4DZZKKdbfGgAM-/0/1745000979434?e=1753920000&v=beta&t=bUcntDRh3mxeaPTCOSQrG2uSDcR9W_q6wOqRFhsFh4M", // Optional: Your logo URL
+                    "handler": function (response){
+                        // This function is called when the payment is successful
+                        // In a real application, you MUST send 'response.razorpay_payment_id' to your server
+                        // for verification. Do NOT rely solely on this client-side callback for order fulfillment.
+                        alert("Payment Successful! Payment ID: " + response.razorpay_payment_id +
+                              "\nThank you for enrolling!");
+                    },
+                    "prefill": {
+                        "name": nameInput ? nameInput.value : "",
+                        "email": emailInput ? emailInput.value : "",
+                        "contact": phoneInput ? phoneInput.value : ""
+                    },
+                    "notes": {
+                        "address": "Nagpur Office",
+                        "course": courseSelect && courseSelect.value ? courseSelect.options[courseSelect.selectedIndex].text : "Not Selected"
+                    },
+                    "theme": {
+                        "color": "#206BDE" // Your theme color (matches secondary-blue)
+                    }
+                };
+
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            });
+        }
+    </script>
+</body>
+</html>
