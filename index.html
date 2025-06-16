@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataAXI Lab - Master Your Tech Career</title>
+    <title>dataAXI Lab - Master Your Tech Career</title>
     <link rel="icon" href="3.png" type="image/png" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
    <style>
     /* Define CSS Variables for Light Theme */
     :root {
@@ -494,6 +493,14 @@
         margin-bottom: 0.8rem; /* Reduced margin */
         color: var(--accent-light); /* Light accent color for titles */
         font-weight: 600;
+    }
+
+    /* Added style for enrollment text */
+    .course-enrollment {
+        font-size: 0.9rem;
+        color: var(--subtle-text);
+        margin-top: -0.5rem; /* Adjust margin to bring closer to title */
+        margin-bottom: 1rem; /* Space before button */
     }
 
     .course-description {
@@ -1066,11 +1073,11 @@
         /* --- End of Corrected Responsive adjustments for Career Path --- */
 
         /* ... (rest of your existing responsive CSS for 768px and custom message box) ... */
-    }
+    } /* <-- This closing brace was missing */
 
-        /* --- End of Corrected Responsive adjustments for Career Path --- */
+    /* --- End of Corrected Responsive adjustments for Career Path --- */
 
-        /* ... (rest of your existing responsive CSS for 768px and custom message box) ... */
+    /* ... (rest of your existing responsive CSS for 768px and custom message box) ... */
 
     @media (max-width: 768px) {
         .container {
@@ -1112,7 +1119,7 @@
             </div>
         </section>
        
-         <section class="courses" id="courses">
+        <section class="courses" id="courses">
             <div class="container">
                 <h2 class="section-title">Explore Our Flagship Programs</h2>
                 <p class="section-subtitle">Choose the path that aligns with your career aspirations.</p>
@@ -1207,10 +1214,12 @@
                         </div>
                         <div class="testimonial-card">
                             <p class="testimonial-text">"As a complete beginner, I found the Data Analytics Cohort 2.0 very accessible. The instructors broke down complex topics into easy-to-understand modules."</p>
-                            <div class="author-avatar">PW</div>
-                            <div class="author-info">
-                                <h4>Prathmesh Wazaekar</h4>
-                                <p>BI Developer, E-commerce</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">PW</div>
+                                <div class="author-info">
+                                    <h4>Prathmesh Wazaekar</h4>
+                                    <p>BI Developer, E-commerce</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1282,12 +1291,12 @@
             <div class="footer-section">
                 <h3>Contact Info</h3>
                 <p><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra, India</p>
-                <p><i class="fas fa-envelope"></i> dataxilab@gmail.com</p>
+                <p><i class="fas fa-envelope"></i> info@dataaxilab.com</p>
             </div>
             <div class="footer-section">
                 <h3>Follow Us</h3>
                 <div class="social-links">
-                    <a href="https://www.youtube.com/@dataAXI_Lab" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                     <a href="https://medium.com/@Aaditya.G/list/reading-list" aria-label="Medium"><i class="fab fa-medium"></i></a>
                     <a href="https://www.linkedin.com/company/dataaxi-labs/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
@@ -1371,7 +1380,7 @@
         const coursePrices = {
             "Aptitude & Foundational Python": 899,
             "Python Live Projects": 1199,
-            "Data Analytics Masterclass": 1599
+            "Data Analytics Masterclass": 1599,
         };
 
         // Function to update the enroll button text with price
@@ -1396,13 +1405,8 @@
             updateEnrollButtonText();
         }
 
-        // Razorpay integration
-        const RAZORPAY_KEY_ID = 'rzp_live_QhsHTzRSUBITkk';
-        const RAZORPAY_KEY_SECRET = '5c1IxM9o0j0NQKIkq1yVkjnD';
-
-
         if (enrollmentForm) {
-            enrollmentForm.addEventListener('submit', async function(e) {
+            enrollmentForm.addEventListener('submit', function(e) {
                 e.preventDefault(); // Prevent default form submission
 
                 const name = document.getElementById('name').value;
@@ -1412,75 +1416,39 @@
                 const currentYear = document.getElementById('currentYear').value;
                 const collegeName = document.getElementById('collegeName').value;
                 const interestedCourse = document.getElementById('interestedCourse').value;
-                const coursePrice = coursePrices[interestedCourse];
 
                 // Basic validation
-                if (!name || !email || !interestedCourse || !coursePrice) {
-                    showMessageBox('Please fill in your Name, Email, and select a Course with a valid price.');
+                if (!name || !email || !interestedCourse) {
+                    // Replaced alert with a custom message for better UX
+                    showMessageBox('Please fill in your Name, Email, and select an Interested Course.');
                     return;
                 }
 
-                // Razorpay options
-                var options = {
-                    key: RAZORPAY_KEY_ID, // Enter your Key ID here
-                    amount: coursePrice * 100, // Amount in paise (e.g., 50000 for ₹500)
-                    currency: "INR",
-                    name: "dataAXI Lab",
-                    description: `Enrollment for ${interestedCourse}`,
-                    image: "https://placehold.co/100x100/8A2BE2/FFFFFF?text=DA", // Replace with your company logo
-                    handler: async function (response) {
-                        // This function will be called after a successful payment
-                        // You can verify the payment on your server using response.razorpay_payment_id
-
-                        const formData = {
-                            name: name,
-                            email: email,
-                            phone: phone,
-                            degreeName: degreeName,
-                            currentYear: currentYear,
-                            collegeName: collegeName,
-                            interestedCourse: interestedCourse,
-                            coursePrice: coursePrice,
-                            paymentId: response.razorpay_payment_id,
-                            orderId: response.razorpay_order_id,
-                            signature: response.razorpay_signature,
-                            timestamp: new Date().toISOString()
-                        };
-
-                        // Save data to Firebase Realtime Database after successful payment
-                        db.ref('enrollments').push(formData)
-                            .then(() => {
-                                showMessageBox("Payment successful and your enrollment has been submitted! We will contact you shortly.");
-                                enrollmentForm.reset(); // Clear the form
-                                updateEnrollButtonText(); // Reset button text after submission
-                            })
-                            .catch((error) => {
-                                console.error("Error writing data to Firebase: ", error);
-                                showMessageBox("Payment was successful, but there was an error saving your enrollment details. Please contact support.");
-                            });
-                    },
-                    prefill: {
-                        name: name,
-                        email: email,
-                        contact: phone
-                    },
-                    notes: {
-                        address: "DataAXI Lab Office" // Optional notes for your reference
-                    },
-                    theme: {
-                        color: "#8A2BE2" // Primary theme color for Razorpay modal
-                    }
+                // Data to save to Firebase
+                const formData = {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    degreeName: degreeName,
+                    currentYear: currentYear,
+                    collegeName: collegeName,
+                    interestedCourse: interestedCourse,
+                    timestamp: new Date().toISOString() // For Realtime Database
                 };
 
-                const rzp = new Razorpay(options);
-
-                rzp.on('payment.failed', function (response) {
-                    // This function will be called if the payment fails
-                    console.error("Payment failed: ", response.error);
-                    showMessageBox(`Payment Failed: ${response.error.description || 'Unknown error'}. Please try again.`);
-                });
-
-                rzp.open(); // Open the Razorpay checkout form
+                // Save data to Firebase Realtime Database
+                db.ref('enrollments').push(formData)
+                    .then(() => {
+                        // Replaced alert with a custom message for better UX
+                        showMessageBox("Your inquiry has been submitted successfully! We will contact you shortly.");
+                        enrollmentForm.reset(); // Clear the form
+                        updateEnrollButtonText(); // Reset button text after submission
+                    })
+                    .catch((error) => {
+                        console.error("Error writing data: ", error);
+                        // Replaced alert with a custom message for better UX
+                        showMessageBox("There was an error submitting your inquiry. Please try again.");
+                    });
             });
         }
 
@@ -1507,6 +1475,20 @@
                 }
             }, 5000); // Remove after 5 seconds
         }
+    </script>
+     <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "dataAXI Lab",
+      "url": "https://www.dataaxi.in/", // *** IMPORTANT: CHANGE THIS TO YOUR REAL WEBSITE ADDRESS (e.g., https://dataaxilab.com) ***
+      "logo": "https://www.dataaxi.in/3.png", // *** IMPORTANT: CHANGE THIS TO THE FULL WEB ADDRESS OF YOUR LOGO (e.g., https://dataaxilab.com/3.png) ***
+      "sameAs": [
+        "https://www.youtube.com/@dataAXI_Lab", // If you have a YouTube channel, put its full link here
+        "https://medium.com/@Aaditya.G/list/reading-list",
+        "https://www.linkedin.com/company/dataaxi-labs/"
+      ]
+    }
     </script>
 
     <style>
