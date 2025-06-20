@@ -13,26 +13,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
     <style>
-        /* CSS Variables for Dark Theme */
+        /* CSS Variables for Dark Theme (Adjusted to match main page and black cards) */
         :root {
             --hamburger-bar-color: #E0F7FA; /* Light cyan for dark background */
-            --primary-dark-bg: #1A1A2E; /* Deep dark blue */
-            --secondary-violet: #6A1B9A; /* Rich purple */
+            --primary-dark-bg: #0A0A0A; /* Even darker, almost black - matches main page */
+            --secondary-violet: #8A2BE2; /* Richer purple - matches main page */
             --accent-light: #E0F7FA; /* Light cyan */
-            --section-bg-dark: #2C2C54; /* Darker blue-purple for sections */
+            --section-bg-dark: #121212; /* Darker grey for sections */
             --dark-text: #E0F7FA; /* Light cyan text */
             --subtle-text: #B3E5FC; /* Slightly darker light blue */
             --success-green: #4CAF50;
             --light-border: #4A4A7F; /* Darker blue-purple border */
             --footer-border: #3A3A6B; /* Darker footer border */
             --hover-violet: #9C27B0; /* Brighter purple on hover */
-            --card-background: #2C2C54; /* Darker blue-purple for cards */
-            --new-card-background: #2C2C54; /* Darker blue-purple for new cards */
+            --card-background: #000000; /* Black for cards as requested */
+            --new-card-background: #000000; /* Black for new cards as requested */
             --new-card-border: #4A4A7F; /* Dark border for cards */
-            --hero-bg-dark: #1A1A2E; /* Very dark hero background */
+            --hero-bg-dark: #0A0A0A; /* Matches primary dark background */
             --hero-text-highlight: #BB86FC; /* Lighter, vibrant purple highlight for contrast */
-            --hero-gradient-start: #1A1A2E; /* Very dark gradient start */
-            --hero-gradient-end: #2C2C54; /* Very dark gradient end */
+            --hero-gradient-start: #0A0A0A; /* Starts from primary dark background */
+            --hero-gradient-end: #121212; /* Ends at section background dark */
 
             /* Specific for Service Page Levels */
             --level-badge-1: #4CAF50; /* Green */
@@ -64,7 +64,7 @@
         }
 
         .main-content-wrapper {
-            background: rgba(10, 10, 10, 0.8); /* Adjusted to match new body background with transparency */
+            background: rgba(0, 0, 0, 0.8); /* Adjusted for consistency with black cards */
             border-radius: 15px;
             margin: 100px auto 50px auto;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Darker shadow */
@@ -489,7 +489,7 @@
         }
 
         .message-content {
-            background: var(--card-background);
+            background: var(--card-background); /* Uses card background for consistency */
             color: var(--dark-text);
             padding: 30px;
             border-radius: 15px;
@@ -683,7 +683,7 @@
 
         <section class="learning-path animated-element">
             <div class="container">
-                <h2 class="section-title"><span class="hero-text-highlight">Your 3-Level Learning Path</span></h2>
+                <h2 class="section-title">Your <span class="hero-text-highlight">3-Level Learning Path</span></h2>
                 <p class="section-subtitle">A structured journey to data analytics mastery, project by project.</p>
 
                 <div class="learning-path-grid">
@@ -765,7 +765,6 @@
             </div>
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra, India</p>
                 <p><i class="fas fa-envelope"></i> dataaxilab@gmail.com</p>
             </div>
             <div class="footer-section">
