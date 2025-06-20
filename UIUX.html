@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX Design - dataAXI Lab</title>
+    <link rel="icon" href="3.png" type="image/png" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        /* CSS Variables for Dark Theme (Adjusted to match main page and black cards) */
+        :root {
+            --hamburger-bar-color: #E0F7FA; /* Light cyan for dark background */
+            --primary-dark-bg: #0A0A0A; /* Even darker, almost black - matches main page */
+            --secondary-violet: #8A2BE2; /* Richer purple - matches main page */
+            --accent-light: #E0F7FA; /* Light cyan */
+            --section-bg-dark: #121212; /* Darker grey for sections */
+            --dark-text: #E0F7FA; /* Light cyan text */
+            --subtle-text: #B3E5FC; /* Slightly darker light blue */
+            --success-green: #4CAF50;
+            --light-border: #4A4A7F; /* Darker blue-purple border */
+            --footer-border: #3A3A6B; /* Darker footer border */
+            --hover-violet: #9C27B0; /* Brighter purple on hover */
+            --card-background: #000000; /* Black for cards as requested */
+            --new-card-background: #000000; /* Black for new cards as requested */
+            --new-card-border: #4A4A7F; /* Dark border for cards */
+            --hero-bg-dark: #0A0A0A; /* Matches primary dark background */
+            --hero-text-highlight: #BB86FC; /* Lighter, vibrant purple highlight for contrast */
+            --hero-gradient-start: #0A0A0A; /* Starts from primary dark background */
+            --hero-gradient-end: #121212; /* Ends at section background dark */
+
+            /* Specific for Service Page Levels */
+            --level-badge-1: #4CAF50; /* Green */
+            --level-badge-2: #FFC107; /* Yellow */
+            --level-badge-3: #DC3545; /* Red */
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: #0A0A0A; /* Very dark grey, almost black */
+            background-attachment: fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .main-content-wrapper {
+            background: rgba(0, 0, 0, 0.8); /* Adjusted for consistency with black cards */
+            border-radius: 15px;
+            margin: 100px auto 50px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Darker shadow */
+            padding-top: 20px;
+            padding-bottom: 20px;
+            max-width: 1200px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-dark-bg);
+            color: var(--accent-light);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.5); /* Darker shadow */
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-violet);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--accent-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--secondary-violet);
+            transition: width 0.3s ease-out;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-violet);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-btn {
+            background: var(--secondary-violet);
+            color: var(--accent-light);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--hover-violet);
+        }
+
+        /* Hamburger Menu Icon */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 30px;
+            height: 25px;
+            position: relative;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger-menu .bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--hamburger-bar-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-menu.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Section Common Styling */
+        section {
+            padding: 80px 0;
+            background: var(--section-bg-dark);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        section:first-of-type {
+            padding-top: 40px;
+        }
+        section:last-of-type {
+            margin-bottom: 0;
+            padding-bottom: 40px;
+        }
+        section:nth-of-type(odd) {
+            background: var(--section-bg-dark);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--subtle-text);
+            margin-bottom: 3rem;
+        }
+
+        /* Hero Section (for service page title) */
+        .service-hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+            color: var(--accent-light);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .service-hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInDown 1s ease-out;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .service-hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero-text-highlight {
+            color: var(--hero-text-highlight);
+        }
+
+        /* Learning Path Section */
+        .learning-path {
+            padding: 80px 0;
+            background: var(--primary-dark-bg);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .learning-path-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .level-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s ease-in-out;
+            border: 1px solid var(--new-card-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .level-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+        }
+
+        .level-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .level-card h3 i {
+            font-size: 1.5em;
+        }
+
+        .level-card h4 {
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .level-card ul {
+            list-style: none;
+            padding-left: 20px; /* Indent list items */
+            margin-bottom: 1.5rem;
+        }
+
+        .level-card ul li {
+            color: var(--subtle-text);
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 25px; /* Space for custom bullet */
+        }
+
+        .level-card ul li::before {
+            content: '✓'; /* Custom checkmark bullet */
+            color: var(--success-green);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+        }
+
+        .level-card .level-badge {
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            display: inline-block;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .level-badge.level-1 { background-color: var(--level-badge-1); color: white; }
+        .level-badge.level-2 { background-color: var(--level-badge-2); color: #333; }
+        .level-badge.level-3 { background-color: var(--level-badge-3); color: white; }
+
+        /* Add-on Section */
+        .add-on-section {
+            padding: 60px 0;
+            background: var(--section-bg-dark);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .add-on-section ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 2rem;
+            display: inline-block; /* For centering the list items */
+            text-align: left; /* Align list items to the left within the block */
+        }
+
+        .add-on-section ul li {
+            font-size: 1.1rem;
+            color: var(--dark-text);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 600px; /* Limit width of list items */
+        }
+
+        .add-on-section ul li i {
+            color: var(--success-green);
+            font-size: 1.3em;
+            flex-shrink: 0;
+            margin-top: 2px; /* Adjust alignment for icon */
+        }
+
+        /* Call to Action Section */
+        .service-cta {
+            padding: 50px 0;
+            background: var(--primary-dark-bg);
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .service-cta .btn-primary {
+            background: var(--secondary-violet);
+            color: var(--accent-light);
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+
+        .service-cta .btn-primary:hover {
+            background: var(--hover-violet);
+            color: var(--accent-light);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .service-cta p {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--subtle-text);
+        }
+
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark-bg);
+            color: var(--accent-light);
+            padding: 60px 0 20px;
+            margin-top: 50px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+        }
+        .footer-section p, .footer-section ul {
+            font-size: 0.95rem;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li {
+            padding: 0.25rem 0;
+        }
+        .footer-section ul li a {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-section ul li a:hover {
+            color: var(--dark-text);
+        }
+        .footer-section p i {
+            margin-right: 8px;
+            color: var(--secondary-violet);
+        }
+        .footer-section .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .footer-section .social-links a {
+            color: var(--subtle-text);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        .footer-section .social-links a:hover {
+            color: var(--secondary-violet);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--footer-border);
+            color: var(--subtle-text);
+            font-size: 0.9rem;
+        }
+
+
+        /* Overlay message styles */
+        .overlay-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85); /* Dark background for dark theme */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .message-content {
+            background: var(--card-background); /* Uses card background for consistency */
+            color: var(--dark-text);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); /* Darker shadow */
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(-20px);
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+
+        .message-content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .message-close-btn {
+            background: var(--secondary-violet);
+            color: var(--accent-light);
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .message-close-btn:hover {
+            background: var(--hover-violet);
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes revealUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated-element {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .animated-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger-menu {
+                display: flex;
+            }
+            .mobile-nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(26, 26, 46, 0.95);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+                transform: translateX(100%);
+                transition: transform 0.4s ease-in-out;
+            }
+            .mobile-nav-overlay.active {
+                transform: translateX(0);
+            }
+            .mobile-nav-links {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+            .mobile-nav-links a {
+                color: var(--dark-text);
+                text-decoration: none;
+                font-size: 1.8rem;
+                font-weight: 600;
+                transition: color 0.3s;
+            }
+            .mobile-nav-links a:hover {
+                color: var(--secondary-violet);
+            }
+
+            .service-hero h1 {
+                font-size: 3rem;
+            }
+            .service-hero p {
+                font-size: 1.2rem;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+            .learning-path-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-content-wrapper {
+                margin: 70px auto 20px auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .service-hero h1 {
+                font-size: 2.5rem;
+            }
+            .service-hero p {
+                font-size: 1rem;
+            }
+            .service-cta .btn-primary {
+                width: 80%;
+                max-width: 300px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Custom CSS to hide the mobile nav overlay if it appears below the footer on desktop */
+        .footer-bottom + .mobile-nav-overlay {
+            display: none !important;
+        }
+
+        @media (min-width: 993px) {
+            .mobile-nav-overlay {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <a href="#" class="logo" style="font-weight: bold; font-size: 1.5rem;">
+                <span style="color: var(--accent-light);">data</span>
+                <i class="fas fa-infinity" style="color: var(--secondary-violet); font-size: 2rem; vertical-align: middle;"></i>
+                <span style="color: var(--accent-light);">AXI</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html#hero">Home</a></li>
+                <li><a href="index.html#courses">Domains</a></li>
+                <li><a href="index.html#benefits">Benefits</a></li>
+                <li><a href="index.html#roadmap">Roadmap</a></li>
+                <li><a href="index.html#contact">Enroll Now</a></li>
+            </ul>
+            <div class="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content-wrapper">
+        <section class="service-hero">
+            <div class="container">
+                <h1><span class="hero-text-highlight">UI/UX Design</span></h1>
+                <p>Learn to design interfaces people actually love using.</p>
+            </div>
+        </section>
+
+        <section class="learning-path animated-element">
+            <div class="container">
+                <h2 class="section-title">Your <span class="hero-text-highlight">3-Level Learning Path</span></h2>
+                <p class="section-subtitle">A structured journey to UI/UX design mastery, project by project.</p>
+
+                <div class="learning-path-grid">
+                    <div class="level-card animated-element">
+                        <span class="level-badge level-1">Level 1</span>
+                        <h3>Foundation Project – App UI Wireframe (Figma)</h3>
+                        <h4>What You'll Learn:</h4>
+                        <ul>
+                            <li>Design thinking basics: user, goal, flow</li>
+                            <li>Low-fidelity wireframe creation in Figma</li>
+                            <li>Understanding layout grids, spacing, and structure</li>
+                            <li>Typography and color basics</li>
+                            <li>Clickable prototype creation</li>
+                        </ul>
+                        <h4>What You'll Build:</h4>
+                        <ul>
+                            <li>A clean wireframe and clickable prototype of a basic mobile app — showing navigation and structure flow using Figma.</li>
+                        </ul>
+                    </div>
+
+                    <div class="level-card animated-element">
+                        <span class="level-badge level-2">Level 2</span>
+                        <h3>Intermediate Project – Web Landing Page (UI Kit Design)</h3>
+                        <h4>What You'll Learn:</h4>
+                        <ul>
+                            <li>UI component design: cards, buttons, navbars</li>
+                            <li>Create a high-fidelity web layout using a design system</li>
+                            <li>Apply color theory, iconography, contrast</li>
+                            <li>Organize files using frames & auto layout</li>
+                            <li>Build a full responsive layout in Figma</li>
+                        </ul>
+                        <h4>What You'll Build:</h4>
+                        <ul>
+                            <li>A professional landing page design for a tech product — styled using a proper design system and color palette.</li>
+                        </ul>
+                    </div>
+
+                    <div class="level-card animated-element">
+                        <span class="level-badge level-3">Level 3</span>
+                        <h3>Final Capstone Project – Complete App UI Case Study</h3>
+                        <h4>What You'll Learn:</h4>
+                        <ul>
+                            <li>End-to-end UI/UX workflow: user research → wireframes → UI design → prototype</li>
+                            <li>User persona creation</li>
+                            <li>Visual storytelling using mockups</li>
+                            <li>Build a portfolio-ready case study</li>
+                        </ul>
+                        <h4>What You'll Build:</h4>
+                        <ul>
+                            <li>A complete multi-screen app design (e.g., food delivery, health app, fintech app) with interactive prototype and a Behance-style case study ready to showcase.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="service-cta animated-element">
+            <div class="container">
+                <a href="index.html#contact" class="btn-primary">🔓 Unlock the Full Track – ₹299</a>
+                <p>Lifetime access + certification after final case study submission.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-section">
+                <h3>About dataAXI Lab</h3>
+                <p>Empowering students to build real projects, gain practical experience, and launch career-ready portfolios.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#courses">Domains</a></li>
+                    <li><a href="index.html#benefits">Benefits</a></li>
+                    <li><a href="index.html#contact">Unlock Project</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-envelope"></i> dataaxilab@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.youtube.com/@dataAXI_Lab" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://medium.com/@Aaditya.G/list/reading-list" aria-label="Medium"><i class="fab fa-medium"></i></a>
+                    <a href="https://www.linkedin.com/company/dataaxi-labs/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 dataAXI Lab | All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-links">
+            <a href="index.html#hero">Home</a>
+            <a href="index.html#courses">Domain</a>
+            <a href="index.html#benefits">Benefits</a>
+            <a href="index.html#roadmap">Roadmap</a>
+            <a href="index.html#contact">Enroll Now</a>
+        </div>
+    </div>
+
+    <div id="successMessage" class="overlay-message" style="display:none;">
+        <div class="message-content">
+            <p id="successText"></p>
+            <button class="message-close-btn" onclick="document.getElementById('successMessage').style.display='none';">Close</button>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="overlay-message" style="display:none;">
+        <div class="message-content">
+            <p id="errorText"></p>
+            <button class="message-close-btn" onclick="document.getElementById('errorMessage').style.display='none';">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hamburger menu functionality
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            const mobileNavLinks = document.querySelector('.mobile-nav-links');
+
+            if (hamburgerMenu && mobileNavOverlay && mobileNavLinks) {
+                hamburgerMenu.addEventListener('click', () => {
+                    hamburgerMenu.classList.toggle('active');
+                    mobileNavOverlay.classList.toggle('active');
+                    if (mobileNavOverlay.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                mobileNavLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        hamburgerMenu.classList.remove('active');
+                        mobileNavOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+
+            // New: Intersection Observer for scroll animations
+            const animatedElements = document.querySelectorAll('.animated-element');
+
+            const observerOptions = {
+                root: null, /* viewport */
+                rootMargin: '0px',
+                threshold: 0.1 /* 10% of item visible */
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Firebase Integration (mocked for this specific page as the form is not included here)
+            // If a form for enrollment is added to this page, you would need to implement
+            // Razorpay and Firebase logic here. For now, CTA buttons link to a general contact section.
+
+            // Function to show custom overlay messages
+            function showOverlayMessage(overlayId, message) {
+                const overlay = document.getElementById(overlayId);
+                const textElement = overlay.querySelector('p');
+                textElement.textContent = message;
+                overlay.style.display = 'flex';
+            }
+        });
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "dataAXI Lab",
+      "url": "https://www.dataaxi.in/",
+      "logo": "https://www.dataaxi.in/3.png",
+      "sameAs": [
+        "https://www.youtube.com/@dataAXI_Lab",
+        "https://medium.com/@Aaditya.G/list/reading-list",
+        "https://www.linkedin.com/company/dataaxi-labs/"
+        ]
+    }
+    </script>
+</body>
+</html>
