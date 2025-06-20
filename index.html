@@ -8,1497 +8,994 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-   <style>
-    /* Define CSS Variables for Light Theme */
-    :root {
-        --hamburger-bar-color: #5A358A; /* Darker violet for contrast on light background */
 
-        /* Light Mode Colors */
-        --primary-dark-bg: #FFFFFF; /* White for primary backgrounds */
-        --secondary-violet: #8A2BE2; /* Keep vibrant violet for accents */
-        --accent-light: #1A1A1A; /* Very dark grey for general text on light background */
-        --section-bg-dark: #F5F5F5; /* Light grey for section backgrounds */
-        --dark-text: #1A1A1A; /* Very dark grey for main text */
-        --subtle-text: #555555; /* Medium grey for subtle text */
-        --success-green: #28A745; /* Slightly darker green for success */
-        --light-border: #DDDDDD; /* Lighter grey border for separation */
-        --footer-border: #CCCCCC; /* Slightly darker light grey border for footer separation */
-        --hover-violet: #7A2BA2; /* A deeper violet for hover effects, contrasts well */
-        --card-background: #FFFFFF; /* White for cards/items */
-        --new-card-background: #FFFFFF; /* White for new cards */
-        --new-card-border: #E0E0E0; /* Very light grey border */
+    <style>
+        /* CSS Variables for Dark Theme */
+        :root {
+            --hamburger-bar-color: #FFFFFF; /* Lighter for dark background */
+            --primary-dark-bg: #0A0A0A; /* Even darker, almost black */
+            --secondary-violet: #8A2BE2; /* Keep violet accent */
+            --accent-light: #E0E0E0; /* Light text */
+            --section-bg-dark: #1A1A1A; /* Very dark grey for sections */
+            --dark-text: #E0E0E0; /* Light text */
+            --subtle-text: #AAAAAA; /* Slightly darker light text */
+            --success-green: #4CAF50;
+            --light-border: #333333; /* Darker border */
+            --footer-border: #2A2A2A; /* Darker footer border */
+            --hover-violet: #A052FF;
+            --card-background: #1A1A1A; /* Very dark grey for cards */
+            --new-card-background: #1A1A1A; /* Very dark grey for new cards */
+            --new-card-border: #2A2A2A; /* Dark border for cards */
+            /* Removed dynamic-bg variables as body will be solid black */
+            --dynamic-accent-color1: transparent; /* Removed for solid black background */
+            --dynamic-accent-color2: transparent; /* Removed for solid black background */
+            --hero-bg-dark: #0A0A0A; /* Very dark hero background */
+            --hero-text-highlight: #A052FF; /* Slightly brighter violet highlight for contrast */
+            --hero-gradient-start: #0A0A0A; /* Very dark gradient start */
+            --hero-gradient-end: #1A1A1A; /* Very dark gradient end */
+        }
+
+        /* General Styles (from pro.html) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: #000000; /* Solid Black Background */
+            background-attachment: fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .main-content-wrapper {
+            background: rgba(0, 0, 0, 0.8); /* Very dark, slightly transparent black */
+            border-radius: 15px;
+            margin: 100px auto 50px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); /* Darker shadow */
+            padding-top: 20px;
+            padding-bottom: 20px;
+            max-width: 1200px;
+        }
+
+        /* Header (from pro.html) */
+        .header {
+            background: var(--primary-dark-bg);
+            color: var(--accent-light);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3); /* Darker shadow */
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-violet);
+        }
 
-
-        /* Dynamic Background Colors (adjusted for light) */
-        --dynamic-bg-start: #F8F8F8; /* Light grey */
-        --dynamic-bg-mid: #F0F0F0; /* Slightly darker light grey */
-        --dynamic-bg-end: #F8F8F8; /* Light grey */
-        --dynamic-accent-color1: #E5E5E5; /* Lighter grey for subtle geometric touch */
-        --dynamic-accent-color2: #D8D8D8; /* Slightly darker light grey */
-
-        /* Hero Section specific colors (adjusted for light background, violet highlight) */
-        --hero-bg-dark: #F0F0F0; /* Light grey for hero background */
-        --hero-text-highlight: #6A1BA2; /* A darker violet for highlight on light background */
-        --hero-gradient-start: #FBFBFB; /* Very light grey */
-        --hero-gradient-end: #F0F0F0; /* Slightly darker very light grey */
-    }
-
-    /* General Styles */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Inter', sans-serif;
-        line-height: 1.6;
-        color: var(--dark-text);
-        /* Dynamic background */
-        background:
-            radial-gradient(at 20% 80%, var(--dynamic-accent-color1) 0%, transparent 50%),
-            radial-gradient(at 80% 20%, var(--dynamic-accent-color2) 0%, transparent 50%),
-            linear-gradient(to bottom right, var(--dynamic-bg-start), var(--dynamic-bg-mid), var(--dynamic-bg-end));
-        background-attachment: fixed; /* Makes the background static */
-        background-size: cover; /* Ensures background covers the whole body */
-        overflow-x: hidden; /* Prevent horizontal scroll */
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    /* Main content wrapper to sit on top of the static background */
-    .main-content-wrapper {
-        background: rgba(255, 255, 255, 0.95); /* White with slight transparency */
-        border-radius: 15px;
-        margin: 100px auto 50px auto; /* Adjust margin for header and footer */
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); /* More prominent shadow */
-        padding-top: 20px; /* Internal padding */
-        padding-bottom: 20px;
-        max-width: 1200px; /* Match container width */
-    }
-
-    /* Header */
-    .header {
-        background: var(--primary-dark-bg);
-        color: var(--accent-light);
-        padding: 1rem 0;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 2px 20px rgba(0,0,0,0.4); /* Stronger shadow for depth */
-    }
-
-    .nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo {
-        font-size: 1.8rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--accent-light); /* Ensure logo text is visible */
-        text-decoration: none; /* Remove underline from logo link */
-    }
-
-    .logo i {
-        font-size: 2rem;
-        color: var(--secondary-violet);
-    }
-
-    .nav-links {
-        display: flex;
-        list-style: none;
-        gap: 2rem;
-    }
-
-    .nav-links a {
-        color: var(--accent-light);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-        position: relative; /* Needed for pseudo-element positioning */
-        padding-bottom: 5px; /* Space for the underline */
-    }
-
-    .nav-links a::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0; /* Position below the text */
-        width: 0%; /* Start with no width */
-        height: 2px; /* Thickness of the underline */
-        background-color: var(--secondary-violet); /* Color of the underline */
-        transition: width 0.3s ease-out; /* Smooth transition for width */
-    }
-
-    .nav-links a:hover {
-        color: var(--secondary-violet);
-    }
-
-    .nav-links a:hover::after {
-        width: 100%; /* Expand to full width on hover */
-    }
-
-    .cta-btn {
-        background: var(--secondary-violet);
-        color: var(--accent-light); /* Darker text for CTA button */
-        padding: 10px 20px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-
-    .cta-btn:hover {
-        background: var(--hover-violet);
-        transform: translateY(-2px);
-        color: var(--accent-light); /* Ensure text remains dark on hover */
-    }
-
-    /* Hamburger Menu Icon (CSS Bars) */
-    .hamburger-menu {
-        display: none;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        width: 30px;
-        height: 25px;
-        position: relative;
-        z-index: 1001;
-        cursor: pointer;
-        padding: 5px;
-    }
-
-    .hamburger-menu .bar {
-        display: block;
-        width: 100%;
-        height: 3px;
-        background-color: var(--hamburger-bar-color);
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-
-    .hamburger-menu.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-
-    .hamburger-menu.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    .hamburger-menu.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
-    /* Section Common Styling */
-    section {
-        padding: 80px 0;
-        background: var(--section-bg-dark); /* Default section background */
-        border-radius: 10px; /* Slightly rounded corners for sections */
-        margin-bottom: 20px; /* Space between sections within the wrapper */
-    }
-    section:first-of-type {
-        padding-top: 40px; /* Adjust top padding for the first section inside wrapper */
-    }
-    section:last-of-type {
-        margin-bottom: 0; /* No bottom margin for the last section */
-        padding-bottom: 40px; /* Adjust bottom padding for the last section inside wrapper */
-    }
-    section:nth-of-type(odd) { /* Alternating background */
-        background: var(--section-bg-dark); /* Use section-bg-dark for all sections */
-    }
-
-    .section-title {
-        text-align: center;
-        font-size: 2.8rem;
-        margin-bottom: 1rem;
-        color: var(--secondary-violet); /* Use secondary violet for titles */
-        font-weight: 700;
-    }
-
-    .section-subtitle {
-        text-align: center;
-        font-size: 1.3rem;
-        color: var(--subtle-text);
-        margin-bottom: 3rem;
-    }
-
-    /* Hero Section */
-    .hero {
-        padding: 120px 0 80px; /* More top padding for fixed header, balanced bottom */
-        background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%); /* Adjusted gradient */
-        color: var(--accent-light);
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px; /* Consistent with other sections */
-        margin-bottom: 20px; /* Space from next section */
-    }
-
-    .hero::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 70%),
-                    radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
-        z-index: 0;
-        animation: backgroundPulse 15s infinite alternate ease-in-out;
-    }
-
-    @keyframes backgroundPulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.05); opacity: 0.8; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-
-    .hero > .container {
-        position: relative; /* Ensure content is above the pseudo-element */
-        z-index: 1;
-    }
-
-    .hero h1 {
-        font-size: 3.8rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-        animation: fadeInDown 1s ease-out;
-        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
-
-    /* Target any element with hero-text-highlight within the hero section */
-    .hero .hero-text-highlight {
-        color: var(--hero-text-highlight);
-    }
-
-    /* Specific styles for the list items in the hero section */
-    .hero ul {
-        list-style: none;
-        padding: 0;
-        margin: 1rem 0 2rem;
-        text-align: center;
-    }
-
-    .hero ul li {
-        font-size: 1.8rem;
-        margin-bottom: 0.5rem;
-        color: var(--accent-light);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        width: auto;
-        max-width: 100%;
-    }
-
-    .hero ul li:last-child {
-        margin-bottom: 0;
-    }
-
-    .hero p {
-        font-size: 1.4rem;
-        margin-bottom: 2rem;
-        opacity: 0.9;
-        animation: fadeInUp 1.2s ease-out;
-    }
-
-    .hero-cta {
-        display: inline-flex;
-        gap: 1.5rem;
-        margin-top: 2rem;
-        animation: fadeInUp 1.4s ease-out;
-    }
-
-    .btn-primary {
-        background: var(--secondary-violet);
-        color: var(--accent-light);
-        padding: 15px 30px;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1.1rem;
-        transition: all 0.3s ease-in-out;
-        border: none;
-        cursor: pointer;
-
-        /* New styles for centering */
-        display: block;
-        margin: 0 auto;
-        width: fit-content;
-    }
-
-    .btn-primary:hover {
-        background: var(--hover-violet);
-        color: var(--accent-light);
-    }
-
-    .btn-secondary {
-        background: transparent;
-        color: var(--accent-light);
-        padding: 15px 30px;
-        border: 2px solid var(--accent-light);
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1.1rem;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .btn-secondary:hover {
-        background: rgba(138, 43, 226, 0.1); /* Subtle background on hover */
-        color: var(--secondary-violet);
-        border-color: var(--secondary-violet);
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    /* Stats Section */
-    .stats {
-        background: var(--section-bg-dark); /* Changed to light section background */
-        padding: 60px 0;
-        margin-top: -40px;
-        position: relative;
-        z-index: 10;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-        text-align: center;
-    }
-
-    /* MODIFIED: .stat-item to match .benefit-item styling */
-    .stat-item {
-        padding: 2rem;
-        border-radius: 15px;
-        background: var(--section-bg-dark); /* Changed to light section background */
-        color: var(--dark-text); /* Use main dark text color */
-        box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* Softer shadow like benefit-item */
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* MODIFIED: .stat-item hover state */
-    .stat-item:hover {
-        transform: translateY(-8px) scale(1.02); /* Adjusted hover transform */
-        box-shadow: 0 15px 30px rgba(0,0,0,0.25); /* Adjusted hover shadow */
-    }
-
-     .stat-item::before { /* Shimmer effect for stats (kept for potential desired effect) */
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.05); /* Light shimmer */
-        transform: translateX(-100%);
-        transition: transform 0.5s ease-out;
-    }
-    .stat-item:hover::before {
-        transform: translateX(100%);
-    }
-
-    /* MODIFIED: .stat-number and .stat-item p for consistent text color */
-    .stat-number {
-        font-size: 2.8rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-        color: var(--secondary-violet); /* Keep violet for the number for contrast */
-    }
-    .stat-item p { /* Added style for paragraph within stat item */
-        font-size: 0.95rem;
-        color: var(--dark-text); /* Changed to main dark text color for consistency with benefit items */
-        margin-bottom: 0;
-        word-wrap: break-word;
-        line-height: 1.4;
-        padding: 0 5px;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Courses Section */
-    .courses {
-        padding: 80px 0;
-        background: var(--section-bg-dark);
-    }
-
-    .courses-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minmax for better fit */
-        gap: 2.5rem;
-        margin-top: 3rem;
-    }
-
-    .course-card {
-        background: var(--new-card-background); /* Using the new lighter background */
-        border-radius: 15px; /* Slightly less rounded */
-        padding: 2.5rem;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.3); /* Softer shadow */
-        transition: all 0.3s ease-in-out;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center; /* Center content horizontally */
-        text-align: center; /* Center text within the card */
-        border: 1px solid var(--new-card-border); /* Subtle border */
-    }
-
-    .course-card:hover {
-        transform: translateY(-8px) scale(1.01);
-        box-shadow: 0 15px 45px rgba(0,0,0,0.4);
-    }
-
-    /* Image container for the new cards */
-    .course-image-container {
-        width: 100%;
-        height: 180px; /* Fixed height for consistency */
-        margin-bottom: 1.5rem;
-        overflow: hidden;
-        border-radius: 8px; /* Slightly rounded corners for the image */
-        background-color: #F0F0F0; /* Fallback for image loading */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .course-image-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Ensures image covers the area, cropping if necessary */
-        display: block;
-    }
-
-
-    .course-title {
-        font-size: 1.6rem; /* Slightly smaller title */
-        margin-bottom: 0.8rem; /* Reduced margin */
-        color: var(--accent-light); /* Light accent color for titles */
-        font-weight: 600;
-    }
-
-    /* Added style for enrollment text */
-    .course-enrollment {
-        font-size: 0.9rem;
-        color: var(--subtle-text);
-        margin-top: -0.5rem; /* Adjust margin to bring closer to title */
-        margin-bottom: 1rem; /* Space before button */
-    }
-
-    .course-description {
-        color: var(--subtle-text);
-        margin-bottom: 1.5rem; /* Space before button */
-        flex-grow: 1; /* Allows description to take available space */
-        font-size: 0.95rem; /* Slightly smaller font */
-        line-height: 1.5;
-    }
-
-    /* New button style for course cards */
-    .course-card .explore-btn {
-        background: var(--secondary-violet);
-        color: var(--accent-light);
-        padding: 10px 25px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 0.95rem;
-        transition: all 0.3s ease-in-out;
-        border: none;
-        cursor: pointer;
-        display: inline-flex; /* Use inline-flex to allow icon beside text */
-        align-items: center;
-        gap: 8px; /* Space between text and arrow */
-    }
-
-    .course-card .explore-btn:hover {
-        background: var(--hover-violet);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
-    }
-    .course-card .explore-btn i {
-        font-size: 0.9em; /* Smaller icon */
-    }
-
-
-    /* Benefits Section */
-    .benefits {
-        padding: 80px 0;
-        background: var(--card-background);
-    }
-
-    .benefits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2.5rem;
-        margin-top: 3rem;
-    }
-
-    .benefit-item {
-        text-align: center;
-        padding: 2.5rem;
-        background: var(--section-bg-dark);
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    .benefit-item:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-    }
-
-    .benefit-icon {
-        font-size: 3.5rem;
-        color: var(--secondary-violet);
-        margin-bottom: 1rem;
-        transition: color 0.3s ease-in-out;
-    }
-
-    .benefit-item:hover .benefit-icon {
-        color: var(--hover-violet);
-    }
-
-    .benefit-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: var(--dark-text);
-        font-weight: 600;
-    }
-
-    /* Career Path Section */
-    .career-path {
-        padding: 80px 0;
-        background: var(--section-bg-dark);
-        text-align: center;
-    }
-
-    .career-path-image-container {
-        margin-bottom: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 20px;
-    }
-
-    .career-path-image {
-        max-width: 100%;
-        height: auto;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .timeline {
-        position: relative;
-        max-width: 900px;
-        margin: 50px auto 0;
-        padding: 20px 0;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        width: 4px;
-        background-color: var(--secondary-violet);
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        margin-left: -2px;
-    }
-
-    .timeline-item {
-        padding: 10px 0;
-        position: relative;
-        width: 50%;
-        margin-bottom: 40px;
-    }
-
-    .timeline-item:nth-child(odd) {
-        left: 0;
-        text-align: right;
-        padding-right: 40px;
-    }
-
-    .timeline-item:nth-child(even) {
-        left: 50%;
-        text-align: left;
-        padding-left: 40px;
-    }
-
-    .timeline-content {
-        background: var(--card-background);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-        position: relative;
-        border: 1px solid var(--light-border);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .timeline-content:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 10px 35px rgba(0,0,0,0.35);
-    }
-
-    .timeline-item::after {
-        content: '';
-        position: absolute;
-        width: 18px;
-        height: 18px;
-        background-color: var(--secondary-violet);
-        border: 3px solid var(--primary-dark-bg);
-        top: 50%;
-        transform: translateY(-50%);
-        border-radius: 50%;
-        z-index: 1;
-    }
-
-    .timeline-item:nth-child(odd)::after {
-        right: -9px; /* Adjust to sit on the line */
-    }
-
-    .timeline-item:nth-child(even)::after {
-        left: -9px; /* Adjust to sit on the line */
-    }
-
-    .timeline-content h3 {
-        font-size: 1.2rem;
-        color: var(--secondary-violet);
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-    }
-
-    .timeline-content h4 {
-        font-size: 1.6rem;
-        color: var(--accent-light);
-        margin-bottom: 1rem;
-        font-weight: 600;
-    }
-
-    .timeline-content p {
-        font-size: 1rem;
-        color: var(--subtle-text);
-    }
-
-    /* Testimonials */
-    .testimonials {
-        background: var(--primary-dark-bg);
-        color: var(--accent-light);
-        padding: 80px 0;
-        overflow: hidden;
-        position: relative;
-    }
-    .testimonials .section-title {
-        color: var(--accent-light);
-    }
-    .testimonials .section-subtitle {
-        color: var(--subtle-text);
-    }
-    .testimonials-slider-wrapper {
-        overflow: hidden;
-        margin: 30px auto;
-        max-width: 500px;
-        padding: 20px;
-        background: rgba(0,0,0,0.05); /* Semi-transparent dark for light theme */
-        border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        position: relative;
-        height: 250px;
-    }
-    .testimonials-slider {
-        display: flex;
-        width: 100%;
-        position: relative;
-        height: 100%;
-    }
-    .testimonial-card {
-        background: var(--card-background); /* Card background remains light */
-        padding: 1.5rem;
-        border-radius: 10px;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(0,0,0,0.1); /* Darker border for light theme */
-        width: 100%;
-        flex-shrink: 0;
-        text-align: center;
-        opacity: 0;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translate(100%, -50%);
-        transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-    }
-    .testimonial-card.active {
-        transform: translate(0, -50%);
-        opacity: 1;
-    }
-    .testimonial-card.inactive-left {
-        transform: translate(-100%, -50%);
-        opacity: 0;
-    }
-    .testimonial-text {
-        font-style: italic;
-        margin-bottom: 1rem;
-        font-size: 1rem;
-        color: var(--accent-light);
-        white-space: normal;
-    }
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.8rem;
-        margin-top: 1rem;
-    }
-    .author-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--secondary-violet);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: var(--accent-light); /* Dark text for avatar */
-        font-size: 0.9rem;
-    }
-    .author-info {
-        text-align: left;
-    }
-    .author-info h4 {
-        margin-bottom: 0.2rem;
-        font-size: 1rem;
-    }
-    .author-info p {
-        opacity: 0.8;
-        font-size: 0.85rem;
-    }
-
-    /* Contact Section */
-    .contact-features-list-wrapper {
-        max-width: 500px;
-        margin: -2rem auto 3rem auto;
-        /* Keep text-align: left here if you want the list block itself centered,
-           but items aligned left within it. If you want the items themselves
-           to have their content centered, the changes below are key. */
-        text-align: center; /* Set text-align to center the entire list content */
-        padding: 0 20px;
-    }
-
-    .contact-features-list {
-        list-style: none;
-        padding: 0;
-        /* To center the list items if they are block elements,
-           you might need to apply margin: 0 auto; to the li itself,
-           or if ul is display:flex, then justify-content:center */
-        display: flex; /* Make the ul a flex container */
-        flex-direction: column; /* Stack the list items vertically */
-        align-items: center; /* Center the list items horizontally within the ul */
-    }
-
-    .contact-features-list li {
-        padding: 0.6rem 0;
-        display: flex;
-        align-items: center; /* Vertically center the icon with the text */
-        gap: 12px;
-        color: var(--subtle-text);
-        max-width: 100%; /* Ensure li doesn't overflow */
-        justify-content: center; /* **Center the icon and text horizontally within the li** */
-    }
-
-    .contact-features-list i {
-        color: var(--success-green);
-        font-size: 1.1rem;
-        /* Removed fixed width, as justify-content will handle spacing */
-        /* width: 25px; */
-        text-align: center;
-        flex-shrink: 0;
-    }
-
-    .contact {
-        padding: 80px 0;
-        background: var(--section-bg-dark);
-    }
-    .contact-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        margin-top: 3rem;
-        justify-content: center;
-    }
-    .contact-form {
-        background: var(--card-background);
-        padding: 2.5rem;
-        border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        max-width: 500px;
-        margin: 0 auto;
-    }
-    .form-group {
-        margin-bottom: 1.8rem;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 0.6rem;
-        font-weight: 500;
-        color: var(--dark-text);
-    }
-    .form-group input, .form-group textarea, .form-group select {
-        width: 100%;
-        padding: 14px;
-        border: 2px solid var(--light-border);
-        border-radius: 8px;
-        font-size: 1.1rem;
-        background: var(--section-bg-dark); /* Match section background */
-        color: var(--dark-text);
-    }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-        outline: none;
-        border-color: var(--secondary-violet);
-        box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
-    }
-    .form-group textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-    .form-group select {
-        appearance: none;
-        -webkit-appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23555555'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Csvg%3E"); /* Adjusted fill color for light theme */
-        background-repeat: no-repeat;
-        background-position: right 15px center;
-        background-size: 18px;
-    }
-
-    /* Footer */
-    .footer {
-        background: var(--primary-dark-bg);
-        color: var(--accent-light);
-        padding: 60px 0 20px;
-        margin-top: 50px;
-    }
-    .footer-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 2rem;
-    }
-    .footer-section h3 {
-        margin-bottom: 1rem;
-        color: var(--secondary-violet);
-    }
-    .footer-section ul {
-        list-style: none;
-    }
-    .footer-section ul li {
-        padding: 0.25rem 0;
-    }
-    .footer-section ul li a {
-        color: var(--subtle-text);
-        text-decoration: none;
-        transition: color 0.3s;
-    }
-    .footer-section ul li a:hover {
-        color: var(--accent-light);
-    }
-    .social-links {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-    .social-links a {
-        color: var(--subtle-text);
-        font-size: 1.5rem;
-        transition: color 0.3s;
-    }
-    .social-links a:hover {
-        color: var(--secondary-violet);
-    }
-    .footer-bottom {
-        text-align: center;
-        padding-top: 20px;
-        border-top: 1px solid var(--footer-border);
-        color: var(--subtle-text);
-        font-size: 0.9rem;
-    }
-
-    /* Keyframe Animations */
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
         .nav-links {
             display: flex;
-            flex-direction: column;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--accent-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
             position: absolute;
-            top: 70px;
             left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--secondary-violet);
+            transition: width 0.3s ease-out;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-violet);
+        }
+
+        .nav-links a:hover::after {
             width: 100%;
-            background: var(--primary-dark-bg);
-            padding: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 999;
-            text-align: center;
-            gap: 1rem;
-
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-        }
-
-        .nav-links.active {
-            max-height: 500px;
-            opacity: 1;
-            padding: 1rem 0;
-        }
-
-        .hamburger-menu {
-            display: flex;
         }
 
         .cta-btn {
+            background: var(--secondary-violet);
+            color: var(--accent-light);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--hover-violet);
+        }
+
+        /* Hamburger Menu Icon (from pro.html) */
+        .hamburger-menu {
             display: none;
-        }
-
-        .hero h1 {
-            font-size: 2.8rem;
-        }
-
-        .hero ul li {
-            font-size: 1.5rem;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-        }
-
-        .hero-cta {
             flex-direction: column;
-            gap: 1rem;
+            justify-content: space-around;
+            align-items: center;
+            width: 30px;
+            height: 25px;
+            position: relative;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 5px;
         }
 
-        .btn-primary, .btn-secondary {
-            width: 80%;
-            margin: 0 auto;
+        .hamburger-menu .bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--hamburger-bar-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-menu.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Section Common Styling (from pro.html) */
+        section {
+            padding: 80px 0;
+            background: var(--section-bg-dark);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        section:first-of-type {
+            padding-top: 40px;
+        }
+        section:last-of-type {
+            margin-bottom: 0;
+            padding-bottom: 40px;
+        }
+        section:nth-of-type(odd) {
+            background: var(--section-bg-dark);
         }
 
         .section-title {
-            font-size: 2rem;
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+            font-weight: 700;
         }
 
         .section-subtitle {
-            font-size: 1rem;
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--subtle-text);
+            margin-bottom: 3rem;
         }
 
-        .courses-grid, .benefits-grid, .stats-grid {
-            grid-template-columns: 1fr;
+        /* Hero Section (from pro.html) */
+        .hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+            color: var(--accent-light);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
-        .stat-item, .course-card, .benefit-item {
-            margin: 0 20px;
-        }
-        .main-content-wrapper {
-            margin: 80px auto 30px auto;
-        }
-
-        /* Responsive adjustments for Career Path (updated) */
-    /* ... (rest of your existing CSS) ... */
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
-        /* ... (rest of your existing responsive CSS for nav-links, hero, etc.) ... */
-
-        /* Corrected Responsive adjustments for Career Path */
-        .timeline::before {
-            left: 20px;
-            margin-left: 0;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.2) 0%, transparent 70%), /* Slightly increased opacity for dark theme */
+                        radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.2) 0%, transparent 70%); /* Slightly increased opacity for dark theme */
+            z-index: 0;
+            animation: backgroundPulse 15s infinite alternate ease-in-out;
         }
 
-        .timeline-item {
+        @keyframes backgroundPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.95; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hero > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInDown 1s ease-out;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Darker text shadow */
+        }
+
+        .hero .hero-text-highlight {
+            color: var(--hero-text-highlight);
+        }
+
+        .hero ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 2rem;
+            text-align: center;
+        }
+
+        .hero ul li {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .hero ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1.4s ease-out;
+            flex-direction: column; /* Added for stacking video and button */
+            align-items: center; /* Center items within the flex container */
+            width: 100%; /* Allow it to take full width */
+            max-width: 800px; /* Adjusted max-width for the container for laptops */
+            margin-left: auto; /* Center the container */
+            margin-right: auto; /* Center the container */
+        }
+
+        .btn-primary {
+            background: var(--secondary-violet);
+            color: var(--accent-light);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--hover-violet);
+            color: var(--accent-light);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-light);
+            padding: 15px 30px;
+            border: 2px solid var(--accent-light);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(138, 43, 226, 0.2); /* Darker hover background */
+            color: var(--secondary-violet);
+            border-color: var(--secondary-violet);
+        }
+
+        /* Video Container Styling */
+        .video-container {
+            position: relative;
             width: 100%;
-            padding-left: 60px;
-            padding-right: 25px;
-            text-align: left;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            margin-top: 2rem; /* Spacing from the button */
+            max-width: 750px; /* Adjusted max-width for the video for laptops */
+            border-radius: 10px; /* Rounded corners for the video frame */
+            overflow: hidden; /* Ensures corners are rounded */
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5); /* Shadow for depth */
+            background-color: #000; /* Fallback background */
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
             left: 0;
-            margin-bottom: 30px;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
-        /* Ensure both odd and even items behave identically on mobile */
-        .timeline-item:nth-child(odd),
-        .timeline-item:nth-child(even) {
-            padding-left: 60px;
-            padding-right: 25px;
-            text-align: left;
+        /* Stats Section (from pro.html) */
+        .stats {
+            background: var(--section-bg-dark);
+            padding: 60px 0;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); /* Darker shadow */
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border-radius: 15px;
+            background: var(--card-background);
+            color: var(--dark-text);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); /* Darker shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--light-border);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px) scale(1.02); /* Adjusted hover transform */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); /* Adjusted hover shadow */
+        }
+
+         .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.05); /* Lighter overlay for dark theme */
+            transform: translateX(-100%);
+            transition: transform 0.5s ease-out;
+        }
+        .stat-item:hover::before {
+            transform: translateX(100%);
+        }
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-violet); /* Keep violet for the number for contrast */
+        }
+        .stat-item p {
+            font-size: 0.95rem;
+            color: var(--dark-text);
+            margin-bottom: 0;
+            word-wrap: break-word;
+            line-height: 1.4;
+            padding: 0 5px;
+            position: relative;
+            z-index: 1;
         }
 
-        .timeline-item::after {
-            /* This is the change to remove the dot */
-            display: none; /* Hides the round dot on mobile */
+        /* Courses Section (Adapted from pro.html's Projects Section) */
+        .courses-section {
+            padding: 80px 0;
+            background: var(--section-bg-dark);
         }
 
-        .timeline-content {
-            padding: 20px;
-        }
-        /* --- End of Corrected Responsive adjustments for Career Path --- */
-
-        /* ... (rest of your existing responsive CSS for 768px and custom message box) ... */
-    } /* <-- This closing brace was missing */
-
-    /* --- End of Corrected Responsive adjustments for Career Path --- */
-
-    /* ... (rest of your existing responsive CSS for 768px and custom message box) ... */
-
-    @media (max-width: 768px) {
-        .container {
-            padding: 0 15px;
-        }
-        .main-content-wrapper {
-            margin: 70px auto 20px auto;
-        }
-    }
-</style>
-</head>
-<body>
-    <header class="header">
-        <div class="container nav">
-            <a href="#" class="logo">
-                <span style="color: var(--accent-light);">data</span>
-                <i class="fas fa-infinity" style="color: var(--secondary-violet); font-size: 2rem;"></i>
-                <span style="color: var(--accent-light);">AXI Lab</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#courses">Courses</a></li>
-                <li><a href="#benefits">Benefits</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Enroll Now</a></li>
-            </ul>
-            <div class="hamburger-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </header>
-
-    <div class="main-content-wrapper">
-         <section class="hero" id="hero">
-            <div class="container">
-                 <h1>"Launch Your Tech Career:<br>Master Skills, Ace <span class="hero-text-highlight">Placements</span>, and Innovate!"</h1>
-                <p>DataAXI Lab transforms aspiring professionals into industry-ready experts with specialized programs and proven placement strategies.</p>
-            </div>
-        </section>
-       
-        <section class="courses" id="courses">
-            <div class="container">
-                <h2 class="section-title">Explore Our Flagship Programs</h2>
-                <p class="section-subtitle">Choose the path that aligns with your career aspirations.</p>
-                <div class="courses-grid">
-                    <div class="course-card">
-                        <div class="course-image-container">
-                            <img src="APTITUDE.jpg" alt="Aptitude & Foundational Python Course">
-                        </div>
-                        <h3 class="course-title">Enroll Now <br>Aptitude & Foundational Python Live + Pre-recorded</h3>
-                        <p class="course-enrollment">1800+ Enrolled Till Now</p> <a href="aptitude.html" class="explore-btn">
-                            Explore Syllabus <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-
-                    <div class="course-card">
-                        <div class="course-image-container">
-                            <img src="python.jpg" alt="Python Development with Live Projects Course">
-                        </div>
-                        <h3 class="course-title">Enroll Now <br> Live Python Project Workshop with Certification & Referral Opportunity</h3>
-                        <p class="course-enrollment">900+ Enrolled Till Now</p> <a href="pythonwork.html" class="explore-btn">
-                            Explore Syllabus <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-
-                    <div class="course-card">
-                        <div class="course-image-container">
-                            <img src="DA.jpg" alt="Data Analytics Masterclass Course">
-                        </div>
-                        <h3 class="course-title">Enroll Now <br> Data Analytics Masterclass Course with Certification & Referral Benefits</h3>
-                        <p class="course-enrollment">4500+ Enrolled Till Now</p> <a href="data.html" class="explore-btn">
-                            Explore Syllabus <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="benefits" id="benefits">
-            <div class="container">
-                <h2 class="section-title">Why Choose dataAXI Lab?</h2>
-                <p class="section-subtitle">We Equip You with the Skills That Truly Matter</p>
-                <div class="benefits-grid">
-                    <div class="benefit-item">
-                        <i class="fas fa-lightbulb benefit-icon"></i>
-                        <h3 class="benefit-title">Industry-Expert Instructors</h3>
-                        <p>Gain knowledge and insights from seasoned professionals with real-world experience.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-laptop-code benefit-icon"></i>
-                        <h3 class="benefit-title">Practical, Hands-On Learning</h3>
-                        <p>Work on live projects and case studies to build a portfolio that impresses recruiters.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-headset benefit-icon"></i>
-                        <h3 class="benefit-title">Personalized Mentorship</h3>
-                        <p>Get one-on-one guidance and quick doubt clearance to keep you on track.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-user-tie benefit-icon"></i>
-                        <h3 class="benefit-title">Placement Support</h3>
-                        <p>Dedicated placement assistance to launch your career.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="testimonials" id="testimonials">
-            <div class="container">
-                <h2 class="section-title">What Our Students Say</h2>
-                <p class="section-subtitle">Hear from those who transformed their careers with us.</p>
-
-                <div class="testimonials-slider-wrapper">
-                    <div class="testimonials-slider">
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"dataAXI Lab transformed my career. The practical approach and expert mentorship made all the difference. Highly recommended for anyone serious about data!"</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">RG</div>
-                                <div class="author-info">
-                                    <h4>Rutuja Gawande</h4>
-                                    <p>Asso, Data Analyst, Infocept</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"I gained confidence in data interpretation and visualization. Best investment for my professional growth."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">KG</div>
-                                <div class="author-info">
-                                    <h4>Kauntey G</h4>
-                                    <p>Junior Data Analyst, TCS</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"As a complete beginner, I found the Data Analytics Cohort 2.0 very accessible. The instructors broke down complex topics into easy-to-understand modules."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">PW</div>
-                                <div class="author-info">
-                                    <h4>Prathmesh Wazaekar</h4>
-                                    <p>BI Developer, E-commerce</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="contact" id="contact">
-            <div class="container">
-                <h2 class="section-title">Ready to Launch Your Tech Career?<br>Join a dataAXI Lab Program!</h2>
-                <p class="section-subtitle">Choose your specialization and get holistic preparation to excel in IT company placements. Our comprehensive programs bridge skill gaps and transform you into a job-ready professional.</p>
-                <div class="contact-grid">
-                    <div class="contact-form">
-                        <form id="enrollmentForm">
-                            <div class="form-group">
-                                <label for="name">Your Name</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Your Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone">
-                            </div>
-                            <div class="form-group">
-                                <label for="degreeName">Your Degree/Highest Qualification</label>
-                                <input type="text" id="degreeName" name="degreeName">
-                            </div>
-                            <div class="form-group">
-                                <label for="currentYear">Current Year of Study / Year of Graduation</label>
-                                <input type="text" id="currentYear" name="currentYear">
-                            </div>
-                            <div class="form-group">
-                                <label for="collegeName">College / University Name</label>
-                                <input type="text" id="collegeName" name="collegeName">
-                            </div>
-                            <div class="form-group">
-                                <label for="interestedCourse">Interested Course</label>
-                                <select id="interestedCourse" name="interestedCourse">
-                                    <option value="">Select a Course</option>
-                                    <option value="Aptitude & Foundational Python">Aptitude & Foundational Python</option>
-                                    <option value="Python Live Projects">Python Live Projects</option>
-                                    <option value="Data Analytics Masterclass">Data Analytics Masterclass</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn-primary">Enroll Now</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    <footer class="footer">
-        <div class="container footer-grid">
-            <div class="footer-section">
-                <h3>About dataAXI Lab</h3>
-                <p>Empowering the next generation of data professionals with cutting-edge skills and industry-relevant training.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#courses">Courses</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#contact">Enroll Now</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <p><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra, India</p>
-                <p><i class="fas fa-envelope"></i> info@dataaxilab.com</p>
-            </div>
-            <div class="footer-section">
-                <h3>Follow Us</h3>
-                <div class="social-links">
-                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://medium.com/@Aaditya.G/list/reading-list" aria-label="Medium"><i class="fab fa-medium"></i></a>
-                    <a href="https://www.linkedin.com/company/dataaxi-labs/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 dataAXI Lab | All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Hamburger menu functionality
-        const hamburgerMenu = document.querySelector('.hamburger-menu');
-        const navLinks = document.querySelector('.nav-links');
-
-        hamburgerMenu.addEventListener('click', () => {
-            hamburgerMenu.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        // Close nav links when a link is clicked (for mobile)
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 992) {
-                    hamburgerMenu.classList.remove('active');
-                    navLinks.classList.remove('active');
-                }
-            });
-        });
-
-        // Testimonial slider
-        const testimonialCards = document.querySelectorAll('.testimonial-card');
-        let currentTestimonialIndex = 0;
-
-        function showTestimonial(index) {
-            testimonialCards.forEach((card, i) => {
-                card.classList.remove('active', 'inactive-left');
-                if (i === index) {
-                    card.classList.add('active');
-                } else if (i < index) {
-                    card.classList.add('inactive-left'); // Animate out to the left
-                }
-            });
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
 
-        function nextTestimonial() {
-            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonialCards.length;
-            showTestimonial(currentTestimonialIndex);
+        .course-card {
+            background: var(--new-card-background);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid var(--new-card-border);
+            text-align: center; /* Center text within card */
         }
 
-        // Auto-advance testimonials
-        setInterval(nextTestimonial, 7000); // Change testimonial every 7 seconds
-
-        // Initial display of the first testimonial
-        showTestimonial(currentTestimonialIndex);
-
-        // --- Firebase Integration ---
-        // Your Firebase project configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDGeHOqxZTBWQ6FIC4CT7wp0W_J4eGHq74",
-            authDomain: "dataaxi-free-course-reg.firebaseapp.com",
-            databaseURL: "https://dataaxi-free-course-reg-default-rtdb.firebaseio.com",
-            projectId: "dataaxi-free-course-reg",
-            storageBucket: "dataaxi-free-course-reg.firebasestorage.app",
-            messagingSenderId: "861361002449",
-            appId: "1:861361002449:web:ccde099f5d98e891ae72f0",
-            measurementId: "G-NLE64SBQG4"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Get a reference to the Realtime Database
-        const db = firebase.database();
-
-        const enrollmentForm = document.getElementById('enrollmentForm');
-        const interestedCourseSelect = document.getElementById('interestedCourse');
-        const enrollButton = document.querySelector('.contact-form .btn-primary');
-
-        // Define course prices (example prices)
-        const coursePrices = {
-            "Aptitude & Foundational Python": 899,
-            "Python Live Projects": 1199,
-            "Data Analytics Masterclass": 1599,
-        };
-
-        // Function to update the enroll button text with price
-        function updateEnrollButtonText() {
-            const selectedCourse = interestedCourseSelect.value;
-            const price = coursePrices[selectedCourse];
-            if (selectedCourse && price) {
-                const formattedPrice = new Intl.NumberFormat('en-IN', {
-                    style: 'currency',
-                    currency: 'INR' // Assuming Indian Rupees, change if necessary
-                }).format(price);
-                enrollButton.textContent = `Enroll Now (${formattedPrice})`;
-            } else {
-                enrollButton.textContent = "Enroll Now";
-            }
+        .course-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Darker shadow */
         }
 
-        // Add event listener for course selection change
-        if (interestedCourseSelect) {
-            interestedCourseSelect.addEventListener('change', updateEnrollButtonText);
-            // Call initially to set correct text if a default option is selected
-            updateEnrollButtonText();
+        .course-card img {
+            max-width: 100%;
+            height: 180px; /* Fixed height for consistency */
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
-        if (enrollmentForm) {
-            enrollmentForm.addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent default form submission
-
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const degreeName = document.getElementById('degreeName').value;
-                const currentYear = document.getElementById('currentYear').value;
-                const collegeName = document.getElementById('collegeName').value;
-                const interestedCourse = document.getElementById('interestedCourse').value;
-
-                // Basic validation
-                if (!name || !email || !interestedCourse) {
-                    // Replaced alert with a custom message for better UX
-                    showMessageBox('Please fill in your Name, Email, and select an Interested Course.');
-                    return;
-                }
-
-                // Data to save to Firebase
-                const formData = {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    degreeName: degreeName,
-                    currentYear: currentYear,
-                    collegeName: collegeName,
-                    interestedCourse: interestedCourse,
-                    timestamp: new Date().toISOString() // For Realtime Database
-                };
-
-                // Save data to Firebase Realtime Database
-                db.ref('enrollments').push(formData)
-                    .then(() => {
-                        // Replaced alert with a custom message for better UX
-                        showMessageBox("Your inquiry has been submitted successfully! We will contact you shortly.");
-                        enrollmentForm.reset(); // Clear the form
-                        updateEnrollButtonText(); // Reset button text after submission
-                    })
-                    .catch((error) => {
-                        console.error("Error writing data: ", error);
-                        // Replaced alert with a custom message for better UX
-                        showMessageBox("There was an error submitting your inquiry. Please try again.");
-                    });
-            });
+        .course-card .course-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+            font-weight: 700;
         }
 
-        // Custom Message Box Function (replaces alert)
-        function showMessageBox(message) {
-            const messageBox = document.createElement('div');
-            messageBox.classList.add('custom-message-box');
-            messageBox.innerHTML = `
-                <div class="message-content">
-                    <p>${message}</p>
-                    <button class="message-close-btn">OK</button>
-                </div>
-            `;
-            document.body.appendChild(messageBox);
-
-            messageBox.querySelector('.message-close-btn').addEventListener('click', () => {
-                messageBox.remove();
-            });
-
-            // Optional: Auto-remove after a few seconds
-            setTimeout(() => {
-                if (messageBox.parentNode) {
-                    messageBox.remove();
-                }
-            }, 5000); // Remove after 5 seconds
+        .course-card .course-description {
+            color: var(--subtle-text);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
         }
-    </script>
-     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "dataAXI Lab",
-      "url": "https://www.dataaxi.in/", // *** IMPORTANT: CHANGE THIS TO YOUR REAL WEBSITE ADDRESS (e.g., https://dataaxilab.com) ***
-      "logo": "https://www.dataaxi.in/3.png", // *** IMPORTANT: CHANGE THIS TO THE FULL WEB ADDRESS OF YOUR LOGO (e.g., https://dataaxilab.com/3.png) ***
-      "sameAs": [
-        "https://www.youtube.com/@dataAXI_Lab", // If you have a YouTube channel, put its full link here
-        "https://medium.com/@Aaditya.G/list/reading-list",
-        "https://www.linkedin.com/company/dataaxi-labs/"
-      ]
-    }
-    </script>
 
-    <style>
-        .custom-message-box {
+        .course-card .explore-btn {
+            background: var(--secondary-violet);
+            color: var(--accent-light);
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: inline-flex; /* For icon alignment */
+            align-items: center;
+            gap: 8px;
+            margin-top: auto; /* Push button to bottom */
+            justify-content: center; /* Center button content */
+        }
+
+        .course-card .explore-btn:hover {
+            background: var(--hover-violet);
+        }
+
+        .course-card .explore-btn i {
+            font-size: 1.2em;
+        }
+
+
+        /* Benefits Section (from pro.html) */
+        .benefits {
+            padding: 80px 0;
+            background: var(--card-background);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 2.5rem;
+            background: var(--section-bg-dark);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); /* Darker shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid var(--light-border);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); /* Darker shadow */
+        }
+
+        .benefit-icon {
+            font-size: 3.5rem;
+            color: var(--secondary-violet);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .benefit-item:hover .benefit-icon {
+            color: var(--hover-violet);
+        }
+        .benefit-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+            font-weight: 600;
+        }
+        .benefit-item p {
+            color: var(--subtle-text);
+            font-size: 0.95rem;
+        }
+
+
+        /* Roadmap Section (from pro.html) */
+        .roadmap {
+            padding: 80px 0;
+            background: var(--primary-dark-bg);
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minwidth for more content */
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .roadmap-step {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
+            text-align: left; /* Aligned text to left for detailed content */
+            transition: all 0.3s ease-in-out;
+            border: 1px solid var(--new-card-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to top */
+        }
+
+        .roadmap-step:hover {
+            transform: translateY(-8px) scale(1.01); /* Reduced scale for more text */
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Darker shadow */
+        }
+        .roadmap-step h3 {
+            font-size: 1.6rem;
+            color: var(--secondary-violet);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        .roadmap-step p {
+            color: var(--subtle-text);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem; /* Spacing for multiple paragraphs */
+        }
+        .roadmap-step strong {
+            color: var(--dark-text); /* Highlight key terms, now light */
+        }
+        .roadmap-step .level-badge {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            display: inline-block;
+            min-width: 100px; /* Ensure badge size consistency */
+            text-align: center;
+        }
+        .level-badge.level-1 { background-color: #4CAF50; color: white; } /* Green */
+        .level-badge.level-2 { background-color: #FFC107; color: #333; } /* Yellow */
+        .level-badge.level-3 { background-color: #DC3545; color: white; } /* Red */
+
+
+        /* Career Path Section (from pro.html) */
+        .career-path {
+            padding: 80px 0;
+            background: var(--section-bg-dark);
+            text-align: center;
+        }
+
+        .career-path-image-container {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* Testimonials Section (from pro.html - grid version) */
+        .testimonials {
+            padding: 80px 0;
+            background: var(--primary-dark-bg);
+            text-align: center;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
+            text-align: left;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+            border: 1px solid var(--new-card-border);
+            display: flex; /* For consistent layout */
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Darker shadow */
+        }
+
+        .testimonial-card .stars {
+            color: gold;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-card .testimonial-text {
+            font-size: 1.1rem;
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .testimonial-card .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+
+        .testimonial-card .testimonial-author img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .testimonial-card .author-info strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--secondary-violet);
+        }
+
+        .testimonial-card .author-info span {
+            font-size: 0.9rem;
+            color: var(--subtle-text);
+        }
+
+        /* FAQ Section (from pro.html) */
+        .faq {
+            padding: 80px 0;
+            background: var(--section-bg-dark);
+        }
+
+        .faq-item {
+            background: var(--card-background);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Darker shadow */
+            border: 1px solid var(--light-border);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            background: var(--card-background);
+            color: var(--accent-light);
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background-color: var(--section-bg-dark);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            color: var(--subtle-text);
+            background: var(--section-bg-dark);
+        }
+
+        .faq-answer.active {
+            max-height: 200px; /* Adjust as needed */
+            padding-bottom: 20px;
+        }
+
+        /* Payment Section Specific Styles (from pro.html) */
+        .payment-section {
+            padding: 80px 0;
+            background: var(--section-bg-dark); /* Ensure it uses the section background */
+        }
+        .payment-options {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .payment-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
+            text-align: center;
+            width: 100%;
+            max-width: 380px; /* Limit card width */
+            border: 1px solid var(--new-card-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 350px; /* Ensure consistent height */
+        }
+
+        .payment-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+            font-weight: 700;
+        }
+
+        .payment-card .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        .payment-card ul li {
+            font-size: 1rem;
+            color: var(--dark-text);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-card ul li i {
+            color: var(--success-green);
+        }
+        .payment-card ul li .fa-times-circle {
+            color: #dc3545; /* Red for unavailable features */
+        }
+
+        /* Contact Section (Preserved from index.html, styled for dark theme) */
+        .contact {
+            padding: 80px 0;
+            background: var(--section-bg-dark);
+        }
+        .contact-features-list-wrapper {
+            max-width: 500px;
+            margin: -2rem auto 3rem auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .contact-features-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-features-list li {
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--subtle-text);
+            max-width: 100%;
+            justify-content: center;
+        }
+
+        .contact-features-list i {
+            color: var(--success-green);
+            font-size: 1.1rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+            justify-content: center;
+        }
+        .contact-form {
+            background: var(--card-background);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); /* Darker shadow for dark theme */
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid var(--new-card-border); /* Add border for consistency */
+        }
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: var(--dark-text); /* Use light text color for labels */
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--light-border); /* Use darker border for inputs */
+            border-radius: 8px;
+            font-size: 1.1rem;
+            background: var(--section-bg-dark); /* Match section background */
+            color: var(--dark-text); /* Use light text color for input text */
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-violet);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.4); /* Darker shadow for focus */
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23AAAAAA'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Csvg%3E"); /* Adjusted fill color for dark theme */
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 18px;
+        }
+
+
+        /* Footer (Combined from index.html content and pro.html styling) */
+        .footer {
+            background: var(--primary-dark-bg);
+            color: var(--accent-light);
+            padding: 60px 0 20px;
+            margin-top: 50px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-violet);
+        }
+        .footer-section p, .footer-section ul {
+            font-size: 0.95rem;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li {
+            padding: 0.25rem 0;
+        }
+        .footer-section ul li a {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-section ul li a:hover {
+            color: var(--dark-text);
+        }
+        .footer-section p i {
+            margin-right: 8px;
+            color: var(--secondary-violet);
+        }
+        .footer-section .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .footer-section .social-links a {
+            color: var(--subtle-text);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        .footer-section .social-links a:hover {
+            color: var(--secondary-violet);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--footer-border);
+            color: var(--subtle-text);
+            font-size: 0.9rem;
+        }
+
+
+        /* Overlay message styles (from pro.html) */
+        .overlay-message {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.7); /* Light background for light theme */
+            background: rgba(0, 0, 0, 0.75); /* Dark background for dark theme */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1509,10 +1006,10 @@
 
         .message-content {
             background: var(--card-background);
-            color: var(--accent-light);
+            color: var(--dark-text);
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* Darker shadow */
             text-align: center;
             max-width: 400px;
             width: 90%;
@@ -1532,16 +1029,838 @@
             padding: 10px 25px;
             border: none;
             border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+            transition: background 0.3s ease;
         }
 
         .message-close-btn:hover {
             background: var(--hover-violet);
-            transform: translateY(-2px);
+        }
+
+        /* Keyframe Animations (from pro.html) */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* New Animations for Scroll Effect */
+        @keyframes revealUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated-element {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .animated-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none; /* Hide desktop nav links */
+            }
+            .hamburger-menu {
+                display: flex; /* Show hamburger */
+            }
+            .mobile-nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 10, 10, 0.95); /* Even darker mobile overlay background */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+                transform: translateX(100%); /* Start off-screen */
+                transition: transform 0.4s ease-in-out;
+            }
+            .mobile-nav-overlay.active {
+                transform: translateX(0); /* Slide in */
+            }
+            .mobile-nav-links {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+            .mobile-nav-links a {
+                color: var(--dark-text); /* Light text for mobile links */
+                text-decoration: none;
+                font-size: 1.8rem;
+                font-weight: 600;
+                transition: color 0.3s;
+            }
+            .mobile-nav-links a:hover {
+                color: var(--secondary-violet);
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+            .stats-grid, .courses-grid, .benefits-grid, .roadmap-grid, .testimonial-grid {
+                grid-template-columns: 1fr; /* Stack columns on small screens */
+            }
+            .payment-options {
+                flex-direction: column; /* Stack payment cards */
+                align-items: center;
+            }
+            .payment-card {
+                max-width: 90%; /* Adjust width for mobile */
+            }
+            .contact-grid {
+                grid-template-columns: 1fr; /* Stack contact form on mobile */
+            }
+            .video-container {
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 90%; /* Adjusted for smaller screens (tablets) - "ok" */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero ul li {
+                font-size: 1.5rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .hero-cta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .btn-primary, .btn-secondary {
+                width: 80%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            .main-content-wrapper {
+                margin: 70px auto 20px auto;
+            }
+            .video-container {
+                max-width: 95%; /* Adjusted for very small screens/mobiles - "ok" */
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        /* Custom CSS to hide the mobile nav overlay if it appears below the footer on desktop */
+        .footer-bottom + .mobile-nav-overlay { /* Targets the mobile overlay if it follows the footer-bottom */
+            display: none !important;
+        }
+
+        @media (min-width: 993px) { /* Explicitly hide mobile overlay on desktop */
+            .mobile-nav-overlay {
+                display: none !important;
+            }
         }
     </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <a href="#" class="logo" style="font-weight: bold; font-size: 1.5rem;">
+    <span style="color: var(--accent-light);">data</span>
+    <i class="fas fa-infinity" style="color: var(--secondary-violet); font-size: 2rem; vertical-align: middle;"></i>
+    <span style="color: var(--accent-light);">AXI</span>
+</a>
+
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#courses">Domains</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#contact">Enroll Now</a></li>
+            </ul>
+            <div class="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content-wrapper">
+        <section id="hero" class="hero">
+            <div class="container">
+                <h1>Go Beyond Theory<br><span class="hero-text-highlight">Build<br>Something<br>Real</span></h1>
+                <ul>
+                    <li id="typewriter-text"></li>
+                </ul>
+                <p>Select your domain, apply your skills through hands-on tasks<br>and build a certified project to strengthen your resume.</p>
+                <div class="hero-cta">
+                     <div class="video-container">
+                        <iframe
+                            src="dax.mp4"
+                            title="dataAXI Lab Introduction"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <br>
+                    <a href="#contact" class="btn-primary">Start Building</a>
+                </div>
+            </div>
+            
+        </section>
+        <section id="courses" class="courses-section animated-element">
+            <div class="container">
+                <h2 class="section-title">Choose a Domain-<span class="hero-text-highlight">Build with Purpose.</span></h2>
+                <p class="section-subtitle">Gain practical experience and create projects that strengthen your resume.</p>
+                <div class="courses-grid">
+                    <div class="course-card animated-element">
+                        <img src="WD.png" alt="Web Development Full Stack">
+                        <h3 class="course-title"><i class="fas fa-code"></i> Web Development Full Stack</h3>
+                        <p class="course-description">Master both front-end and back-end to build dynamic, data-driven web applications.</p>
+                        <a href="#" class="explore-btn">Start Web Dev <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card animated-element">
+                        <img src="AD.png" alt="App Development">
+                        <h3 class="course-title"><i class="fas fa-mobile-alt"></i> App Development</h3>
+                        <p class="course-description">Learn to create robust mobile applications for various platforms (Android/iOS).</p>
+                        <a href="#" class="explore-btn">Build Mobile Apps<i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card animated-element">
+                        <img src="DA.jpg" alt="Data Analytics">
+                        <h3 class="course-title"><i class="fas fa-chart-bar"></i> Data Analytics</h3>
+                        <p class="course-description">Uncover insights from data, build dashboards, and make data-driven decisions.</p>
+                        <a href="#" class="explore-btn">Analyze Data<i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card animated-element">
+                        <img src="DS.png" alt="Data Science">
+                        <h3 class="course-title"><i class="fas fa-flask"></i> Data Science</h3>
+                        <p class="course-description">Dive into machine learning, predictive modeling, and AI to solve complex problems.</p>
+                        <a href="#" class="explore-btn">Explore Data Science<i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card animated-element">
+                        <img src="CC.png" alt="Cloud Computing">
+                        <h3 class="course-title"><i class="fas fa-cloud"></i> Cloud Computing</h3>
+                        <p class="course-description">Master cloud infrastructure, services, and deployment on platforms like AWS, Azure, GCP.</p>
+                        <a href="#" class="explore-btn">Deploy to Cloud<i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="course-card animated-element">
+                        <img src="UIUX.png" alt="UI/UX Design">
+                        <h3 class="course-title"><i class="fas fa-paint-brush"></i> UI/UX Design</h3>
+                        <p class="course-description">Craft intuitive and engaging user interfaces and experiences for digital products.</p>
+                        <a href="#" class="explore-btn">Design Interfaces<i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+         <section id="roadmap" class="roadmap animated-element">
+            <div class="container">
+                <h2 class="section-title">Project-Based Learning <span class="hero-text-highlight">Roadmap</span></h2>
+                <p class="section-subtitle">A clear path from learning to career excellence through hands-on projects.</p>
+                <div class="roadmap-grid">
+                    <div class="roadmap-step animated-element">
+                        <span class="level-badge level-1">Level 1</span>
+                        <h3>Foundational Project</h3>
+                        <p><strong>Goal / Focus:</strong> Understand basics, tools, and setup</p>
+                        <p><strong>What Students Do:</strong> Learn domain tools, follow a guided mini project with explanations</p>
+                        <p><strong>Outcome / What They Gain:</strong> Setup confidence, basic output, tool familiarity</p>
+                    </div>
+
+                    <div class="roadmap-step animated-element">
+                        <span class="level-badge level-2">Level 2</span>
+                        <h3>Intermediate Project</h3>
+                        <p><strong>Goal / Focus:</strong> Apply core concepts into a semi-real build</p>
+                        <p><strong>What Students Do:</strong> Use logic, APIs, visualizations, UI/UX, etc. to build a more functional project</p>
+                        <p><strong>Outcome / What They Gain:</strong> Independent building skills, deeper problem solving</p>
+                    </div>
+
+                    <div class="roadmap-step animated-element">
+                        <span class="level-badge level-3">Level 3</span>
+                        <h3>Capstone Project</h3>
+                        <p><strong>Goal / Focus:</strong> Use all skills to solve a real-world problem</p>
+                        <p><strong>What Students Do:</strong> Plan, build, and present a full-fledged solution like a real industry task</p>
+                        <p><strong>Outcome / What They Gain:</strong> Portfolio-ready project, end-to-end understanding</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+      <section id="benefits" class="benefits animated-element">
+    <div class="container">
+        <h2 class="section-title">Why Choose <span class="hero-text-highlight">dataAXI Lab?</span></h2>
+        <p class="section-subtitle">Experience a project-based learning platform crafted for real-world success.</p>
+        <div class="benefits-grid">
+            <div class="benefit-item animated-element">
+                <i class="fas fa-chalkboard-teacher benefit-icon"></i>
+                <h3>Domain-Specific Modules</h3>
+                <p>Learn through step-by-step modules tailored for Web Dev, Data Analytics, UI/UX, Cloud & more.</p>
+            </div>
+            <div class="benefit-item animated-element">
+                <i class="fas fa-laptop-code benefit-icon"></i>
+                <h3>Task-Based Learning</h3>
+                <p>Complete mini-tasks and challenges that turn your knowledge into practical experience.</p>
+            </div>
+            <div class="benefit-item animated-element">
+                <i class="fas fa-layer-group benefit-icon"></i>
+                <h3>Capstone Projects</h3>
+                <p>Build a complete project that showcases your skills — perfect for resumes and interviews.</p>
+            </div>
+            <div class="benefit-item animated-element">
+                <i class="fas fa-file-alt benefit-icon"></i>
+                <h3>Project Documentation</h3>
+                <p>Get downloadable proof of work with every completed capstone — ready for LinkedIn or job apps.</p>
+            </div>
+            <div class="benefit-item animated-element">
+                <i class="fas fa-user-friends benefit-icon"></i>
+                <h3>Peer & Community Support</h3>
+                <p>Access a lifetime student community for discussions, help, and idea sharing.</p>
+            </div>
+            <div class="benefit-item animated-element">
+                <i class="fas fa-bolt benefit-icon"></i>
+                <h3>No Fluff, Just Action</h3>
+                <p>Skip the theory overload — start doing and building from day one with real-world context.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+       
+        <section id="testimonials" class="testimonials animated-element">
+            <div class="container">
+                <h2 class="section-title">What Our <span class="hero-text-highlight">Students Say</span></h2>
+                <p class="section-subtitle">Real stories. Real projects. Real outcomes.</p> <div class="testimonial-grid">
+                    <div class="testimonial-card animated-element">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"dataAXI Lab provided the best learning experience. The instructors are knowledgeable, and the hands-on projects were invaluable for my career."</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/69.jpg" alt="Student Rahul Sharma">
+                            <div class="author-info">
+                                <strong>Vijay Deshmukh</strong>
+                                <span>Data Scientist at Infosys</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card animated-element">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The job guarantee program is real! I got placed within weeks of completing my full stack development course. Highly recommend!"</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/7.jpg" alt="Student Priya Singh">
+                            <div class="author-info">
+                                <strong>Amir Shaikh</strong>
+                                <span>Software Engineer at ACL Digitals</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card animated-element">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"The mentorship and community support at dataAXI Lab made all the difference. I felt supported every step of the way."</p>
+                        <div class="testimonial-author">
+                            <img src="https://xsgames.co/randomusers/assets/avatars/male/74.jpg" alt="Student Amit Patel">
+                            <div class="author-info">
+                                <strong>Amit Patel</strong>
+                                <span>Cloud Engineer at Confluent</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card animated-element">
+    <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+    </div>
+    <p class="testimonial-text">"I went from just learning design theory to creating full prototypes and case studies. The project flow is exactly what I needed."</p>
+    <div class="testimonial-author">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSafvUom2uGjChUNCbH9IZmTsrvzWY2UCv2xVUCuSpgeEkf-gFsOQkeyYQ&s" alt="Student Anjali Nair">
+        <div class="author-info">
+            <strong>Anjali Nair</strong>
+            <span>UI/UX Designer at CreateX</span>
+        </div>
+    </div>
+</div>
+<div class="testimonial-card animated-element">
+    <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+    </div>
+    <p class="testimonial-text">"dataAXI Lab gave me a structure to follow and projects to build. I finally understood how to apply what I was learning."</p>
+    <div class="testimonial-author">
+        <img src="https://xsgames.co/randomusers/assets/avatars/male/73.jpg" alt="Student Rohan Mehta">
+        <div class="author-info">
+            <strong>Rohan Mehta</strong>
+            <span>Data Analyst at QuantEdge</span>
+        </div>
+    </div>
+</div>
+<div class="testimonial-card animated-element">
+    <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+    </div>
+    <p class="testimonial-text">"The hands-on approach helped me finally build projects I was proud to put on my resume. This platform turned my skills into results."</p>
+    <div class="testimonial-author">
+        <img src="data:image/jpeg;base64,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" alt="Student Priya Desai">
+        <div class="author-info">
+            <strong>Priya Desai</strong>
+            <span>Frontend Developer at TechNest</span>
+        </div>
+    </div>
+</div>
+
+                </div>
+            </div>
+        </section>
+
+       
+
+        <section id="payment" class="payment-section animated-element">
+            <div class="container">
+                <h2 class="section-title">Your Enrollment Includes</span></h2>
+                <p class="section-subtitle">Unlock your first project for just ₹299 — lifetime access with a certificate to boost your resume.</p> <div class="payment-options">
+                    <div class="payment-card animated-element">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Domain-specific guided project modules</li>
+<li><i class="fas fa-check-circle"></i> Step-by-step task-based learning flow</li>
+<li><i class="fas fa-check-circle"></i> Capstone challenge with final project submission</li>
+<li><i class="fas fa-check-circle"></i> Resume-ready project documentation</li>
+<li><i class="fas fa-check-circle"></i> Lifetime community access & peer support</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title">Turn Your Skills Into Real Projects</h2>
+                <p class="section-subtitle">Choose Your Domain and Start Building Real Projects</p>
+                <div class="contact-grid">
+                    <div class="contact-form animated-element">
+                        <form id="enrollmentForm">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="interestedCourse">Interested Domain</label>
+                                <select id="interestedCourse" name="interestedCourse">
+                                    <option value="">Select a Domain</option>
+                                    <option value="Web Development Full Stack">Web Development Full Stack</option>
+                                     <option value="App Development">App Development</option>
+                                    <option value="Data Analytics">Data Analytics</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Cloud Computing">Cloud Computing</option>
+                                    <option value="UI/UX Design">UI/UX Design</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary">Unlock Project</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+         <section id="faq" class="faq animated-element">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked <span class="hero-text-highlight">Questions</span></h2>
+        <p class="section-subtitle">Got doubts? Here’s everything you need to know before starting your journey.</p>
+        <div class="faq-container">
+
+            <div class="faq-item animated-element">
+                <div class="faq-question">
+                    Who is this platform designed for? <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>dataAXI Lab is for students, freshers, and working professionals who want to build real-world projects and boost their resumes with practical, job-ready skills. No prior experience? No problem — our task-based modules will guide you step by step.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animated-element">
+                <div class="faq-question">
+                    What do I get after completing the final project? <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Once you complete the capstone project, you'll receive a verified certificate, GitHub-ready project files, and the confidence to showcase your work in interviews and on LinkedIn.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animated-element">
+                <div class="faq-question">
+                    Is there any placement or interview support? <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! We provide project-based interview prep notes, mock interviews, and mentor support. If you perform well, we also forward your resume to hiring partners in our network.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animated-element">
+                <div class="faq-question">
+                    What is the learning format? <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We offer 100% self-paced, online task-based learning. You can start anytime, build at your own speed, and submit your project when ready. Mentor support is available throughout.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animated-element">
+                <div class="faq-question">
+                    How much does it cost to unlock a domain? <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Each domain can be unlocked with a one-time payment starting at just ₹299. This gives you lifetime access to all 3 levels of tasks — Foundation, Intermediate, and Capstone — along with certification.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-section">
+                <h3>About dataAXI Lab</h3>
+                <p>Empowering students to build real projects, gain practical experience, and launch career-ready portfolios.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#courses">Domains</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#contact">Unlock Project</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra, India</p>
+                <p><i class="fas fa-envelope"></i> dataaxilab@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.youtube.com/@dataAXI_Lab" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://medium.com/@Aaditya.G/list/reading-list" aria-label="Medium"><i class="fab fa-medium"></i></a>
+                    <a href="https://www.linkedin.com/company/dataaxi-labs/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 dataAXI Lab | All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-links">
+            <a href="#hero">Home</a>
+            <a href="#courses">Domain</a>
+            <a href="#benefits">Benefits</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#contact">Enroll Now</a>
+        </div>
+    </div>
+
+    <div id="successMessage" class="overlay-message" style="display:none;">
+        <div class="message-content">
+            <p id="successText"></p>
+            <button class="message-close-btn" onclick="document.getElementById('successMessage').style.display='none';">Close</button>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="overlay-message" style="display:none;">
+        <div class="message-content">
+            <p id="errorText"></p>
+            <button class="message-close-btn" onclick="document.getElementById('errorMessage').style.display='none';">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hamburger menu functionality (from pro.html)
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            const mobileNavLinks = document.querySelector('.mobile-nav-links');
+
+            if (hamburgerMenu && mobileNavOverlay && mobileNavLinks) {
+                hamburgerMenu.addEventListener('click', () => {
+                    hamburgerMenu.classList.toggle('active');
+                    mobileNavOverlay.classList.toggle('active');
+                    if (mobileNavOverlay.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden'; // Prevent scrolling
+                    } else {
+                        document.body.style.overflow = ''; // Allow scrolling
+                    }
+                });
+
+                mobileNavLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        // Close mobile menu on link click
+                        hamburgerMenu.classList.remove('active');
+                        mobileNavOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+
+            // FAQ accordion functionality (from pro.html)
+            document.querySelectorAll('.faq-question').forEach(item => {
+                item.addEventListener('click', event => {
+                    const faqItem = item.closest('.faq-item');
+                    const answer = faqItem.querySelector('.faq-answer');
+                    const icon = item.querySelector('i');
+
+                    item.classList.toggle('active');
+                    answer.classList.toggle('active');
+                    icon.classList.toggle('active');
+
+                    if (answer.classList.contains('active')) {
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                    } else {
+                        answer.style.maxHeight = "0";
+                    }
+                });
+            });
+
+            // Typewriter effect (from pro.html)
+            const textToType = ["Break the Tutorial Loop.", "Start Building for Real."];
+            let typeIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            const typewriterElement = document.getElementById('typewriter-text');
+
+            function typeWriter() {
+                const currentText = textToType[typeIndex];
+                if (isDeleting) {
+                    typewriterElement.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typewriterElement.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                if (!isDeleting && charIndex === currentText.length) {
+                    setTimeout(() => isDeleting = true, 1500);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    typeIndex = (typeIndex + 1) % textToType.length;
+                }
+
+                const typingSpeed = isDeleting ? 50 : 150;
+                setTimeout(typeWriter, typingSpeed);
+            }
+
+            if (typewriterElement) {
+                typeWriter();
+            }
+
+            // New: Intersection Observer for scroll animations
+            const animatedElements = document.querySelectorAll('.animated-element');
+
+            const observerOptions = {
+                root: null, /* viewport */
+                rootMargin: '0px',
+                threshold: 0.1 /* 10% of item visible */
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Optional: Stop observing once animated
+                    }
+                });
+            }, observerOptions);
+
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+
+
+            // --- Firebase Integration ---
+            const firebaseConfig = {
+                apiKey: "AIzaSyDGeHOqxZTBWQ6FIC4CT7wp0W_J4eGHq74",
+                authDomain: "dataaxi-free-course-reg.firebaseapp.com",
+                databaseURL: "https://dataaxi-free-course-reg-default-rtdb.firebaseio.com",
+                projectId: "dataaxi-free-course-reg",
+                storageBucket: "dataaxi-free-course-reg.firebasestorage.app",
+                messagingSenderId: "861361002449",
+                appId: "1:861361002449:web:ccde099f5d98e891ae72f0",
+                measurementId: "G-NLE64SBQG4"
+            };
+
+            if (typeof firebase !== 'undefined' && (typeof firebase.apps === 'undefined' || firebase.apps.length === 0)) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            const database = firebase.database();
+
+            const enrollmentForm = document.getElementById('enrollmentForm');
+            const interestedCourseSelect = document.getElementById('interestedCourse');
+            const enrollButton = document.querySelector('.contact-form .btn-primary');
+
+            const coursePrices = {
+                "Web Development Full Stack": 299,
+                "App Development": 299,
+                "Data Analytics": 299,
+                "Data Science": 299,
+                "Cloud Computing": 299,
+                "UI/UX Design": 299,
+            };
+
+            function updateEnrollButtonText() {
+                const selectedCourse = interestedCourseSelect.value;
+                const price = coursePrices[selectedCourse];
+                if (selectedCourse && price) {
+                    const formattedPrice = new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR'
+                    }).format(price);
+                    enrollButton.textContent = `Unlock Project (${formattedPrice})`;
+                } else {
+                    enrollButton.textContent = "Unlock Project";
+                }
+            }
+
+            if (interestedCourseSelect) {
+                interestedCourseSelect.addEventListener('change', updateEnrollButtonText);
+                updateEnrollButtonText();
+            }
+
+            if (enrollmentForm) {
+                enrollmentForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const phone = document.getElementById('phone').value;
+                    const interestedCourse = document.getElementById('interestedCourse').value;
+                    const courseAmount = coursePrices[interestedCourse];
+
+                    // Basic validation
+                    if (!name || !email || !interestedCourse || !courseAmount) {
+                        showOverlayMessage('errorMessage', 'Please fill in your Name, Email, and select a Course to proceed with payment.');
+                        return;
+                    }
+
+                    // Prepare data for Firebase, but only save AFTER successful payment
+                    const formData = {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        interestedCourse: interestedCourse,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    // Razorpay Options
+                    const options = {
+                        "key": "rzp_live_QhsHTzRSUBITkk", // Replace with your actual Razorpay Key ID
+                        "amount": courseAmount * 100, // amount in smallest currency unit (paise)
+                        "currency": "INR",
+                        "name": "dataAXI Lab",
+                        "description": `Enrollment for ${interestedCourse}`,
+                        "image": "3.png", // Your logo
+                        "handler": function (response){
+                            // Payment successful - now save data to Firebase
+                            formData.razorpay_payment_id = response.razorpay_payment_id;
+                            database.ref('enrollments').push(formData)
+                                .then(() => {
+                                    showOverlayMessage('successMessage', 'Payment Successful! Your Payment ID: ' + response.razorpay_payment_id + '. Your enrollment details have been saved.');
+                                    enrollmentForm.reset(); // Clear the form
+                                    updateEnrollButtonText(); // Reset button text after submission
+                                })
+                                .catch((error) => {
+                                    console.error("Error writing data to Firebase after payment: ", error);
+                                    showOverlayMessage('errorMessage', "Payment was successful, but there was an error saving your enrollment details. Please contact support with your Payment ID: " + response.razorpay_payment_id);
+                                });
+                        },
+                        "prefill": {
+                            "name": name,
+                            "email": email,
+                            "contact": phone
+                        },
+                        "notes": {
+                            "address": "dataAXI Lab Office",
+                            "course": interestedCourse
+                        },
+                        "theme": {
+                            "color": "#8A2BE2" // Violet color for the theme
+                        }
+                    };
+
+                    const rzp1 = new Razorpay(options);
+                    rzp1.on('razorpay.payment.failed', function (response){
+                        showOverlayMessage('errorMessage', `Payment Failed: ${response.error.code} - ${response.error.description}`);
+                        console.error("Payment Failed: ", response.error);
+                    });
+                    rzp1.open();
+                });
+            }
+
+            // Function to show custom overlay messages (from pro.html, adapted)
+            function showOverlayMessage(overlayId, message) {
+                const overlay = document.getElementById(overlayId);
+                const textElement = overlay.querySelector('p');
+                textElement.textContent = message;
+                overlay.style.display = 'flex';
+            }
+        });
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "dataAXI Lab",
+      "url": "https://www.dataaxi.in/",
+      "logo": "https://www.dataaxi.in/3.png",
+      "sameAs": [
+        "https://www.youtube.com/@dataAXI_Lab",
+        "https://medium.com/@Aaditya.G/list/reading-list",
+        "https://www.linkedin.com/company/dataaxi-labs/"
+        ]
+    }
+    </script>
 </body>
 </html>
