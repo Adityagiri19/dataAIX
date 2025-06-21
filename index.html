@@ -3,1864 +3,603 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dataAXI Lab - Master Your Tech Career</title>
-    <link rel="icon" href="3.png" type="image/png" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Unlock Your Potential | Excel Academy - Wardha's Best Coaching</title>
+    <meta name="description" content="Excel Academy in Wardha offers expert coaching for NEET, JEE, Boards, and Spoken English. Book a free demo class today and boost your scores!">
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <link rel="icon" href="https://placehold.co/32x32/1A2C42/ffffff/png?text=EA" type="image/png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Merriweather', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#1A2C42', // Dark Cerulean - Deep, sophisticated navy
+                            light: '#2C4A6F',   // A slightly lighter shade for accents/hover
+                            dark: '#0F1E2E',    // Even darker for backgrounds or strong contrast
+                        },
+                        accent: {
+                            DEFAULT: '#B8860B', // Dark Goldenrod - Elegant gold/bronze
+                            light: '#D4AF37',   // Lighter for hover/active states
+                            dark: '#8B6A09',    // Deeper for subtle contrast
+                        },
+                        neutral: {
+                            dark: '#34495E',    // Dark Slate Gray - For main text
+                            medium: '#7F8C8D',  // Asbestos - For secondary text/subtle hints
+                            light: '#ECF0F1',   // Clouds - Light background for sections
+                            white: '#FDFDFD',   // Off-white for cards and main background
+                            border: '#BDC3C7',  // Silver - For borders and subtle dividers
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        /* CSS Variables for Dark Theme */
-        :root {
-            --hamburger-bar-color: #FFFFFF; /* Lighter for dark background */
-            --primary-dark-bg: #0A0A0A; /* Even darker, almost black */
-            --secondary-violet: #8A2BE2; /* Keep violet accent */
-            --accent-light: #E0E0E0; /* Light text */
-            --section-bg-dark: #1A1A1A; /* Very dark grey for sections */
-            --dark-text: #E0E0E0; /* Light text */
-            --subtle-text: #AAAAAA; /* Slightly darker light text */
-            --success-green: #4CAF50;
-            --light-border: #333333; /* Darker border */
-            --footer-border: #2A2A2A; /* Darker footer border */
-            --hover-violet: #A052FF;
-            --card-background: #1A1A1A; /* Very dark grey for cards */
-            --new-card-background: #1A1A1A; /* Very dark grey for new cards */
-            --new-card-border: #2A2A2A; /* Dark border for cards */
-            /* Removed dynamic-bg variables as body will be solid black */
-            --dynamic-accent-color1: transparent; /* Removed for solid black background */
-            --dynamic-accent-color2: transparent; /* Removed for solid black background */
-            --hero-bg-dark: #0A0A0A; /* Very dark hero background */
-            --hero-text-highlight: #A052FF; /* Slightly brighter violet highlight for contrast */
-            --hero-gradient-start: #0A0A0A; /* Very dark gradient start */
-            --hero-gradient-end: #1A1A1A; /* Very dark gradient end */
+        /* Custom styles - ensure these align with the new color palette */
+        .transition-transform {
+            transition-property: transform;
+            transition-duration: 300ms;
+            transition-timing-function: ease-out;
         }
-
-        /* General Styles (from pro.html) */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .transition-colors {
+            transition-property: background-color, border-color, color;
+            transition-duration: 300ms;
+            transition-timing-function: ease-in-out;
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--dark-text);
-            background-color: #000000; /* Solid Black Background */
-            background-attachment: fixed;
-            background-size: cover;
+        html, body {
             overflow-x: hidden;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .main-content-wrapper {
-            background: rgba(0, 0, 0, 0.8); /* Very dark, slightly transparent black */
-            border-radius: 15px;
-            margin: 100px auto 50px auto;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); /* Darker shadow */
-            padding-top: 20px;
-            padding-bottom: 20px;
-            max-width: 1200px;
-        }
-
-        /* Header (from pro.html) */
-        .header {
-            background: var(--primary-dark-bg);
-            color: var(--accent-light);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.3); /* Darker shadow */
-        }
-
-        .nav {
+        .modal.active {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--accent-light);
-            text-decoration: none;
-        }
-
-        .logo i {
-            font-size: 2rem;
-            color: var(--secondary-violet);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--accent-light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-            padding-bottom: 5px;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 0%;
-            height: 2px;
-            background-color: var(--secondary-violet);
-            transition: width 0.3s ease-out;
-        }
-
-        .nav-links a:hover {
-            color: var(--secondary-violet);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .cta-btn {
-            background: var(--secondary-violet);
-            color: var(--accent-light);
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .cta-btn:hover {
-            background: var(--hover-violet);
-        }
-
-        /* Hamburger Menu Icon (from pro.html) */
-        .hamburger-menu {
-            display: none;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            width: 30px;
-            height: 25px;
-            position: relative;
-            z-index: 1001;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .hamburger-menu .bar {
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: var(--hamburger-bar-color);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .hamburger-menu.active .bar:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
-        }
-
-        .hamburger-menu.active .bar:nth-child(2) {
+        .modal-content-animate {
+            transform: translateY(20px);
             opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
-
-        .hamburger-menu.active .bar:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
-        }
-
-        /* Section Common Styling (from pro.html) */
-        section {
-            padding: 80px 0;
-            background: var(--section-bg-dark);
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        section:first-of-type {
-            padding-top: 40px;
-        }
-        section:last-of-type {
-            margin-bottom: 0;
-            padding-bottom: 40px;
-        }
-        section:nth-of-type(odd) {
-            background: var(--section-bg-dark);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-violet);
-            font-weight: 700;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.3rem;
-            color: var(--subtle-text);
-            margin-bottom: 3rem;
-        }
-
-        /* Hero Section (from pro.html) */
-        .hero {
-            padding: 120px 0 80px;
-            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
-            color: var(--accent-light);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.2) 0%, transparent 70%), /* Slightly increased opacity for dark theme */
-                        radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.2) 0%, transparent 70%); /* Slightly increased opacity for dark theme */
-            z-index: 0;
-            animation: backgroundPulse 15s infinite alternate ease-in-out;
-        }
-
-        @keyframes backgroundPulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.95; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .hero > .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 3.8rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            animation: fadeInDown 1s ease-out;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Darker text shadow */
-        }
-
-        .hero .hero-text-highlight {
-            color: var(--hero-text-highlight);
-        }
-
-        .hero ul {
-            list-style: none;
-            padding: 0;
-            margin: 1rem 0 2rem;
-            text-align: center;
-        }
-
-        .hero ul li {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: var(--accent-light);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: inline-block;
-            width: auto;
-            max-width: 100%;
-        }
-
-        .hero ul li:last-child {
-            margin-bottom: 0;
-        }
-
-        .hero p {
-            font-size: 1.4rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1.2s ease-out;
-        }
-
-        .hero-cta {
-            display: inline-flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            animation: fadeInUp 1.4s ease-out;
-            flex-direction: column; /* Added for stacking video and button */
-            align-items: center; /* Center items within the flex container */
-            width: 100%; /* Allow it to take full width */
-            max-width: 800px; /* Adjusted max-width for the container for laptops */
-            margin-left: auto; /* Center the container */
-            margin-right: auto; /* Center the container */
-        }
-
-        .btn-primary {
-            background: var(--secondary-violet);
-            color: var(--accent-light);
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease-in-out;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary:hover {
-            background: var(--hover-violet);
-            color: var(--accent-light);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-light);
-            padding: 15px 30px;
-            border: 2px solid var(--accent-light);
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(138, 43, 226, 0.2); /* Darker hover background */
-            color: var(--secondary-violet);
-            border-color: var(--secondary-violet);
-        }
-
-        /* Video Container Styling */
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            margin-top: 2rem; /* Spacing from the button */
-            max-width: 750px; /* Adjusted max-width for the video for laptops */
-            border-radius: 10px; /* Rounded corners for the video frame */
-            overflow: hidden; /* Ensures corners are rounded */
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5); /* Shadow for depth */
-            background-color: #000; /* Fallback background */
-        }
-
-        .video-container iframe,
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Stats Section (from pro.html) */
-        .stats {
-            background: var(--section-bg-dark);
-            padding: 60px 0;
-            margin-top: -40px;
-            position: relative;
-            z-index: 10;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3); /* Darker shadow */
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-item {
-            padding: 2rem;
-            border-radius: 15px;
-            background: var(--card-background);
-            color: var(--dark-text);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2); /* Darker shadow */
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--light-border);
-        }
-
-        .stat-item:hover {
-            transform: translateY(-8px) scale(1.02); /* Adjusted hover transform */
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4); /* Adjusted hover shadow */
-        }
-
-         .stat-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.05); /* Lighter overlay for dark theme */
-            transform: translateX(-100%);
-            transition: transform 0.5s ease-out;
-        }
-        .stat-item:hover::before {
-            transform: translateX(100%);
-        }
-        .stat-number {
-            font-size: 2.8rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--secondary-violet); /* Keep violet for the number for contrast */
-        }
-        .stat-item p {
-            font-size: 0.95rem;
-            color: var(--dark-text);
-            margin-bottom: 0;
-            word-wrap: break-word;
-            line-height: 1.4;
-            padding: 0 5px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Courses Section (Adapted from pro.html's Projects Section) */
-        .courses-section {
-            padding: 80px 0;
-            background: var(--section-bg-dark);
-        }
-
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .course-card {
-            background: var(--new-card-background);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
-            transition: all 0.3s ease-in-out;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid var(--new-card-border);
-            text-align: center; /* Center text within card */
-        }
-
-        .course-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Darker shadow */
-        }
-
-        .course-card img {
-            max-width: 100%;
-            height: 180px; /* Fixed height for consistency */
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .course-card .course-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-violet);
-            font-weight: 700;
-        }
-
-        .course-card .course-description {
-            color: var(--subtle-text);
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            flex-grow: 1;
-        }
-
-        .course-card .explore-btn {
-            background: var(--secondary-violet);
-            color: var(--accent-light);
-            padding: 12px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: inline-flex; /* For icon alignment */
-            align-items: center;
-            gap: 8px;
-            margin-top: auto; /* Push button to bottom */
-            justify-content: center; /* Center button content */
-        }
-
-        .course-card .explore-btn:hover {
-            background: var(--hover-violet);
-        }
-
-        .course-card .explore-btn i {
-            font-size: 1.2em;
-        }
-
-
-        /* Benefits Section (from pro.html) */
-        .benefits {
-            padding: 80px 0;
-            background: var(--card-background);
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .benefit-item {
-            text-align: center;
-            padding: 2.5rem;
-            background: var(--section-bg-dark);
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2); /* Darker shadow */
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            border: 1px solid var(--light-border);
-        }
-
-        .benefit-item:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4); /* Darker shadow */
-        }
-
-        .benefit-icon {
-            font-size: 3.5rem;
-            color: var(--secondary-violet);
-            margin-bottom: 1rem;
-            transition: color 0.3s ease-in-out;
-        }
-
-        .benefit-item:hover .benefit-icon {
-            color: var(--hover-violet);
-        }
-        .benefit-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark-text);
-            font-weight: 600;
-        }
-        .benefit-item p {
-            color: var(--subtle-text);
-            font-size: 0.95rem;
-        }
-
-
-        /* Roadmap Section (from pro.html) */
-        .roadmap {
-            padding: 80px 0;
-            background: var(--primary-dark-bg);
-        }
-
-        .roadmap-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minwidth for more content */
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .roadmap-step {
-            background: var(--card-background);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
-            text-align: left; /* Aligned text to left for detailed content */
-            transition: all 0.3s ease-in-out;
-            border: 1px solid var(--new-card-border);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Align content to top */
-        }
-
-        .roadmap-step:hover {
-            transform: translateY(-8px) scale(1.01); /* Reduced scale for more text */
-            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Darker shadow */
-        }
-        .roadmap-step h3 {
-            font-size: 1.6rem;
-            color: var(--secondary-violet);
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-        }
-        .roadmap-step p {
-            color: var(--subtle-text);
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem; /* Spacing for multiple paragraphs */
-        }
-        .roadmap-step strong {
-            color: var(--dark-text); /* Highlight key terms, now light */
-        }
-        .roadmap-step .level-badge {
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-bottom: 1rem;
-            display: inline-block;
-            min-width: 100px; /* Ensure badge size consistency */
-            text-align: center;
+        .modal.active .modal-content-animate {
+            transform: translateY(0);
+            opacity: 1;
         }
-        .level-badge.level-1 { background-color: #4CAF50; color: white; } /* Green */
-        .level-badge.level-2 { background-color: #FFC107; color: #333; } /* Yellow */
-        .level-badge.level-3 { background-color: #DC3545; color: white; } /* Red */
-
-
-        /* Career Path Section (from pro.html) */
-        .career-path {
-            padding: 80px 0;
-            background: var(--section-bg-dark);
-            text-align: center;
-        }
-
-        .career-path-image-container {
-            margin-bottom: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        /* Testimonials Section (from pro.html - grid version) */
-        .testimonials {
-            padding: 80px 0;
-            background: var(--primary-dark-bg);
-            text-align: center;
-        }
-
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: var(--card-background);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
-            text-align: left;
-            position: relative;
-            transition: all 0.3s ease-in-out;
-            border: 1px solid var(--new-card-border);
-            display: flex; /* For consistent layout */
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 15px 45px rgba(0,0,0,0.3); /* Darker shadow */
-        }
-
-        .testimonial-card .stars {
-            color: gold;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-
-        .testimonial-card .testimonial-text {
-            font-size: 1.1rem;
-            color: var(--dark-text);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            flex-grow: 1;
-        }
-
-        .testimonial-card .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 1.5rem;
-        }
-
-        .testimonial-card .testimonial-author img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .testimonial-card .author-info strong {
-            display: block;
-            font-size: 1.1rem;
-            color: var(--secondary-violet);
-        }
-
-        .testimonial-card .author-info span {
-            font-size: 0.9rem;
-            color: var(--subtle-text);
-        }
-
-        /* FAQ Section (from pro.html) */
-        .faq {
-            padding: 80px 0;
-            background: var(--section-bg-dark);
-        }
-
-        .faq-item {
-            background: var(--card-background);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Darker shadow */
-            border: 1px solid var(--light-border);
-        }
-
-        .faq-question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            cursor: pointer;
-            background: var(--card-background);
-            color: var(--accent-light);
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
-
-        .faq-question:hover {
-            background-color: var(--section-bg-dark);
-        }
-
-        .faq-question i {
-            transition: transform 0.3s ease;
-        }
-
-        .faq-question.active i {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            padding: 0 25px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-            color: var(--subtle-text);
-            background: var(--section-bg-dark);
-        }
-
-        .faq-answer.active {
-            max-height: 200px; /* Adjust as needed */
-            padding-bottom: 20px;
-        }
-
-        /* Payment Section Specific Styles (from pro.html) */
-        .payment-section {
-            padding: 80px 0;
-            background: var(--section-bg-dark); /* Ensure it uses the section background */
-        }
-        .payment-options {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin-top: 3rem;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-        }
-
-        .payment-card {
-            background: var(--card-background);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2); /* Darker shadow */
-            text-align: center;
-            width: 100%;
-            max-width: 380px; /* Limit card width */
-            border: 1px solid var(--new-card-border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 350px; /* Ensure consistent height */
-        }
-
-        .payment-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-violet);
-            font-weight: 700;
-        }
-
-        .payment-card .price {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--accent-light);
-            margin-bottom: 1.5rem;
-        }
-
-        .payment-card ul {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 2rem;
-            text-align: left;
-            width: 100%;
-        }
-
-        .payment-card ul li {
-            font-size: 1rem;
-            color: var(--dark-text);
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .payment-card ul li i {
-            color: var(--success-green);
-        }
-        .payment-card ul li .fa-times-circle {
-            color: #dc3545; /* Red for unavailable features */
-        }
-
-        /* Contact Section (Preserved from index.html, styled for dark theme) */
-        .contact {
-            padding: 80px 0;
-            background: var(--section-bg-dark);
-        }
-        .contact-features-list-wrapper {
-            max-width: 500px;
-            margin: -2rem auto 3rem auto;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        .contact-features-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .contact-features-list li {
-            padding: 0.6rem 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--subtle-text);
-            max-width: 100%;
-            justify-content: center;
-        }
-
-        .contact-features-list i {
-            color: var(--success-green);
-            font-size: 1.1rem;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            margin-top: 3rem;
-            justify-content: center;
-        }
-        .contact-form {
-            background: var(--card-background);
-            padding: 2.5rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3); /* Darker shadow for dark theme */
-            max-width: 500px;
-            margin: 0 auto;
-            border: 1px solid var(--new-card-border); /* Add border for consistency */
-        }
-        .form-group {
-            margin-bottom: 1.8rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.6rem;
-            font-weight: 500;
-            color: var(--dark-text); /* Use light text color for labels */
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid var(--light-border); /* Use darker border for inputs */
-            border-radius: 8px;
-            font-size: 1.1rem;
-            background: var(--section-bg-dark); /* Match section background */
-            color: var(--dark-text); /* Use light text color for input text */
-        }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--secondary-violet);
-            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.4); /* Darker shadow for focus */
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-        .form-group select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23AAAAAA'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Csvg%3E"); /* Adjusted fill color for dark theme */
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 18px;
-        }
-
-
-        /* Footer (Combined from index.html content and pro.html styling) */
-        .footer {
-            background: var(--primary-dark-bg);
-            color: var(--accent-light);
-            padding: 60px 0 20px;
-            margin-top: 50px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--secondary-violet);
-        }
-        .footer-section p, .footer-section ul {
-            font-size: 0.95rem;
-        }
-        .footer-section ul {
-            list-style: none;
-        }
-        .footer-section ul li {
-            padding: 0.25rem 0;
-        }
-        .footer-section ul li a {
-            color: var(--subtle-text);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .footer-section ul li a:hover {
-            color: var(--dark-text);
-        }
-        .footer-section p i {
-            margin-right: 8px;
-            color: var(--secondary-violet);
-        }
-        .footer-section .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .footer-section .social-links a {
-            color: var(--subtle-text);
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-        .footer-section .social-links a:hover {
-            color: var(--secondary-violet);
-        }
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid var(--footer-border);
-            color: var(--subtle-text);
-            font-size: 0.9rem;
-        }
-
-
-        /* Overlay message styles (from pro.html) */
-        .overlay-message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75); /* Dark background for dark theme */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .message-content {
-            background: var(--card-background);
-            color: var(--dark-text);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* Darker shadow */
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            transform: translateY(-20px);
-            animation: fadeInUp 0.4s ease-out forwards;
-        }
-
-        .message-content p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .message-close-btn {
-            background: var(--secondary-violet);
-            color: var(--accent-light);
-            padding: 10px 25px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-
-        .message-close-btn:hover {
-            background: var(--hover-violet);
-        }
-
-        /* Keyframe Animations (from pro.html) */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        /* New Animations for Scroll Effect */
-        @keyframes revealUp {
+        /* Keyframe Animations (keep as is, they are generic) */
+        @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+        .animate-fade-in-up {
+            animation: fadeInSlideUp 0.7s ease-out forwards;
+        }
+        .animate-delay-100 { animation-delay: 0.1s; }
+        .animate-delay-200 { animation-delay: 0.2s; }
+        .animate-delay-300 { animation-delay: 0.3s; }
+        .animate-delay-400 { animation-delay: 0.4s; }
+        .animate-delay-500 { animation-delay: 0.5s; }
+        .animate-delay-600 { animation-delay: 0.6s; }
 
-        .animated-element {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            will-change: opacity, transform;
+        /* Custom glow for hover borders - updated to new primary-light */
+        .group:hover .group-hover-glow {
+            box-shadow: 0 0 0 4px rgba(44, 74, 111, 0.5); /* primary-light with opacity */
         }
 
-        .animated-element.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* Subtle gradient for buttons and call-to-actions */
+        .btn-gradient-primary {
+            background-image: linear-gradient(to right, var(--tw-colors-primary-light), var(--tw-colors-primary));
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-gradient-primary:hover {
+            background-image: linear-gradient(to right, var(--tw-colors-primary), var(--tw-colors-primary-dark));
+        }
+        .btn-gradient-accent {
+            background-image: linear-gradient(to right, var(--tw-colors-accent), var(--tw-colors-accent-dark));
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-gradient-accent:hover {
+            background-image: linear-gradient(to right, var(--tw-colors-accent-light), var(--tw-colors-accent));
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 992px) {
-            .nav-links {
-                display: none; /* Hide desktop nav links */
-            }
-            .hamburger-menu {
-                display: flex; /* Show hamburger */
-            }
-            .mobile-nav-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(10, 10, 10, 0.95); /* Even darker mobile overlay background */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 999;
-                transform: translateX(100%); /* Start off-screen */
-                transition: transform 0.4s ease-in-out;
-            }
-            .mobile-nav-overlay.active {
-                transform: translateX(0); /* Slide in */
-            }
-            .mobile-nav-links {
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-                text-align: center;
-            }
-            .mobile-nav-links a {
-                color: var(--dark-text); /* Light text for mobile links */
-                text-decoration: none;
-                font-size: 1.8rem;
-                font-weight: 600;
-                transition: color 0.3s;
-            }
-            .mobile-nav-links a:hover {
-                color: var(--secondary-violet);
-            }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
-            .hero p {
-                font-size: 1.2rem;
-            }
-            .section-title {
-                font-size: 2.2rem;
-            }
-            .section-subtitle {
-                font-size: 1.1rem;
-            }
-            .stats-grid, .courses-grid, .benefits-grid, .roadmap-grid, .testimonial-grid {
-                grid-template-columns: 1fr; /* Stack columns on small screens */
-            }
-            .payment-options {
-                flex-direction: column; /* Stack payment cards */
-                align-items: center;
-            }
-            .payment-card {
-                max-width: 90%; /* Adjust width for mobile */
-            }
-            .contact-grid {
-                grid-template-columns: 1fr; /* Stack contact form on mobile */
-            }
-            .video-container {
-                margin-left: auto;
-                margin-right: auto;
-                max-width: 90%; /* Adjusted for smaller screens (tablets) - "ok" */
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero ul li {
-                font-size: 1.5rem;
-            }
-            .hero p {
-                font-size: 1rem;
-            }
-            .hero-cta {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .btn-primary, .btn-secondary {
-                width: 80%;
-                max-width: 300px;
-                margin: 0 auto;
-            }
-            .main-content-wrapper {
-                margin: 70px auto 20px auto;
-            }
-            .video-container {
-                max-width: 95%; /* Adjusted for very small screens/mobiles - "ok" */
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        /* Custom CSS to hide the mobile nav overlay if it appears below the footer on desktop */
-        .footer-bottom + .mobile-nav-overlay { /* Targets the mobile overlay if it follows the footer-bottom */
-            display: none !important;
-        }
-
-        @media (min-width: 993px) { /* Explicitly hide mobile overlay on desktop */
-            .mobile-nav-overlay {
-                display: none !important;
-            }
-        }
     </style>
 </head>
-<body>
-    <header class="header">
-        <div class="container nav">
-            <a href="#" class="logo" style="font-weight: bold; font-size: 1.5rem;">
-    <span style="color: var(--accent-light);">data</span>
-    <i class="fas fa-infinity" style="color: var(--secondary-violet); font-size: 2rem; vertical-align: middle;"></i>
-    <span style="color: var(--accent-light);">AXI</span>
-</a>
+<body class="font-sans text-neutral-dark bg-neutral-white antialiased pt-20">
 
-            <ul class="nav-links">
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#courses">Domains</a></li>
-                <li><a href="#benefits">Benefits</a></li>
-                <li><a href="#roadmap">Roadmap</a></li>
-                <li><a href="#contact">Enroll Now</a></li>
-            </ul>
-            <div class="hamburger-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+    <header class="fixed top-0 left-0 w-full z-50 bg-neutral-white shadow-lg py-4 border-b border-neutral-border">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 text-2xl font-extrabold text-primary" aria-label="Excel Academy Home">
+                <img src="https://placehold.co/50x50/1A2C42/B8860B/png?text=EA" alt="Excel Academy Logo" class="h-12 w-12 rounded-full shadow-md border-2 border-accent">
+                <span class="font-heading text-3xl">Excel <span class="text-accent">Academy</span></span>
+            </a>
+
+            <button id="menu-toggle" class="lg:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="block w-6 h-0.5 bg-neutral-dark transition-all duration-300 ease-in-out"></span>
+                <span class="block w-6 h-0.5 bg-neutral-dark mt-1 transition-all duration-300 ease-in-out"></span>
+                <span class="block w-6 h-0.5 bg-neutral-dark mt-1 transition-all duration-300 ease-in-out"></span>
+            </button>
+
+            <nav id="main-nav" class="hidden lg:flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-8 absolute lg:static top-full left-0 w-full lg:w-auto bg-neutral-white lg:bg-transparent shadow-md lg:shadow-none p-6 lg:p-0 border-t lg:border-t-0 border-neutral-border">
+                <ul class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-8">
+                    <li><a href="#hero" class="text-neutral-medium hover:text-accent font-semibold transition-colors py-2 block lg:py-0">Home</a></li>
+                    <li><a href="#services-brief" class="text-neutral-medium hover:text-accent font-semibold transition-colors py-2 block lg:py-0">Our Offerings</a></li>
+                    <li><a href="#trust-builder" class="text-neutral-medium hover:text-accent font-semibold transition-colors py-2 block lg:py-0">Why Choose Us</a></li>
+                    <li><a href="#success-stories-carousel" class="text-neutral-medium hover:text-accent font-semibold transition-colors py-2 block lg:py-0">Success Stories</a></li>
+                    <li><a href="#connect-demo" class="text-neutral-medium hover:text-accent font-semibold transition-colors py-2 block lg:py-0">Contact & Demo</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <div class="main-content-wrapper">
-        <section id="hero" class="hero">
-            <div class="container">
-                <h1>Go Beyond Theory<br><span class="hero-text-highlight">Build<br>Something<br>Real</span></h1>
-                <ul>
-                    <li id="typewriter-text"></li>
-                </ul>
-                <p>Select your domain, apply your skills through hands-on tasks<br>and build a certified project to strengthen your resume.</p>
-                <div class="hero-cta">
-                     <div class="video-container">
-                        <iframe
-                            src="dax.mp4"
-                            title="dataAXI Lab Introduction"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
+    <section id="hero" class="relative bg-primary-dark py-20 md:py-32 flex items-center justify-center text-center text-neutral-white overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
+        <div class="container mx-auto px-4 relative z-20">
+            <h1 class="text-4xl md:text-6xl font-extrabold font-heading leading-tight mb-8 opacity-0 animate-fade-in-up">Unlock Your Potential in Wardha!</h1>
+            <p class="text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto opacity-0 animate-fade-in-up animate-delay-100">Empowering students with expert coaching for <span class="text-accent-light">NEET</span>, <span class="text-accent-light">JEE</span>, <span class="text-accent-light">Boards</span> & <span class="text-accent-light">Spoken English</span>.</p>
+            <button id="open-popup-btn" class="inline-flex items-center px-10 py-4 bg-accent rounded-full shadow-xl hover:bg-accent-dark text-neutral-white font-bold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-accent-light opacity-0 animate-fade-in-up animate-delay-200 btn-gradient-accent" aria-haspopup="dialog" aria-controls="popup-modal">
+                Book a FREE Demo Class <i class="fas fa-arrow-right ml-3"></i>
+            </button>
+        </div>
+    </section>
+
+    <section id="services-brief" class="py-16 md:py-24 bg-neutral-light">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold font-heading text-neutral-dark mb-4 opacity-0 animate-fade-in-up animate-delay-100">Our Specialized Coaching Programs</h2>
+            <p class="text-lg text-neutral-medium mb-12 max-w-4xl mx-auto opacity-0 animate-fade-in-up animate-delay-200">We empower students to achieve their academic and professional goals through tailored programs, experienced faculty, and a supportive learning environment.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-neutral-white p-6 rounded-xl shadow-lg border border-neutral-border hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out flex flex-col items-center opacity-0 animate-fade-in-up animate-delay-300">
+                    <div class="w-20 h-20 mb-4 rounded-full bg-primary flex items-center justify-center text-white text-4xl shadow-md border-2 border-primary-light">
+                        <i class="fas fa-stethoscope"></i>
                     </div>
-                    <br>
-                    <a href="#contact" class="btn-primary">Start Building</a>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">NEET Preparation</h3>
+                    <p class="text-neutral-medium text-center">Comprehensive coaching for medical entrance exams. In-depth subject knowledge, regular tests, and doubt-solving sessions to ensure success.</p>
+                </div>
+                <div class="bg-neutral-white p-6 rounded-xl shadow-lg border border-neutral-border hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out flex flex-col items-center opacity-0 animate-fade-in-up animate-delay-400">
+                    <div class="w-20 h-20 mb-4 rounded-full bg-primary flex items-center justify-center text-white text-4xl shadow-md border-2 border-primary-light">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">JEE Mains & Advanced</h3>
+                    <p class="text-neutral-medium text-center">Focused guidance for engineering entrance exams. Master problem-solving techniques, critical thinking, and exam strategies.</p>
+                </div>
+                <div class="bg-neutral-white p-6 rounded-xl shadow-lg border border-neutral-border hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out flex flex-col items-center opacity-0 animate-fade-in-up animate-delay-500">
+                    <div class="w-20 h-20 mb-4 rounded-full bg-primary flex items-center justify-center text-white text-4xl shadow-md border-2 border-primary-light">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">Class 10th & 12th Boards</h3>
+                    <p class="text-neutral-medium text-center">Structured curriculum to excel in board examinations. Emphasis on conceptual clarity, rigorous practice, and scoring techniques.</p>
+                </div>
+                <div class="bg-neutral-white p-6 rounded-xl shadow-lg border border-neutral-border hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out flex flex-col items-center opacity-0 animate-fade-in-up animate-delay-600">
+                    <div class="w-20 h-20 mb-4 rounded-full bg-primary flex items-center justify-center text-white text-4xl shadow-md border-2 border-primary-light">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">Spoken English</h3>
+                    <p class="text-neutral-medium text-center">Develop fluency, confidence, and effective communication skills essential for academic and professional success in a global world.</p>
                 </div>
             </div>
-            
-        </section>
-        <section id="courses" class="courses-section animated-element">
-            <div class="container">
-                <h2 class="section-title">Choose a Domain-<span class="hero-text-highlight">Build with Purpose.</span></h2>
-                <p class="section-subtitle">Gain practical experience and create projects that strengthen your resume.</p>
-                <div class="courses-grid">
-                    <div class="course-card animated-element">
-                        <img src="WD.png" alt="Web Development Full Stack">
-                        <h3 class="course-title"><i class="fas fa-code"></i> Web Development Full Stack</h3>
-                        <p class="course-description">Master both front-end and back-end to build dynamic, data-driven web applications.</p>
-                        <a href="WD.html" class="explore-btn">Start Web Dev <i class="fas fa-arrow-right"></i></a>
+            <a href="#connect-demo" class="mt-12 inline-flex items-center px-8 py-3 border-2 border-primary rounded-lg text-primary font-bold hover:bg-primary-light hover:text-neutral-white transition-colors transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary-light">
+                Explore All Our Offerings <i class="fas fa-external-link-alt ml-3"></i>
+            </a>
+        </div>
+    </section>
+
+    <section id="trust-builder" class="py-16 md:py-24 bg-neutral-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold font-heading text-neutral-dark text-center mb-12">Why Choose Excel Academy for Your Child's Future?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="bg-neutral-light p-6 rounded-xl shadow-md text-center group border border-neutral-border hover:shadow-lg transition-all duration-300 ease-in-out">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-neutral-white text-3xl font-bold mx-auto mb-4 group-hover-glow transition-all duration-300 ease-in-out">
+                        <i class="fas fa-user-graduate"></i>
                     </div>
-                    <div class="course-card animated-element">
-                        <img src="AD.png" alt="App Development">
-                        <h3 class="course-title"><i class="fas fa-mobile-alt"></i> App Development</h3>
-                        <p class="course-description">Learn to create robust mobile applications for various platforms (Android/iOS).</p>
-                        <a href="#" class="explore-btn">Build Mobile Apps<i class="fas fa-arrow-right"></i></a>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">Experienced Faculty</h3>
+                    <p class="text-neutral-medium">Learn from highly qualified and dedicated educators with years of experience in their respective fields.</p>
+                </div>
+                <div class="bg-neutral-light p-6 rounded-xl shadow-md text-center group border border-neutral-border hover:shadow-lg transition-all duration-300 ease-in-out">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-neutral-white text-3xl font-bold mx-auto mb-4 group-hover-glow transition-all duration-300 ease-in-out">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="course-card animated-element">
-                        <img src="DA.jpg" alt="Data Analytics">
-                        <h3 class="course-title"><i class="fas fa-chart-bar"></i> Data Analytics</h3>
-                        <p class="course-description">Uncover insights from data, build dashboards, and make data-driven decisions.</p>
-                        <a href="dataA.html" class="explore-btn">Analyze Data<i class="fas fa-arrow-right"></i></a>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">Proven Results</h3>
+                    <p class="text-neutral-medium">Our consistent track record of student success in competitive exams speaks volumes about our methodology.</p>
+                </div>
+                <div class="bg-neutral-light p-6 rounded-xl shadow-md text-center group border border-neutral-border hover:shadow-lg transition-all duration-300 ease-in-out">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-neutral-white text-3xl font-bold mx-auto mb-4 group-hover-glow transition-all duration-300 ease-in-out">
+                        <i class="fas fa-users"></i>
                     </div>
-                    <div class="course-card animated-element">
-                        <img src="DS.png" alt="Data Science">
-                        <h3 class="course-title"><i class="fas fa-flask"></i> Data Science</h3>
-                        <p class="course-description">Dive into machine learning, predictive modeling, and AI to solve complex problems.</p>
-                        <a href="#" class="explore-btn">Explore Data Science<i class="fas fa-arrow-right"></i></a>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">Personalized Attention</h3>
+                    <p class="text-neutral-medium">Small batch sizes ensure individualized guidance, allowing every student to clarify doubts and thrive.</p>
+                </div>
+                <div class="bg-neutral-light p-6 rounded-xl shadow-md text-center group border border-neutral-border hover:shadow-lg transition-all duration-300 ease-in-out">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-neutral-white text-3xl font-bold mx-auto mb-4 group-hover-glow transition-all duration-300 ease-in-out">
+                        <i class="fas fa-laptop-code"></i>
                     </div>
-                    <div class="course-card animated-element">
-                        <img src="CC.png" alt="Cloud Computing">
-                        <h3 class="course-title"><i class="fas fa-cloud"></i> Cloud Computing</h3>
-                        <p class="course-description">Master cloud infrastructure, services, and deployment on platforms like AWS, Azure, GCP.</p>
-                        <a href="#" class="explore-btn">Deploy to Cloud<i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="course-card animated-element">
-                        <img src="UIUX.png" alt="UI/UX Design">
-                        <h3 class="course-title"><i class="fas fa-paint-brush"></i> UI/UX Design</h3>
-                        <p class="course-description">Craft intuitive and engaging user interfaces and experiences for digital products.</p>
-                        <a href="UIUX.html" class="explore-btn">Design Interfaces<i class="fas fa-arrow-right"></i></a>
-                    </div>
+                    <h3 class="text-xl font-bold font-heading text-primary mb-2">Modern Teaching</h3>
+                    <p class="text-neutral-medium">We combine traditional teaching with modern techniques and digital resources for an engaging learning experience.</p>
                 </div>
             </div>
-        </section>
-         <section id="roadmap" class="roadmap animated-element">
-            <div class="container">
-                <h2 class="section-title">Project-Based Learning <span class="hero-text-highlight">Roadmap</span></h2>
-                <p class="section-subtitle">A clear path from learning to career excellence through hands-on projects.</p>
-                <div class="roadmap-grid">
-                    <div class="roadmap-step animated-element">
-                        <span class="level-badge level-1">Level 1</span>
-                        <h3>Foundational Project</h3>
-                        <p><strong>Goal / Focus:</strong> Understand basics, tools, and setup</p>
-                        <p><strong>What Students Do:</strong> Learn domain tools, follow a guided mini project with explanations</p>
-                        <p><strong>Outcome / What They Gain:</strong> Setup confidence, basic output, tool familiarity</p>
-                    </div>
 
-                    <div class="roadmap-step animated-element">
-                        <span class="level-badge level-2">Level 2</span>
-                        <h3>Intermediate Project</h3>
-                        <p><strong>Goal / Focus:</strong> Apply core concepts into a semi-real build</p>
-                        <p><strong>What Students Do:</strong> Use logic, APIs, visualizations, UI/UX, etc. to build a more functional project</p>
-                        <p><strong>Outcome / What They Gain:</strong> Independent building skills, deeper problem solving</p>
-                    </div>
-
-                    <div class="roadmap-step animated-element">
-                        <span class="level-badge level-3">Level 3</span>
-                        <h3>Capstone Project</h3>
-                        <p><strong>Goal / Focus:</strong> Use all skills to solve a real-world problem</p>
-                        <p><strong>What Students Do:</strong> Plan, build, and present a full-fledged solution like a real industry task</p>
-                        <p><strong>Outcome / What They Gain:</strong> Portfolio-ready project, end-to-end understanding</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-      <section id="benefits" class="benefits animated-element">
-    <div class="container">
-        <h2 class="section-title">Why Choose <span class="hero-text-highlight">dataAXI Lab?</span></h2>
-        <p class="section-subtitle">Experience a project-based learning platform crafted for real-world success.</p>
-        <div class="benefits-grid">
-            <div class="benefit-item animated-element">
-                <i class="fas fa-chalkboard-teacher benefit-icon"></i>
-                <h3>Domain-Specific Modules</h3>
-                <p>Learn through step-by-step modules tailored for Web Dev, Data Analytics, UI/UX, Cloud & more.</p>
-            </div>
-            <div class="benefit-item animated-element">
-                <i class="fas fa-laptop-code benefit-icon"></i>
-                <h3>Task-Based Learning</h3>
-                <p>Complete mini-tasks and challenges that turn your knowledge into practical experience.</p>
-            </div>
-            <div class="benefit-item animated-element">
-                <i class="fas fa-layer-group benefit-icon"></i>
-                <h3>Capstone Projects</h3>
-                <p>Build a complete project that showcases your skills — perfect for resumes and interviews.</p>
-            </div>
-            <div class="benefit-item animated-element">
-                <i class="fas fa-file-alt benefit-icon"></i>
-                <h3>Project Documentation</h3>
-                <p>Get downloadable proof of work with every completed capstone — ready for LinkedIn or job apps.</p>
-            </div>
-            <div class="benefit-item animated-element">
-                <i class="fas fa-user-friends benefit-icon"></i>
-                <h3>Peer & Community Support</h3>
-                <p>Access a lifetime student community for discussions, help, and idea sharing.</p>
-            </div>
-            <div class="benefit-item animated-element">
-                <i class="fas fa-bolt benefit-icon"></i>
-                <h3>No Fluff, Just Action</h3>
-                <p>Skip the theory overload — start doing and building from day one with real-world context.</p>
+            <div class="bg-primary-dark text-neutral-white p-8 rounded-xl shadow-xl text-center max-w-4xl mx-auto border border-accent">
+                <p class="text-xl italic leading-relaxed mb-4 font-light">"Excel Academy transformed my understanding of Physics and Chemistry. The faculty's dedication is unparalleled. I truly believe I wouldn't have achieved my NEET score without them!"</p>
+                <cite class="block text-lg font-semibold">- Priyanka Singh, NEET Qualifier 2024</cite>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
-       
-        <section id="testimonials" class="testimonials animated-element">
-            <div class="container">
-                <h2 class="section-title">What Our <span class="hero-text-highlight">Students Say</span></h2>
-                <p class="section-subtitle">Real stories. Real projects. Real outcomes.</p> <div class="testimonial-grid">
-                    <div class="testimonial-card animated-element">
-                        <div class="stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <p class="testimonial-text">"dataAXI Lab provided the best learning experience. The instructors are knowledgeable, and the hands-on projects were invaluable for my career."</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/men/69.jpg" alt="Student Rahul Sharma">
-                            <div class="author-info">
-                                <strong>Vijay Deshmukh</strong>
-                                <span>Data Scientist at Infosys</span>
-                            </div>
-                        </div>
+    <section id="success-stories-carousel" class="py-16 md:py-24 bg-neutral-light">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold font-heading text-neutral-dark text-center mb-12">Our Students' Success Stories</h2>
+            <div class="flex overflow-x-auto snap-x snap-mandatory space-x-6 pb-4 no-scrollbar">
+                <div class="flex-shrink-0 snap-start w-[calc(100vw-3rem)] sm:w-80 rounded-lg overflow-hidden shadow-lg border border-neutral-border hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://placehold.co/320x240/1A2C42/FDFDFD/png?text=Student+1" alt="Student Success Story 1" class="w-full h-48 object-cover">
+                    <div class="p-4 bg-white">
+                        <p class="text-primary font-semibold">Anjali Sharma - NEET 2024</p>
+                        <p class="text-sm text-neutral-medium">Secured admission to a top medical college.</p>
                     </div>
-                    <div class="testimonial-card animated-element">
-                        <div class="stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <p class="testimonial-text">"The job guarantee program is real! I got placed within weeks of completing my full stack development course. Highly recommend!"</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/men/7.jpg" alt="Student Priya Singh">
-                            <div class="author-info">
-                                <strong>Amir Shaikh</strong>
-                                <span>Software Engineer at ACL Digitals</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="flex-shrink-0 snap-start w-[calc(100vw-3rem)] sm:w-80 rounded-lg overflow-hidden shadow-lg border border-neutral-border hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://placehold.co/320x240/B8860B/FDFDFD/png?text=Student+2" alt="Student Success Story 2" class="w-full h-48 object-cover">
+                    <div class="p-4 bg-white">
+                        <p class="text-primary font-semibold">Rahul Verma - JEE Advanced 2024</p>
+                        <p class="text-sm text-neutral-medium">Cracked JEE Advanced, joining IIT Delhi.</p>
                     </div>
-                    <div class="testimonial-card animated-element">
-                        <div class="stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <p class="testimonial-text">"The mentorship and community support at dataAXI Lab made all the difference. I felt supported every step of the way."</p>
-                        <div class="testimonial-author">
-                            <img src="https://xsgames.co/randomusers/assets/avatars/male/74.jpg" alt="Student Amit Patel">
-                            <div class="author-info">
-                                <strong>Amit Patel</strong>
-                                <span>Cloud Engineer at Confluent</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="flex-shrink-0 snap-start w-[calc(100vw-3rem)] sm:w-80 rounded-lg overflow-hidden shadow-lg border border-neutral-border hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://placehold.co/320x240/1A2C42/FDFDFD/png?text=Student+3" alt="Student Success Story 3" class="w-full h-48 object-cover">
+                    <div class="p-4 bg-white">
+                        <p class="text-primary font-semibold">Preeti Devi - Class 12th Boards</p>
+                        <p class="text-sm text-neutral-medium">Achieved 95% in CBSE Board Exams.</p>
                     </div>
-                    <div class="testimonial-card animated-element">
-    <div class="stars">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-    </div>
-    <p class="testimonial-text">"I went from just learning design theory to creating full prototypes and case studies. The project flow is exactly what I needed."</p>
-    <div class="testimonial-author">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSafvUom2uGjChUNCbH9IZmTsrvzWY2UCv2xVUCuSpgeEkf-gFsOQkeyYQ&s" alt="Student Anjali Nair">
-        <div class="author-info">
-            <strong>Anjali Nair</strong>
-            <span>UI/UX Designer at CreateX</span>
+                </div>
+                <div class="flex-shrink-0 snap-start w-[calc(100vw-3rem)] sm:w-80 rounded-lg overflow-hidden shadow-lg border border-neutral-border hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://placehold.co/320x240/B8860B/FDFDFD/png?text=Student+4" alt="Student Success Story 4" class="w-full h-48 object-cover">
+                    <div class="p-4 bg-white">
+                        <p class="text-primary font-semibold">Vikram Singh - Spoken English</p>
+                        <p class="text-sm text-neutral-medium">Significantly improved communication skills.</p>
+                    </div>
+                </div>
+                 <div class="flex-shrink-0 snap-start w-[calc(100vw-3rem)] sm:w-80 rounded-lg overflow-hidden shadow-lg border border-neutral-border hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://placehold.co/320x240/1A2C42/FDFDFD/png?text=Student+5" alt="Student Success Story 5" class="w-full h-48 object-cover">
+                    <div class="p-4 bg-white">
+                        <p class="text-primary font-semibold">Riya Kapoor - NEET 2023</p>
+                        <p class="text-sm text-neutral-medium">Joined AIIMS Nagpur after dedicated coaching.</p>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 snap-start w-[calc(100vw-3rem)] sm:w-80 rounded-lg overflow-hidden shadow-lg border border-neutral-border hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://placehold.co/320x240/B8860B/FDFDFD/png?text=Student+6" alt="Student Success Story 6" class="w-full h-48 object-cover">
+                    <div class="p-4 bg-white">
+                        <p class="text-primary font-semibold">Arjun Mehta - JEE Mains 2023</p>
+                        <p class="text-sm text-neutral-medium">Secured a seat in a top NIT.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-neutral-medium mt-4">Scroll to see more success stories!</p>
         </div>
-    </div>
-</div>
-<div class="testimonial-card animated-element">
-    <div class="stars">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-    </div>
-    <p class="testimonial-text">"dataAXI Lab gave me a structure to follow and projects to build. I finally understood how to apply what I was learning."</p>
-    <div class="testimonial-author">
-        <img src="https://xsgames.co/randomusers/assets/avatars/male/73.jpg" alt="Student Rohan Mehta">
-        <div class="author-info">
-            <strong>Rohan Mehta</strong>
-            <span>Data Analyst at QuantEdge</span>
-        </div>
-    </div>
-</div>
-<div class="testimonial-card animated-element">
-    <div class="stars">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-    </div>
-    <p class="testimonial-text">"The hands-on approach helped me finally build projects I was proud to put on my resume. This platform turned my skills into results."</p>
-    <div class="testimonial-author">
-        <img src="data:image/jpeg;base64,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" alt="Student Priya Desai">
-        <div class="author-info">
-            <strong>Priya Desai</strong>
-            <span>Frontend Developer at TechNest</span>
-        </div>
-    </div>
-</div>
+    </section>
 
+    <section id="connect-demo" class="py-16 md:py-24 bg-gradient-to-br from-primary-dark to-primary text-neutral-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold font-heading text-center mb-12">Connect With Us & Book Your Free Demo!</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-neutral-white text-neutral-dark p-8 rounded-xl shadow-xl border-2 border-neutral-border hover:border-accent hover:ring-4 hover:ring-accent-light hover:ring-opacity-50 transition-all duration-300 ease-in-out flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold font-heading text-primary mb-6 text-center">Get In Touch Directly</h3>
+                    <p class="flex items-start mb-4 text-lg">
+                        <i class="fas fa-map-marker-alt text-accent mt-1 mr-3"></i>
+                        <strong>Address:</strong> 123, Gandhi Chowk, Main Road, Wardha, Maharashtra 442001
+                    </p>
+                    <p class="flex items-start mb-4 text-lg">
+                        <i class="fas fa-phone-alt text-accent mt-1 mr-3"></i>
+                        <strong>Phone:</strong> <a href="tel:+918698313370" class="text-primary hover:underline">+91 86983 13370</a>
+                    </p>
+                    <p class="flex items-start mb-4 text-lg">
+                        <i class="fas fa-envelope text-accent mt-1 mr-3"></i>
+                        <strong>Email:</strong> <a href="mailto:info@excelacademy.com" class="text-primary hover:underline">info@excelacademy.com</a>
+                    </p>
+                    <p class="flex items-start mb-4 text-lg">
+                        <i class="fas fa-clock text-accent mt-1 mr-3"></i>
+                        <strong>Hours:</strong> Mon-Sat: 09:00 AM - 08:00 PM, Sunday: Closed
+                    </p>
+                    <a href="https://wa.me/918698313370?text=Hello%2C%20I%27m%20interested%20in%20a%20free%20demo%20class!" target="_blank" class="inline-flex items-center justify-center px-6 py-3 bg-accent rounded-lg shadow-md hover:bg-accent-dark text-neutral-white font-bold text-lg mt-6 transform hover:scale-105 transition-colors focus:outline-none focus:ring-4 focus:ring-accent-light btn-gradient-accent">
+                        <i class="fab fa-whatsapp text-2xl mr-3"></i> Chat on WhatsApp
+                    </a>
                 </div>
-            </div>
-        </section>
 
-       
-
-        <section id="payment" class="payment-section animated-element">
-            <div class="container">
-                <h2 class="section-title">Your Enrollment Includes</span></h2>
-                <p class="section-subtitle">Unlock your first project for just ₹299 — lifetime access with a certificate to boost your resume.</p> <div class="payment-options">
-                    <div class="payment-card animated-element">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Domain-specific guided project modules</li>
-<li><i class="fas fa-check-circle"></i> Step-by-step task-based learning flow</li>
-<li><i class="fas fa-check-circle"></i> Capstone challenge with final project submission</li>
-<li><i class="fas fa-check-circle"></i> Resume-ready project documentation</li>
-<li><i class="fas fa-check-circle"></i> Lifetime community access & peer support</li>
-
-                        </ul>
-                    </div>
+                <div class="bg-neutral-white rounded-xl shadow-xl overflow-hidden lg:col-span-1 flex flex-col border-2 border-neutral-border hover:border-accent hover:ring-4 hover:ring-accent-light hover:ring-opacity-50 transition-all duration-300 ease-in-out">
+                    <h3 class="text-2xl font-bold font-heading text-primary text-center p-6 bg-neutral-light border-b border-neutral-border">Find Us Easily</h3>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d185.82081682673095!2d78.5889912!3d20.7511784!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd47f18835d9679%3A0x4b494b5321d3f7bb!2sSpim%20Classes!5e1!3m2!1sen!2sin!4v1750499630498!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location of Excel Academy in Wardha" class="min-h-[300px] lg:min-h-full flex-grow"></iframe>
                 </div>
-            </div>
-        </section>
 
-        <section class="contact" id="contact">
-            <div class="container">
-                <h2 class="section-title">Turn Your Skills Into Real Projects</h2>
-                <p class="section-subtitle">Choose Your Domain and Start Building Real Projects</p>
-                <div class="contact-grid">
-                    <div class="contact-form animated-element">
-                        <form id="enrollmentForm">
-                            <div class="form-group">
-                                <label for="name">Your Name</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Your Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone">
-                            </div>
-                            <div class="form-group">
-                                <label for="interestedCourse">Interested Domain</label>
-                                <select id="interestedCourse" name="interestedCourse">
-                                    <option value="">Select a Domain</option>
-                                    <option value="Web Development Full Stack">Web Development Full Stack</option>
-                                     <option value="App Development">App Development</option>
-                                    <option value="Data Analytics">Data Analytics</option>
-                                    <option value="Data Science">Data Science</option>
-                                    <option value="Cloud Computing">Cloud Computing</option>
-                                    <option value="UI/UX Design">UI/UX Design</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn-primary">Unlock Project</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-         <section id="faq" class="faq animated-element">
-    <div class="container">
-        <h2 class="section-title">Frequently Asked <span class="hero-text-highlight">Questions</span></h2>
-        <p class="section-subtitle">Got doubts? Here’s everything you need to know before starting your journey.</p>
-        <div class="faq-container">
-
-            <div class="faq-item animated-element">
-                <div class="faq-question">
-                    Who is this platform designed for? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>dataAXI Lab is for students, freshers, and working professionals who want to build real-world projects and boost their resumes with practical, job-ready skills. No prior experience? No problem — our task-based modules will guide you step by step.</p>
-                </div>
-            </div>
-
-            <div class="faq-item animated-element">
-                <div class="faq-question">
-                    What do I get after completing the final project? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>Once you complete the capstone project, you'll receive a verified certificate, GitHub-ready project files, and the confidence to showcase your work in interviews and on LinkedIn.</p>
-                </div>
-            </div>
-
-            <div class="faq-item animated-element">
-                <div class="faq-question">
-                    Is there any placement or interview support? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>Yes! We provide project-based interview prep notes, mock interviews, and mentor support. If you perform well, we also forward your resume to hiring partners in our network.</p>
-                </div>
-            </div>
-
-            <div class="faq-item animated-element">
-                <div class="faq-question">
-                    What is the learning format? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>We offer 100% self-paced, online task-based learning. You can start anytime, build at your own speed, and submit your project when ready. Mentor support is available throughout.</p>
-                </div>
-            </div>
-
-            <div class="faq-item animated-element">
-                <div class="faq-question">
-                    How much does it cost to unlock a domain? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>Each domain can be unlocked with a one-time payment starting at just ₹299. This gives you lifetime access to all 3 levels of tasks — Foundation, Intermediate, and Capstone — along with certification.</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-    </div>
-
-    <footer class="footer">
-        <div class="container footer-grid">
-            <div class="footer-section">
-                <h3>About dataAXI Lab</h3>
-                <p>Empowering students to build real projects, gain practical experience, and launch career-ready portfolios.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#courses">Domains</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#contact">Unlock Project</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <p><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra, India</p>
-                <p><i class="fas fa-envelope"></i> dataaxilab@gmail.com</p>
-            </div>
-            <div class="footer-section">
-                <h3>Follow Us</h3>
-                <div class="social-links">
-                    <a href="https://www.youtube.com/@dataAXI_Lab" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://medium.com/@Aaditya.G/list/reading-list" aria-label="Medium"><i class="fab fa-medium"></i></a>
-                    <a href="https://www.linkedin.com/company/dataaxi-labs/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <div class="bg-neutral-white text-neutral-dark p-8 rounded-xl shadow-xl border-2 border-neutral-border hover:border-accent hover:ring-4 hover:ring-accent-light hover:ring-opacity-50 transition-all duration-300 ease-in-out">
+                    <h3 class="text-2xl font-bold font-heading text-primary mb-6 text-center">Schedule Your Free Demo Class</h3>
+                    <form id="demo-booking-form">
+                        <div class="mb-4">
+                            <label for="demo-name" class="block text-neutral-dark text-md font-semibold mb-2">Your Full Name:</label>
+                            <input type="text" id="demo-name" name="name" required placeholder="e.g., Rohan Sharma" aria-label="Full Name"
+                                class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                        </div>
+                        <div class="mb-4">
+                            <label for="demo-phone" class="block text-neutral-dark text-md font-semibold mb-2">Phone Number:</label>
+                            <input type="tel" id="demo-phone" name="phone" required placeholder="e.g., 8698313370" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" aria-label="Phone Number"
+                                class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                        </div>
+                        <div class="mb-4">
+                            <label for="demo-email" class="block text-neutral-dark text-md font-semibold mb-2">Email (Optional):</label>
+                            <input type="email" id="demo-email" name="email" placeholder="e.g., your@example.com" aria-label="Email Address"
+                                class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                        </div>
+                        <div class="mb-4">
+                            <label for="demo-course" class="block text-neutral-dark text-md font-semibold mb-2">Interested Course:</label>
+                            <select id="demo-course" name="course" required aria-label="Interested Course"
+                                class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                                <option value="">-- Select Course --</option>
+                                <option value="NEET">NEET Coaching</option>
+                                <option value="JEE">JEE Mains & Advanced</option>
+                                <option value="Boards">Class 10th & 12th Boards</option>
+                                <option value="English">Spoken English</option>
+                                <option value="Other">Other (Please specify)</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label for="demo-date-time" class="block text-neutral-dark text-md font-semibold mb-2">Preferred Date/Time:</label>
+                            <input type="text" id="demo-date-time" name="preferredDateTime" placeholder="e.g., Sat, 29th June, 4 PM" aria-label="Preferred Date and Time"
+                                class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                            <small class="block text-neutral-medium text-sm mt-1">We'll confirm the exact slot based on availability.</small>
+                        </div>
+                        <button type="submit" class="w-full px-6 py-3 bg-primary rounded-lg shadow-lg hover:bg-primary-dark text-neutral-white font-bold text-lg transform hover:scale-105 transition-colors focus:outline-none focus:ring-4 focus:ring-primary-light btn-gradient-primary">
+                            Submit Demo Request <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                    <div id="demo-form-message" class="hidden mt-6 p-4 rounded-md text-center font-semibold" role="status" aria-live="polite"></div>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2025 dataAXI Lab | All rights reserved.</p>
+    </section>
+
+    <footer class="bg-primary-dark text-neutral-light py-8 shadow-inner">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+            <p class="text-sm">© 2025 Excel Academy. All rights reserved.</p>
+            <ul class="flex flex-wrap justify-center md:justify-end space-x-6">
+                <li><a href="https://www.instagram.com/your_excel_academy_instagram" target="_blank" class="text-neutral-light hover:text-accent transition-colors text-sm" aria-label="Our Instagram Page"><i class="fab fa-instagram mr-1"></i> Instagram</a></li>
+                <li><a href="https://www.facebook.com/your_excel_academy_facebook" target="_blank" class="text-neutral-light hover:text-accent transition-colors text-sm" aria-label="Our Facebook Page"><i class="fab fa-facebook-f mr-1"></i> Facebook</a></li>
+                <li><a href="#about-us" class="text-neutral-light hover:text-accent transition-colors text-sm" aria-label="About Us">About Us</a></li>
+            </ul>
         </div>
     </footer>
 
-    <div class="mobile-nav-overlay">
-        <div class="mobile-nav-links">
-            <a href="#hero">Home</a>
-            <a href="#courses">Domain</a>
-            <a href="#benefits">Benefits</a>
-            <a href="#roadmap">Roadmap</a>
-            <a href="#contact">Enroll Now</a>
+    <div id="popup-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-[1000] items-center justify-center p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-content-animate bg-neutral-white p-8 rounded-xl shadow-2xl relative w-full max-w-lg border border-neutral-border">
+            <button class="close-button absolute top-4 right-4 text-neutral-medium text-4xl font-light hover:text-neutral-dark transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-border" role="button" aria-label="Close dialog">
+                ×
+            </button>
+            <div class="text-center mb-6">
+                <h2 id="modal-title" class="text-3xl font-bold font-heading text-primary mb-2">Ready to Excel?</h2>
+                <p class="text-neutral-medium text-lg">Fill out the form for a <span class="text-accent">Free Counseling Session</span> & Course Details!</p>
+            </div>
+            <form id="popup-lead-form">
+                <div class="mb-4">
+                    <label for="popup-name" class="block text-neutral-dark text-md font-semibold mb-2">Your Full Name:</label>
+                    <input type="text" id="popup-name" name="name" required placeholder="e.g., Priya Singh" aria-label="Full Name"
+                        class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                </div>
+                <div class="mb-4">
+                    <label for="popup-location" class="block text-neutral-dark text-md font-semibold mb-2">Your Location (Wardha Area):</label>
+                    <select id="popup-location" name="location" required aria-label="Your Location in Wardha Area"
+                        class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                        <option value="">-- Select Area --</option>
+                        <option value="Sevagram">Sevagram</option>
+                        <option value="Arvi Naka">Arvi Naka</option>
+                        <option value="Bachharaj">Bachharaj</option>
+                        <option value="Mahatma Gandhi Nagar">Mahatma Gandhi Nagar</option>
+                        <option value="Sindhi Meghe">Sindhi Meghe</option>
+                        <option value="Civil Lines">Civil Lines</option>
+                        <option value="Ramnagar">Ramnagar</option>
+                        <option value="Maganwadi">Maganwadi</option>
+                        <option value="Other">Other (Please specify)</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="popup-course" class="block text-neutral-dark text-md font-semibold mb-2">Interested Course:</label>
+                    <select id="popup-course" name="course" required aria-label="Interested Course"
+                        class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                        <option value="">-- Select Course --</option>
+                        <option value="NEET">NEET Coaching</option>
+                        <option value="JEE">JEE Mains & Advanced</option>
+                        <option value="Boards">Class 10th & 12th Boards</option>
+                        <option value="English">Spoken English</option>
+                        <option value="Other">Other (Please specify)</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="popup-phone" class="block text-neutral-dark text-md font-semibold mb-2">Phone Number:</label>
+                    <input type="tel" id="popup-phone" name="phone" required placeholder="e.g., 8698313370" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" aria-label="Phone Number"
+                        class="w-full px-4 py-2 border border-neutral-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-light transition-colors duration-200">
+                </div>
+                <button type="submit" class="w-full px-6 py-3 bg-primary rounded-lg shadow-lg hover:bg-primary-dark text-neutral-white font-bold text-lg transform hover:scale-105 transition-colors focus:outline-none focus:ring-4 focus:ring-primary-light btn-gradient-primary">
+                    Get FREE Counseling <i class="fas fa-comments ml-2"></i>
+                </button>
+            </form>
+            <div id="popup-form-message" class="hidden mt-6 p-4 rounded-md text-center font-semibold" role="status" aria-live="polite"></div>
         </div>
     </div>
 
-    <div id="successMessage" class="overlay-message" style="display:none;">
-        <div class="message-content">
-            <p id="successText"></p>
-            <button class="message-close-btn" onclick="document.getElementById('successMessage').style.display='none';">Close</button>
-        </div>
-    </div>
-
-    <div id="errorMessage" class="overlay-message" style="display:none;">
-        <div class="message-content">
-            <p id="errorText"></p>
-            <button class="message-close-btn" onclick="document.getElementById('errorMessage').style.display='none';">Close</button>
-        </div>
-    </div>
+    <a href="https://wa.me/918698313370?text=Hello%2C%20I%27m%20interested%20in%20knowing%20more%20about%20your%20coaching%20classes." target="_blank"
+        class="fixed bottom-8 right-8 bg-accent-dark w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-neutral-white text-3xl hover:bg-accent transform hover:scale-110 transition-transform z-40" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Hamburger menu functionality (from pro.html)
-            const hamburgerMenu = document.querySelector('.hamburger-menu');
-            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-            const mobileNavLinks = document.querySelector('.mobile-nav-links');
+            // --- Mobile Menu Logic ---
+            const menuToggle = document.getElementById('menu-toggle');
+            const mainNav = document.getElementById('main-nav');
 
-            if (hamburgerMenu && mobileNavOverlay && mobileNavLinks) {
-                hamburgerMenu.addEventListener('click', () => {
-                    hamburgerMenu.classList.toggle('active');
-                    mobileNavOverlay.classList.toggle('active');
-                    if (mobileNavOverlay.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden'; // Prevent scrolling
-                    } else {
-                        document.body.style.overflow = ''; // Allow scrolling
-                    }
-                });
+            menuToggle.addEventListener('click', () => {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+                mainNav.classList.toggle('hidden', isExpanded);
+                mainNav.classList.toggle('flex', !isExpanded);
+                // Optional: Add/remove classes to animate hamburger icon
+                menuToggle.children[0].classList.toggle('rotate-45', !isExpanded);
+                menuToggle.children[0].classList.toggle('translate-y-2', !isExpanded);
+                menuToggle.children[1].classList.toggle('opacity-0', !isExpanded);
+                menuToggle.children[2].classList.toggle('-rotate-45', !isExpanded);
+                menuToggle.children[2].classList.toggle('-translate-y-2', !isExpanded);
+            });
 
-                mobileNavLinks.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        // Close mobile menu on link click
-                        hamburgerMenu.classList.remove('active');
-                        mobileNavOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                });
-            }
-
-            // FAQ accordion functionality (from pro.html)
-            document.querySelectorAll('.faq-question').forEach(item => {
-                item.addEventListener('click', event => {
-                    const faqItem = item.closest('.faq-item');
-                    const answer = faqItem.querySelector('.faq-answer');
-                    const icon = item.querySelector('i');
-
-                    item.classList.toggle('active');
-                    answer.classList.toggle('active');
-                    icon.classList.toggle('active');
-
-                    if (answer.classList.contains('active')) {
-                        answer.style.maxHeight = answer.scrollHeight + "px";
-                    } else {
-                        answer.style.maxHeight = "0";
+            // Close mobile menu when a nav link is clicked
+            mainNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mainNav.classList.contains('hidden') && window.innerWidth < 1024) { // Only close if menu is open and on mobile
+                        menuToggle.click(); // Simulate click to close and reset hamburger
                     }
                 });
             });
 
-            // Typewriter effect (from pro.html)
-            const textToType = ["Break the Tutorial Loop.", "Start Building for Real."];
-            let typeIndex = 0;
-            let charIndex = 0;
-            let isDeleting = false;
-            const typewriterElement = document.getElementById('typewriter-text');
 
-            function typeWriter() {
-                const currentText = textToType[typeIndex];
-                if (isDeleting) {
-                    typewriterElement.textContent = currentText.substring(0, charIndex - 1);
-                    charIndex--;
-                } else {
-                    typewriterElement.textContent = currentText.substring(0, charIndex + 1);
-                    charIndex++;
-                }
+            // --- Pop-up Modal Logic ---
+            const openPopupBtn = document.getElementById('open-popup-btn');
+            const popupModal = document.getElementById('popup-modal');
+            const closePopupBtn = popupModal.querySelector('.close-button');
 
-                if (!isDeleting && charIndex === currentText.length) {
-                    setTimeout(() => isDeleting = true, 1500);
-                } else if (isDeleting && charIndex === 0) {
-                    isDeleting = false;
-                    typeIndex = (typeIndex + 1) % textToType.length;
-                }
-
-                const typingSpeed = isDeleting ? 50 : 150;
-                setTimeout(typeWriter, typingSpeed);
-            }
-
-            if (typewriterElement) {
-                typeWriter();
-            }
-
-            // New: Intersection Observer for scroll animations
-            const animatedElements = document.querySelectorAll('.animated-element');
-
-            const observerOptions = {
-                root: null, /* viewport */
-                rootMargin: '0px',
-                threshold: 0.1 /* 10% of item visible */
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // Optional: Stop observing once animated
-                    }
-                });
-            }, observerOptions);
-
-            animatedElements.forEach(element => {
-                observer.observe(element);
+            openPopupBtn.addEventListener('click', () => {
+                popupModal.classList.add('active'); // Use 'active' class for flex display and animation
+                popupModal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
             });
 
+            closePopupBtn.addEventListener('click', () => {
+                popupModal.classList.remove('active');
+                popupModal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = ''; // Restore scrolling
+            });
 
-            // --- Firebase Integration ---
-            const firebaseConfig = {
-                apiKey: "AIzaSyDGeHOqxZTBWQ6FIC4CT7wp0W_J4eGHq74",
-                authDomain: "dataaxi-free-course-reg.firebaseapp.com",
-                databaseURL: "https://dataaxi-free-course-reg-default-rtdb.firebaseio.com",
-                projectId: "dataaxi-free-course-reg",
-                storageBucket: "dataaxi-free-course-reg.firebasestorage.app",
-                messagingSenderId: "861361002449",
-                appId: "1:861361002449:web:ccde099f5d98e891ae72f0",
-                measurementId: "G-NLE64SBQG4"
-            };
-
-            if (typeof firebase !== 'undefined' && (typeof firebase.apps === 'undefined' || firebase.apps.length === 0)) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            const database = firebase.database();
-
-            const enrollmentForm = document.getElementById('enrollmentForm');
-            const interestedCourseSelect = document.getElementById('interestedCourse');
-            const enrollButton = document.querySelector('.contact-form .btn-primary');
-
-            const coursePrices = {
-                "Web Development Full Stack": 299,
-                "App Development": 299,
-                "Data Analytics": 299,
-                "Data Science": 299,
-                "Cloud Computing": 299,
-                "UI/UX Design": 299,
-            };
-
-            function updateEnrollButtonText() {
-                const selectedCourse = interestedCourseSelect.value;
-                const price = coursePrices[selectedCourse];
-                if (selectedCourse && price) {
-                    const formattedPrice = new Intl.NumberFormat('en-IN', {
-                        style: 'currency',
-                        currency: 'INR'
-                    }).format(price);
-                    enrollButton.textContent = `Unlock Project (${formattedPrice})`;
-                } else {
-                    enrollButton.textContent = "Unlock Project";
+            // Close modal when clicking outside the content
+            popupModal.addEventListener('click', (e) => {
+                if (e.target === popupModal) {
+                    popupModal.classList.remove('active');
+                    popupModal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
                 }
-            }
+            });
 
-            if (interestedCourseSelect) {
-                interestedCourseSelect.addEventListener('change', updateEnrollButtonText);
-                updateEnrollButtonText();
-            }
+            // Close modal with ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && popupModal.classList.contains('active')) {
+                    popupModal.classList.remove('active');
+                    popupModal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                }
+            });
 
-            if (enrollmentForm) {
-                enrollmentForm.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Prevent default form submission
+            // --- Formspree Submission Logic for Demo Booking Form ---
+            const demoBookingForm = document.getElementById('demo-booking-form');
+            const demoFormMessage = document.getElementById('demo-form-message');
 
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const phone = document.getElementById('phone').value;
-                    const interestedCourse = document.getElementById('interestedCourse').value;
-                    const courseAmount = coursePrices[interestedCourse];
+            demoBookingForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Prevent default form submission
 
-                    // Basic validation
-                    if (!name || !email || !interestedCourse || !courseAmount) {
-                        showOverlayMessage('errorMessage', 'Please fill in your Name, Email, and select a Course to proceed with payment.');
-                        return;
-                    }
+                const formData = new FormData(demoBookingForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
 
-                    // Prepare data for Firebase, but only save AFTER successful payment
-                    const formData = {
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        interestedCourse: interestedCourse,
-                        timestamp: new Date().toISOString()
-                    };
-
-                    // Razorpay Options
-                    const options = {
-                        "key": "rzp_live_QhsHTzRSUBITkk", // Replace with your actual Razorpay Key ID
-                        "amount": courseAmount * 100, // amount in smallest currency unit (paise)
-                        "currency": "INR",
-                        "name": "dataAXI Lab",
-                        "description": `Enrollment for ${interestedCourse}`,
-                        "image": "3.png", // Your logo
-                        "handler": function (response){
-                            // Payment successful - now save data to Firebase
-                            formData.razorpay_payment_id = response.razorpay_payment_id;
-                            database.ref('enrollments').push(formData)
-                                .then(() => {
-                                    showOverlayMessage('successMessage', 'Payment Successful! Your Payment ID: ' + response.razorpay_payment_id + '. Your enrollment details have been saved.');
-                                    enrollmentForm.reset(); // Clear the form
-                                    updateEnrollButtonText(); // Reset button text after submission
-                                })
-                                .catch((error) => {
-                                    console.error("Error writing data to Firebase after payment: ", error);
-                                    showOverlayMessage('errorMessage', "Payment was successful, but there was an error saving your enrollment details. Please contact support with your Payment ID: " + response.razorpay_payment_id);
-                                });
+                try {
+                    const response = await fetch('https://formspree.io/f/mqabdgvp', { // REPLACE with your actual Formspree endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         },
-                        "prefill": {
-                            "name": name,
-                            "email": email,
-                            "contact": phone
-                        },
-                        "notes": {
-                            "address": "dataAXI Lab Office",
-                            "course": interestedCourse
-                        },
-                        "theme": {
-                            "color": "#8A2BE2" // Violet color for the theme
-                        }
-                    };
-
-                    const rzp1 = new Razorpay(options);
-                    rzp1.on('razorpay.payment.failed', function (response){
-                        showOverlayMessage('errorMessage', `Payment Failed: ${response.error.code} - ${response.error.description}`);
-                        console.error("Payment Failed: ", response.error);
+                        body: json
                     });
-                    rzp1.open();
-                });
-            }
 
-            // Function to show custom overlay messages (from pro.html, adapted)
-            function showOverlayMessage(overlayId, message) {
-                const overlay = document.getElementById(overlayId);
-                const textElement = overlay.querySelector('p');
-                textElement.textContent = message;
-                overlay.style.display = 'flex';
-            }
+                    if (response.ok) {
+                        demoFormMessage.textContent = 'Your demo request has been sent successfully! We will contact you shortly.';
+                        demoFormMessage.classList.remove('hidden');
+                        demoFormMessage.classList.remove('bg-red-100', 'text-red-800');
+                        demoFormMessage.classList.add('bg-green-100', 'text-green-800');
+                        demoBookingForm.reset(); // Clear the form
+                    } else {
+                        const errorData = await response.json();
+                        demoFormMessage.textContent = `Failed to send demo request: ${errorData.message || 'Please try again.'}`;
+                        demoFormMessage.classList.remove('hidden');
+                        demoFormMessage.classList.remove('bg-green-100', 'text-green-800');
+                        demoFormMessage.classList.add('bg-red-100', 'text-red-800');
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    demoFormMessage.textContent = 'An error occurred. Please check your internet connection and try again.';
+                    demoFormMessage.classList.remove('hidden');
+                    demoFormMessage.classList.remove('bg-green-100', 'text-green-800');
+                    demoFormMessage.classList.add('bg-red-100', 'text-red-800');
+                }
+            });
+
+            // --- Formspree Submission Logic for Pop-up Lead Form ---
+            const popupLeadForm = document.getElementById('popup-lead-form');
+            const popupFormMessage = document.getElementById('popup-form-message');
+
+            popupLeadForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(popupLeadForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                try {
+                    const response = await fetch('https://formspree.io/f/xkgbvpdp', { // REPLACE with your actual Formspree endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    });
+
+                    if (response.ok) {
+                        popupFormMessage.textContent = 'Your inquiry has been sent successfully! We will contact you shortly.';
+                        popupFormMessage.classList.remove('hidden');
+                        popupFormMessage.classList.remove('bg-red-100', 'text-red-800');
+                        popupFormMessage.classList.add('bg-green-100', 'text-green-800');
+                        popupLeadForm.reset(); // Clear the form
+                        // Optionally close the modal after successful submission
+                        // popupModal.classList.remove('active');
+                        // document.body.style.overflow = '';
+                    } else {
+                        const errorData = await response.json();
+                        popupFormMessage.textContent = `Failed to send inquiry: ${errorData.message || 'Please try again.'}`;
+                        popupFormMessage.classList.remove('hidden');
+                        popupFormMessage.classList.remove('bg-green-100', 'text-green-800');
+                        popupFormMessage.classList.add('bg-red-100', 'text-red-800');
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    popupFormMessage.textContent = 'An error occurred. Please check your internet connection and try again.';
+                    popupFormMessage.classList.remove('hidden');
+                    popupFormMessage.classList.remove('bg-green-100', 'text-green-800');
+                    popupFormMessage.classList.add('bg-red-100', 'text-red-800');
+                }
+            });
         });
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "dataAXI Lab",
-      "url": "https://www.dataaxi.in/",
-      "logo": "https://www.dataaxi.in/3.png",
-      "sameAs": [
-        "https://www.youtube.com/@dataAXI_Lab",
-        "https://medium.com/@Aaditya.G/list/reading-list",
-        "https://www.linkedin.com/company/dataaxi-labs/"
-        ]
-    }
     </script>
 </body>
 </html>
